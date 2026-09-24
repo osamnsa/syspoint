@@ -44,6 +44,13 @@ keep updated but the code itself.
    `admin@syspoint.example` / `SyspointAdmin123!` (change this immediately
    once real credentials are set up; see seed.sql).
 
+   `public/index.php` includes a small `PHP_SAPI === 'cli-server'` check
+   so CSS/JS/uploaded images actually load under this dev server — PHP's
+   built-in server always runs the router script for every request
+   unless that script explicitly opts a file out, unlike Apache, which
+   already keeps real files away from the router via `.htaccess`. Only
+   matters for local `php -S`; production is unaffected either way.
+
 ## Applying Updates
 
 Same discipline as every other build of this shape:
