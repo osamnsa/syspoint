@@ -18,6 +18,8 @@ $pageTitle = 'Order ' . $order['order_ref'];
 require __DIR__ . '/../partials/header.php';
 ?>
 
+<div class="shop-theme">
+
 <section class="page-header">
     <div class="container">
         <div class="breadcrumb"><a href="<?= path() ?>">Home</a> / Order <?= e($order['order_ref']) ?></div>
@@ -60,5 +62,7 @@ require __DIR__ . '/../partials/header.php';
         </div>
     </div>
 </section>
+
+</div>
 
 <?php require __DIR__ . '/../partials/footer.php'; ?>

@@ -352,6 +352,117 @@ img { max-width: 100%; display: block; }
 .portfolio-item-placeholder { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; background: var(--color-bg-soft); border-radius: var(--radius-sm); flex-shrink: 0; }
 .portfolio-item p { margin: 4px 0 0; font-size: 0.88rem; color: var(--color-text-muted); }
 
+/* ============================================================
+   SHOP THEME — scoped to .shop-theme (wraps shop/cart/checkout
+   page content only, never the shared header/nav/footer) so the
+   rest of the site keeps its teal/navy identity untouched.
+   ============================================================ */
+.shop-theme {
+    --shop-accent: #e0142c;
+    --shop-accent-dark: #b30f22;
+    --shop-ink: #0c0c0f;
+}
+.shop-theme .eyebrow { color: var(--shop-accent); }
+.shop-theme .btn-primary { background: var(--shop-accent); color: #fff; }
+.shop-theme .btn-primary:hover { background: var(--shop-accent-dark); }
+.shop-theme .product-card-price { color: var(--shop-accent); }
+.shop-theme .category-card:hover, .shop-theme .product-card:hover { border-color: var(--shop-accent); box-shadow: 0 10px 28px rgba(224, 20, 44, 0.18); }
+.shop-theme .breadcrumb a { color: var(--shop-accent-dark); }
+.shop-theme .form-group input:focus,
+.shop-theme .form-group select:focus,
+.shop-theme .form-group textarea:focus { border-color: var(--shop-accent); box-shadow: 0 0 0 3px rgba(224, 20, 44, 0.15); }
+.shop-theme .order-summary-total { border-top-color: var(--shop-ink); }
+
+.shop-theme .shop-hero {
+    background: radial-gradient(ellipse at top right, rgba(224, 20, 44, 0.35), transparent 55%), var(--shop-ink);
+}
+.shop-theme .shop-hero .eyebrow { color: var(--shop-accent); }
+.shop-theme .shop-hero-highlight { color: var(--shop-accent); }
+.shop-theme .shop-hero-art { background: rgba(224, 20, 44, 0.12); border-color: rgba(224, 20, 44, 0.3); }
+
+/* Compact category strip — icon, name, count, arrow affordance. */
+.shop-category-strip { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
+.shop-category-strip-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+.shop-category-strip-item:hover { border-color: var(--shop-accent); box-shadow: 0 8px 20px rgba(224, 20, 44, 0.16); transform: translateY(-2px); text-decoration: none; }
+.shop-category-strip-icon { font-size: 1.3rem; }
+.shop-category-strip-item strong { display: block; font-size: 0.92rem; }
+.shop-category-strip-item span { display: block; font-size: 0.78rem; color: var(--color-text-muted); }
+.shop-category-strip-arrow { margin-left: 6px; color: var(--shop-accent); font-weight: 700; }
+
+.shop-theme .trust-badges { border-color: var(--color-border); }
+.shop-theme .trust-badge-icon { color: var(--shop-accent); }
+
+/* ============================================================
+   GAMING THEME — scoped to .gaming-theme, same isolation rule.
+   ============================================================ */
+.gaming-theme {
+    --gaming-accent: #4fd1ff;
+    --gaming-accent-2: #9b6bff;
+}
+.gaming-theme .btn-primary { background: linear-gradient(135deg, var(--gaming-accent), var(--gaming-accent-2)); color: #05070d; border: none; }
+.gaming-theme .btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.gaming-theme .eyebrow { color: var(--gaming-accent); }
+.gaming-theme .product-card-price { color: var(--gaming-accent-2); }
+.gaming-theme .category-card:hover, .gaming-theme .product-card:hover { border-color: var(--gaming-accent); box-shadow: 0 10px 28px rgba(79, 209, 255, 0.18); }
+.gaming-theme .breadcrumb a { color: var(--gaming-accent-2); }
+
+.gaming-hero {
+    background:
+        radial-gradient(ellipse at top right, rgba(79, 209, 255, 0.28), transparent 55%),
+        radial-gradient(ellipse at bottom left, rgba(155, 107, 255, 0.22), transparent 60%),
+        linear-gradient(135deg, #05070d 0%, #0a0e18 100%);
+    color: #fff;
+    padding: 96px 0 76px;
+}
+.gaming-hero-inner { max-width: 64ch; }
+.gaming-hero p { color: rgba(255, 255, 255, 0.75); }
+.gaming-hero h1 {
+    background: linear-gradient(90deg, #fff 20%, var(--gaming-accent) 60%, var(--gaming-accent-2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.platform-badges { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+.platform-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(79, 209, 255, 0.1);
+    border: 1px solid rgba(79, 209, 255, 0.4);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.88rem;
+}
+
+/* Bright gradient CTA banner, echoing the reference's bottom bar. */
+.gaming-cta-banner {
+    background: linear-gradient(120deg, var(--gaming-accent-2), var(--gaming-accent));
+    border-radius: var(--radius-lg);
+    padding: 32px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    color: #05070d;
+}
+.gaming-cta-banner h3 { margin: 0 0 4px; color: #05070d; }
+.gaming-cta-banner p { margin: 0; color: rgba(5, 7, 13, 0.75); }
+.gaming-cta-banner .btn-primary { background: #05070d; color: #fff; }
+.gaming-cta-banner .btn-primary:hover { background: #15192a; filter: none; }
+
 /* ---------- Checkout ---------- */
 .checkout-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 28px; align-items: start; margin-top: 8px; }
 .order-summary-line { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 8px 0; border-bottom: 1px solid var(--color-border); }

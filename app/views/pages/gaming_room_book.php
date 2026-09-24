@@ -79,6 +79,8 @@ $pageTitle = 'Book the ' . $room['name'];
 require __DIR__ . '/../partials/header.php';
 ?>
 
+<div class="gaming-theme">
+
 <section class="page-header">
     <div class="container">
         <div class="breadcrumb"><a href="<?= path() ?>">Home</a> / <a href="<?= path('gaming') ?>">Gaming Lounge</a> / Book <?= e($room['name']) ?></div>
@@ -138,5 +140,7 @@ require __DIR__ . '/../partials/header.php';
         </div>
     </div>
 </section>
+
+</div>
 
 <?php require __DIR__ . '/../partials/footer.php'; ?>

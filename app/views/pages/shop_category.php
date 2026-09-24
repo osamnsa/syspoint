@@ -18,6 +18,8 @@ $pageDescription = 'Browse ' . $category['name'] . ' — photos, specs, and curr
 require __DIR__ . '/../partials/header.php';
 ?>
 
+<div class="shop-theme">
+
 <section class="page-header">
     <div class="container">
         <div class="breadcrumb"><a href="<?= path() ?>">Home</a> / <a href="<?= path('shop') ?>">Shop</a> / <?= e($category['name']) ?></div>
@@ -51,5 +53,7 @@ require __DIR__ . '/../partials/header.php';
         <?php endif; ?>
     </div>
 </section>
+
+</div>
 
 <?php require __DIR__ . '/../partials/footer.php'; ?>

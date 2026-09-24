@@ -9,6 +9,8 @@ $subtotal = cart_subtotal();
 require __DIR__ . '/../partials/header.php';
 ?>
 
+<div class="shop-theme">
+
 <section class="page-header">
     <div class="container">
         <div class="breadcrumb"><a href="<?= path() ?>">Home</a> / Cart</div>
@@ -76,5 +78,7 @@ require __DIR__ . '/../partials/header.php';
         <?php endif; ?>
     </div>
 </section>
+
+</div>
 
 <?php require __DIR__ . '/../partials/footer.php'; ?>

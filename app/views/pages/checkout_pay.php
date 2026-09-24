@@ -32,6 +32,8 @@ $pageTitle = 'Complete Payment';
 require __DIR__ . '/../partials/header.php';
 ?>
 
+<div class="shop-theme">
+
 <section class="page-header">
     <div class="container">
         <h1>Payment Unavailable Right Now</h1>
@@ -51,5 +53,7 @@ require __DIR__ . '/../partials/header.php';
         </div>
     </div>
 </section>
+
+</div>
 
 <?php require __DIR__ . '/../partials/footer.php'; ?>

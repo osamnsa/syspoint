@@ -10,15 +10,17 @@ $trending = products_recent(6);
 require __DIR__ . '/../partials/header.php';
 ?>
 
+<div class="shop-theme">
+
 <section class="shop-hero">
     <div class="container shop-hero-inner">
         <div class="shop-hero-copy">
-            <span class="eyebrow" style="color:var(--color-accent);">Discover. Shop. Upgrade.</span>
-            <h1><?= e(content_block('shop.hero_title', 'Computers & Accessories')) ?></h1>
+            <span class="eyebrow">Discover. Shop. Upgrade.</span>
+            <h1><?= e(content_block('shop.hero_title_prefix', 'Latest Tech')) ?> <span class="shop-hero-highlight"><?= e(content_block('shop.hero_title_highlight', 'Gadgets')) ?></span></h1>
             <p><?= e(content_block('shop.hero_subtitle', 'Genuine gadgets and accessories, in stock now, with secure checkout and fast local delivery.')) ?></p>
             <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:24px;">
-                <a href="#categories" class="btn btn-primary">Shop Now</a>
-                <a href="<?= path('contact') ?>" class="btn btn-outline btn-outline-light">Ask a Question</a>
+                <a href="#categories" class="btn btn-primary">Shop Now →</a>
+                <a href="#trending" class="btn btn-outline btn-outline-light">Browse Collection</a>
             </div>
         </div>
         <div class="shop-hero-art" aria-hidden="true">🖥️</div>
@@ -33,18 +35,15 @@ require __DIR__ . '/../partials/header.php';
         <?php if (!$categories): ?>
             <p style="color:var(--color-text-muted);">No categories yet — check back soon.</p>
         <?php else: ?>
-            <div class="category-grid">
+            <div class="shop-category-strip">
                 <?php foreach ($categories as $category): ?>
-                    <a class="category-card" href="<?= path('shop/' . e($category['slug'])) ?>">
-                        <div class="category-card-img">
-                            <?php if ($category['image_path']): ?>
-                                <img src="<?= asset(e($category['image_path'])) ?>" alt="<?= e($category['name']) ?>">
-                            <?php else: ?>
-                                <span class="category-card-placeholder">🖥️</span>
-                            <?php endif; ?>
-                        </div>
-                        <h3><?= e($category['name']) ?></h3>
-                        <p><?= (int) $category['product_count'] ?> item<?= (int) $category['product_count'] === 1 ? '' : 's' ?></p>
+                    <a class="shop-category-strip-item" href="<?= path('shop/' . e($category['slug'])) ?>">
+                        <span class="shop-category-strip-icon"><?= $category['slug'] === 'accessories' ? '🎧' : '🖥️' ?></span>
+                        <span>
+                            <strong><?= e($category['name']) ?></strong>
+                            <span><?= (int) $category['product_count'] ?> item<?= (int) $category['product_count'] === 1 ? '' : 's' ?></span>
+                        </span>
+                        <span class="shop-category-strip-arrow">→</span>
                     </a>
                 <?php endforeach; ?>
             </div>
@@ -53,7 +52,7 @@ require __DIR__ . '/../partials/header.php';
 </section>
 
 <?php if ($trending): ?>
-<section class="section section-soft">
+<section class="section section-soft" id="trending">
     <div class="container">
         <div class="admin-header-row" style="margin-bottom:12px;">
             <div>
@@ -103,5 +102,7 @@ require __DIR__ . '/../partials/header.php';
         </div>
     </div>
 </section>
+
+</div>
 
 <?php require __DIR__ . '/../partials/footer.php'; ?>

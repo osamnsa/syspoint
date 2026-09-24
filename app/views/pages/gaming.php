@@ -14,9 +14,11 @@ $successMessage = flash('booking_success');
 require __DIR__ . '/../partials/header.php';
 ?>
 
+<div class="gaming-theme">
+
 <section class="gaming-hero">
     <div class="container gaming-hero-inner">
-        <span class="eyebrow" style="color:var(--color-accent);">Play. Compete. Immerse.</span>
+        <span class="eyebrow">Play. Compete. Immerse.</span>
         <h1><?= e(content_block('gaming.hero_title', 'PS5, VR & Board Games — All Under One Roof')) ?></h1>
         <p><?= e(content_block('gaming.hero_subtitle', 'A full gaming lounge with the latest PS5 titles, immersive VR experiences, and a shelf of board games — plus a VIP room and a common room ready to book.')) ?></p>
         <div class="platform-badges">
@@ -147,6 +149,18 @@ require __DIR__ . '/../partials/header.php';
     </div>
 </section>
 
+<section class="section">
+    <div class="container">
+        <div class="gaming-cta-banner">
+            <div>
+                <h3>Ready to Play?</h3>
+                <p>Grab a PS5 controller, strap in for VR, or pull up a board — book your room now.</p>
+            </div>
+            <a href="#rooms" class="btn btn-primary">Book Your Session →</a>
+        </div>
+    </div>
+</section>
+
 <section class="trust-badges">
     <div class="container trust-badges-grid">
         <div class="trust-badge">
@@ -167,5 +181,7 @@ require __DIR__ . '/../partials/header.php';
         </div>
     </div>
 </section>
+
+</div>
 
 <?php require __DIR__ . '/../partials/footer.php'; ?>
