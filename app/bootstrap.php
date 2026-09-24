@@ -26,9 +26,10 @@ require_once __DIR__ . '/paystack.php';
 require_once __DIR__ . '/mailer.php';
 require_once __DIR__ . '/software_clinic.php';
 require_once __DIR__ . '/gaming.php';
-// Each phase adds its own domain file here as it's built
-// (training/telegram) — same incremental-require pattern as every prior
-// build, so an unfinished phase never breaks the pages that already work.
+require_once __DIR__ . '/training.php';
+// Each phase adds its own domain file here as it's built (telegram) — same
+// incremental-require pattern as every prior build, so an unfinished phase
+// never breaks the pages that already work.
 
 function db(): PDO
 {

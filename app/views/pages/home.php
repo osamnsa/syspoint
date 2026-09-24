@@ -38,16 +38,25 @@ require __DIR__ . '/../partials/header.php';
                 <h3>Gaming Lounge</h3>
                 <p style="color:var(--color-text-muted);font-size:0.92rem;">Video games and board games, a VIP room and a common room — reserve your session.</p>
             </a>
-            <div class="offer-card">
-                <div class="offer-icon">📊</div>
-                <h3>IT Consulting</h3>
-                <p style="color:var(--color-text-muted);font-size:0.92rem;">Strategic technology consulting for individuals and businesses, via our sister consulting practice.</p>
-            </div>
-            <div class="offer-card">
+            <?php $consultingUrl = config()['app']['consulting_url']; ?>
+            <?php if ($consultingUrl): ?>
+                <a class="offer-card" href="<?= e($consultingUrl) ?>" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+                    <div class="offer-icon">📊</div>
+                    <h3>IT Consulting</h3>
+                    <p style="color:var(--color-text-muted);font-size:0.92rem;">Strategic technology consulting for individuals and businesses, via our sister consulting practice.</p>
+                </a>
+            <?php else: ?>
+                <div class="offer-card">
+                    <div class="offer-icon">📊</div>
+                    <h3>IT Consulting</h3>
+                    <p style="color:var(--color-text-muted);font-size:0.92rem;">Strategic technology consulting for individuals and businesses, via our sister consulting practice.</p>
+                </div>
+            <?php endif; ?>
+            <a class="offer-card" href="<?= path('training') ?>" style="text-decoration:none;color:inherit;">
                 <div class="offer-icon">🎓</div>
                 <h3>Internship &amp; Training</h3>
                 <p style="color:var(--color-text-muted);font-size:0.92rem;">Hands-on courses and an internship program built to get you job-ready.</p>
-            </div>
+            </a>
         </div>
     </div>
 </section>

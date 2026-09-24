@@ -29,6 +29,7 @@ $titleTag = 'Admin' . (isset($pageTitle) && $pageTitle !== '' ? ' — ' . $pageT
         <a href="<?= path('admin/games') ?>">Games</a>
         <a href="<?= path('admin/rooms') ?>">Rooms</a>
         <a href="<?= path('admin/bookings') ?>">Bookings</a>
+        <a href="<?= path('admin/courses') ?>">Courses</a>
     </nav>
     <div class="admin-topbar-user">
         <span><?= e($adminUser['name'] ?? '') ?></span>

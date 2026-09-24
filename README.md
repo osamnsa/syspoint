@@ -91,6 +91,7 @@ app/
   mailer.php                      Order confirmation email
   software_clinic.php              Deployed-business portfolio lookups
   gaming.php                         Games, rooms, and booking-overlap check
+  training.php                         Training course lookups
   views/
     partials/            header.php, nav.php, footer.php,
                            admin_header.php, admin_footer.php
@@ -123,8 +124,9 @@ public/
 - [x] **Phase 4 — Gaming**: video/board game lists, VIP + common room
       reservation system with overlap checking, admin games/rooms/bookings
       management.
-- [ ] **Phase 5 — Training & Internship**: course showcase, internship
-      program page; Consulting section links out to The Icon's site.
+- [x] **Phase 5 — Training & Internship**: course showcase (admin-managed),
+      internship program section, Consulting nav/home links out to The
+      Icon's site once `CONSULTING_URL` is set.
 - [ ] **Phase 6 — Admin panel**: full CRUD across every section above,
       grown-out dashboard stats.
 - [ ] **Phase 7 — Polish**: SEO, mobile pass, Telegram/email
@@ -245,6 +247,27 @@ non-conflicting one on the same room/date succeeds); admin confirm/cancel
 status transitions; game and room CRUD including image upload; a bad
 room slug and a bad admin ID both 404; no PHP warnings/errors in the
 server log.
+
+### Phase 5 notes
+
+The lightest phase so far — `training_courses` is a straightforward
+admin-managed list (same CRUD shape as games/businesses), and the
+Internship section is two `content_block()`-driven text blocks rather
+than a dedicated table, since the brief just asks it to "showcase" the
+concept, not manage structured internship listings.
+
+Consulting isn't a page at all — Charles' own site is already a
+consulting site, so the brief is just a link-out. That link depends on
+a real URL I don't have, so it's wired through `config()['app']['consulting_url']`
+(from `.env`'s `CONSULTING_URL`, empty by default) rather than
+hardcoded: the nav item and the homepage's IT Consulting card only
+render as links once that's set, and degrade to a plain (non-clickable)
+card otherwise, so nothing 404s or links nowhere in the meantime.
+
+Tested end-to-end: the training page renders courses and falls back
+correctly when there are none; admin course CRUD with image upload;
+`content_block()` defaults render correctly before any admin edit; a
+bad admin course ID 404s; no PHP warnings/errors in the server log.
 
 ## Security Notes
 

@@ -53,6 +53,9 @@ function config(): array
                 'name' => env('APP_NAME', 'Syspoint'),
                 'url' => rtrim(env('APP_URL', 'http://localhost:8000'), '/'),
                 'base_path' => env('APP_BASE_PATH', ''),
+                // The Icon's own consulting site — the Consulting section
+                // just links out to it rather than building a page here.
+                'consulting_url' => env('CONSULTING_URL', ''),
             ],
             'db' => [
                 'host' => env('DB_HOST', '127.0.0.1'),

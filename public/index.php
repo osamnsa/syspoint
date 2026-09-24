@@ -25,6 +25,8 @@ $routes = [
     '#^gaming$#' => __DIR__ . '/../app/views/pages/gaming.php',
     '#^gaming/book/([a-z0-9-]+)$#' => __DIR__ . '/../app/views/pages/gaming_room_book.php',
 
+    '#^training$#' => __DIR__ . '/../app/views/pages/training.php',
+
     '#^admin/login$#' => __DIR__ . '/../app/views/pages/admin_login.php',
     '#^admin/logout$#' => __DIR__ . '/../app/views/pages/admin_logout.php',
     '#^admin$#' => __DIR__ . '/../app/views/pages/admin_dashboard.php',
@@ -53,6 +55,11 @@ $routes = [
     '#^admin/rooms/(\d+)/edit$#' => __DIR__ . '/../app/views/pages/admin_room_form.php',
     '#^admin/bookings$#' => __DIR__ . '/../app/views/pages/admin_bookings.php',
     '#^admin/bookings/(\d+)$#' => __DIR__ . '/../app/views/pages/admin_booking_detail.php',
+
+    '#^admin/courses$#' => __DIR__ . '/../app/views/pages/admin_courses.php',
+    '#^admin/courses/new$#' => __DIR__ . '/../app/views/pages/admin_course_form.php',
+    '#^admin/courses/(\d+)/edit$#' => __DIR__ . '/../app/views/pages/admin_course_form.php',
+    '#^admin/courses/(\d+)/delete$#' => __DIR__ . '/../app/views/pages/admin_course_delete.php',
 ];
 
 $requestPath = trim((string) (parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: ''), '/');
