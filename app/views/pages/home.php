@@ -33,11 +33,11 @@ require __DIR__ . '/../partials/header.php';
                 <h3>Software Clinic</h3>
                 <p style="color:var(--color-text-muted);font-size:0.92rem;">Tell us what your business needs built or deployed — we've done it for businesses across the region.</p>
             </a>
-            <div class="offer-card">
+            <a class="offer-card" href="<?= path('gaming') ?>" style="text-decoration:none;color:inherit;">
                 <div class="offer-icon">🎮</div>
                 <h3>Gaming Lounge</h3>
                 <p style="color:var(--color-text-muted);font-size:0.92rem;">Video games and board games, a VIP room and a common room — reserve your session.</p>
-            </div>
+            </a>
             <div class="offer-card">
                 <div class="offer-icon">📊</div>
                 <h3>IT Consulting</h3>

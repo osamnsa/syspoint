@@ -6,6 +6,7 @@ $adminUser = require_admin();
 $unreadMessages = (int) db()->query("SELECT COUNT(*) FROM contact_messages WHERE read_at IS NULL")->fetchColumn();
 $pendingOrders = (int) db()->query("SELECT COUNT(*) FROM orders WHERE status = 'pending'")->fetchColumn();
 $newRequests = (int) db()->query("SELECT COUNT(*) FROM software_requests WHERE status = 'new'")->fetchColumn();
+$pendingBookings = (int) db()->query("SELECT COUNT(*) FROM room_bookings WHERE status = 'pending'")->fetchColumn();
 
 $recentMessages = db()->query(
     "SELECT id, name, subject, created_at, read_at FROM contact_messages ORDER BY created_at DESC LIMIT 5"
@@ -32,6 +33,10 @@ require __DIR__ . '/../partials/admin_header.php';
     <a class="admin-stat" href="<?= path('admin/software-requests') ?>">
         <div class="admin-stat-label">New Software Requests</div>
         <div class="admin-stat-value"><?= $newRequests ?></div>
+    </a>
+    <a class="admin-stat" href="<?= path('admin/bookings') ?>">
+        <div class="admin-stat-label">Pending Bookings</div>
+        <div class="admin-stat-value"><?= $pendingBookings ?></div>
     </a>
 </div>
 

@@ -90,6 +90,7 @@ app/
   paystack.php                   Paystack REST client (init/verify/webhook)
   mailer.php                      Order confirmation email
   software_clinic.php              Deployed-business portfolio lookups
+  gaming.php                         Games, rooms, and booking-overlap check
   views/
     partials/            header.php, nav.php, footer.php,
                            admin_header.php, admin_footer.php
@@ -119,8 +120,9 @@ public/
 - [x] **Phase 3 — Software Clinic**: request-a-build form (with
       honeypot), portfolio of deployed businesses, admin request triage
       and portfolio management.
-- [ ] **Phase 4 — Gaming**: video/board game lists, VIP + common room
-      showcase and booking/reservation system.
+- [x] **Phase 4 — Gaming**: video/board game lists, VIP + common room
+      reservation system with overlap checking, admin games/rooms/bookings
+      management.
 - [ ] **Phase 5 — Training & Internship**: course showcase, internship
       program page; Consulting section links out to The Icon's site.
 - [ ] **Phase 6 — Admin panel**: full CRUD across every section above,
@@ -217,6 +219,32 @@ in the admin request list/detail with status transitions (`new` →
 business added in the admin panel shows up immediately on the public
 page; a bad admin business ID returns a real 404; no PHP warnings/errors
 across any of it.
+
+### Phase 4 notes
+
+`room_bookings` is a reservation *request*, not a paid booking — a
+customer's submission lands as `pending` and an admin confirms or
+declines it from `/admin/bookings`, matching the brief (no payment
+mentioned for room time, unlike the gadget shop). The one thing worth
+enforcing at submission time regardless is double-booking: `room_booking_overlaps()`
+runs the standard interval-overlap test (`start < otherEnd AND end >
+otherStart`) against existing pending/confirmed bookings for that room
+and date, backed by the `idx_room_bookings_date` index already in the
+schema, and rejects a conflicting request with a clear error before it's
+written. This doesn't fully close the race between two people submitting
+overlapping requests in the same instant (both could still land as
+`pending` before either is confirmed) — deliberately not solved with a
+transaction/lock here, since a human reviews and confirms every booking
+anyway and would simply decline the second one; that's a reasonable
+trade for a request queue, unlike the gadget checkout's stock, which
+*is* worth locking because there's no human in that loop.
+
+Tested end-to-end: booking submission and its overlap rejection (a
+genuinely conflicting time slot is blocked with a clear message, a
+non-conflicting one on the same room/date succeeds); admin confirm/cancel
+status transitions; game and room CRUD including image upload; a bad
+room slug and a bad admin ID both 404; no PHP warnings/errors in the
+server log.
 
 ## Security Notes
 
