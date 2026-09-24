@@ -17,6 +17,17 @@ function game_by_id(int $id): ?array
     return $stmt->fetch() ?: null;
 }
 
+/** Display label for a games.type value — ucfirst() alone can't get "PS5" or "VR" right. */
+function game_type_label(string $type): string
+{
+    return match ($type) {
+        'ps5' => 'PS5',
+        'vr' => 'VR',
+        'board' => 'Board Game',
+        default => ucfirst($type),
+    };
+}
+
 function gaming_rooms_active(): array
 {
     return db()->query('SELECT * FROM gaming_rooms WHERE is_active = 1 ORDER BY name ASC')->fetchAll();

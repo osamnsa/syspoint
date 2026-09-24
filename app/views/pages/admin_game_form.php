@@ -16,7 +16,7 @@ if ($gameId && !$game) {
 
 $errors = [];
 $values = [
-    'type' => $game['type'] ?? 'video',
+    'type' => $game['type'] ?? 'ps5',
     'name' => $game['name'] ?? '',
     'description' => $game['description'] ?? '',
     'price' => $game['price'] ?? '',
@@ -28,14 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verify_csrf()) {
         $errors[] = 'Your session expired. Please try again.';
     } else {
-        $values['type'] = (string) ($_POST['type'] ?? 'video');
+        $values['type'] = (string) ($_POST['type'] ?? 'ps5');
         $values['name'] = trim((string) ($_POST['name'] ?? ''));
         $values['description'] = trim((string) ($_POST['description'] ?? ''));
         $values['price'] = (string) ($_POST['price'] ?? '');
         $values['sort_order'] = (string) ($_POST['sort_order'] ?? '0');
         $values['is_active'] = isset($_POST['is_active']) ? 1 : 0;
 
-        if (!in_array($values['type'], ['video', 'board'], true)) $errors[] = 'Please choose a valid game type.';
+        if (!in_array($values['type'], ['ps5', 'vr', 'board'], true)) $errors[] = 'Please choose a valid game type.';
         if ($values['name'] === '') $errors[] = 'Please enter a game name.';
         if ($values['price'] !== '' && (!is_numeric($values['price']) || (float) $values['price'] < 0)) $errors[] = 'Please enter a valid price, or leave it blank.';
         if (!ctype_digit($values['sort_order'])) $errors[] = 'Please enter a valid sort order.';
@@ -105,7 +105,8 @@ require __DIR__ . '/../partials/admin_header.php';
     <div class="form-group">
         <label for="type">Type</label>
         <select id="type" name="type" required>
-            <option value="video" <?= $values['type'] === 'video' ? 'selected' : '' ?>>Video Game</option>
+            <option value="ps5" <?= $values['type'] === 'ps5' ? 'selected' : '' ?>>PS5</option>
+            <option value="vr" <?= $values['type'] === 'vr' ? 'selected' : '' ?>>VR</option>
             <option value="board" <?= $values['type'] === 'board' ? 'selected' : '' ?>>Board Game</option>
         </select>
     </div>

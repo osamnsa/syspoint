@@ -255,6 +255,31 @@ img { max-width: 100%; display: block; }
     flex-shrink: 0;
 }
 
+/* ---------- Gaming hero ---------- */
+.gaming-hero {
+    background:
+        radial-gradient(ellipse at top right, rgba(45, 212, 191, 0.25), transparent 55%),
+        radial-gradient(ellipse at bottom left, rgba(20, 184, 166, 0.18), transparent 60%),
+        linear-gradient(135deg, var(--color-ink) 0%, #060b12 100%);
+    color: #fff;
+    padding: 88px 0 72px;
+}
+.gaming-hero-inner { max-width: 62ch; }
+.gaming-hero p { color: rgba(255, 255, 255, 0.75); }
+.platform-badges { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+.platform-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(45, 212, 191, 0.12);
+    border: 1px solid rgba(45, 212, 191, 0.35);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.88rem;
+}
+
 /* ---------- Category & product grids ---------- */
 .category-grid, .product-grid {
     display: grid;

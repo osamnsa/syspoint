@@ -231,6 +231,19 @@ across any of it.
 
 ### Phase 4 notes
 
+**Updated after launch**: the catalog was originally "video games" +
+"board games" per the brief's literal wording, then split into three
+explicit types — PS5, VR, and board games — once the client clarified
+scope with a reference design. `games.type` changed from
+`ENUM('video','board')` to `ENUM('ps5','vr','board')`; since a column
+can't hold a value outside its current enum, the migration in
+`schema.sql` widens the enum first (union of old + new values), remaps
+any existing `'video'` rows to `'ps5'`, then narrows to the final three
+— verified safe to re-run against a database that already has games in
+it (confirmed idempotent: a second run is a no-op). `game_type_label()`
+in `app/gaming.php` renders the display label (`ucfirst()` alone can't
+get "PS5" or "VR" capitalized right).
+
 `room_bookings` is a reservation *request*, not a paid booking — a
 customer's submission lands as `pending` and an admin confirms or
 declines it from `/admin/bookings`, matching the brief (no payment

@@ -118,12 +118,12 @@ CREATE TABLE IF NOT EXISTS deployed_businesses (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---------------------------------------------------------------------------
--- Gaming: a video-game list and a board-game list (type distinguishes them),
--- plus the two physical rooms and their bookings.
+-- Gaming: three catalogs — PS5, VR, and board games (type distinguishes
+-- them) — plus the two physical rooms and their bookings.
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS games (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    type ENUM('video', 'board') NOT NULL,
+    type ENUM('ps5', 'vr', 'board') NOT NULL,
     name VARCHAR(190) NOT NULL,
     description TEXT NULL,
     price DECIMAL(12,2) NULL,
@@ -132,6 +132,15 @@ CREATE TABLE IF NOT EXISTS games (
     sort_order INT UNSIGNED NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- `type` started as ENUM('video','board') before the catalog split into
+-- PS5 vs VR specifically. A column can't hold a value outside its current
+-- enum, so widen it first (union of old + new), remap 'video' rows to
+-- 'ps5' (the closer fit), then narrow to the final three — safe to re-run
+-- against a database that already has games in it either way.
+ALTER TABLE games MODIFY COLUMN type ENUM('video', 'board', 'ps5', 'vr') NOT NULL;
+UPDATE games SET type = 'ps5' WHERE type = 'video';
+ALTER TABLE games MODIFY COLUMN type ENUM('ps5', 'vr', 'board') NOT NULL;
 
 -- Two rows expected (VIP, Common) but not hardcoded as an enum, so a third
 -- room is just another admin-added row, not a schema change.

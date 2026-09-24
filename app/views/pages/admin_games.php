@@ -27,7 +27,7 @@ require __DIR__ . '/../partials/admin_header.php';
                             <?php endif; ?>
                         </td>
                         <td><?= e($game['name']) ?></td>
-                        <td><span class="badge badge-muted"><?= e(ucfirst($game['type'])) ?></span></td>
+                        <td><span class="badge badge-muted"><?= e(game_type_label($game['type'])) ?></span></td>
                         <td><?= $game['price'] !== null ? format_naira((float) $game['price']) : '—' ?></td>
                         <td><?php if ($game['is_active']): ?><span class="badge badge-success">Active</span><?php else: ?><span class="badge badge-muted">Hidden</span><?php endif; ?></td>
                         <td style="white-space:nowrap;">
