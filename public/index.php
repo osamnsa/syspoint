@@ -1,6 +1,21 @@
 <?php
 declare(strict_types=1);
 
+// PHP's built-in dev server (php -S ... index.php) treats this file as a
+// router for every request — unlike Apache, it does NOT skip the router
+// for a file that already exists on disk (Apache's job normally, via the
+// RewriteCond in .htaccess). Without this, every CSS/JS/image request
+// locally would 404 through the app router instead of being served as-is.
+// This is the standard idiom for PHP's built-in server and is a no-op
+// under Apache, where .htaccess already routes real files around this
+// script entirely.
+if (PHP_SAPI === 'cli-server') {
+    $assetPath = __DIR__ . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    if ($assetPath !== __DIR__ . '/index.php' && is_file($assetPath)) {
+        return false;
+    }
+}
+
 require __DIR__ . '/../app/bootstrap.php';
 
 $routes = [
