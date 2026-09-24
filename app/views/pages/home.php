@@ -23,11 +23,11 @@ require __DIR__ . '/../partials/header.php';
         <span class="eyebrow">What we do</span>
         <h2>Five ways we can help</h2>
         <div class="offer-grid">
-            <div class="offer-card">
+            <a class="offer-card" href="<?= path('shop') ?>" style="text-decoration:none;color:inherit;">
                 <div class="offer-icon">🖥️</div>
                 <h3>Computers &amp; Accessories</h3>
-                <p style="color:var(--color-text-muted);font-size:0.92rem;">Browse computers and accessories with photos, specs, and current prices — shop online soon.</p>
-            </div>
+                <p style="color:var(--color-text-muted);font-size:0.92rem;">Browse computers and accessories with photos, specs, and current prices — shop online now.</p>
+            </a>
             <div class="offer-card">
                 <div class="offer-icon">🛠️</div>
                 <h3>Software Clinic</h3>

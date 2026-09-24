@@ -83,6 +83,12 @@ app/
                             handle_image_upload()
   admin.php                 Session-based admin auth
   content_blocks.php         Lightweight in-house CMS for editable copy
+  products.php                Category/product query helpers
+  cart.php                     Session-based cart (no DB table)
+  orders.php                    Transactional checkout (stock-locking),
+                                  order lookups, idempotent payment marking
+  paystack.php                   Paystack REST client (init/verify/webhook)
+  mailer.php                      Order confirmation email
   views/
     partials/            header.php, nav.php, footer.php,
                            admin_header.php, admin_footer.php
@@ -105,8 +111,10 @@ public/
       training, shared content/contact tables), app core
       (config/bootstrap/router/helpers/admin auth), design system CSS,
       Home/About/Contact, admin login + a starter dashboard.
-- [ ] **Phase 2 — Gadget sales**: Computers/Accessories catalog, cart,
-      Paystack checkout, stock tracking, order management.
+- [x] **Phase 2 — Gadget sales**: Computers/Accessories catalog (shop
+      landing, category, product detail), session cart, checkout with
+      transactional stock-locking, Paystack payment (init/verify/webhook),
+      order confirmation, admin product/category/order management.
 - [ ] **Phase 3 — Software Clinic**: request-a-build form, portfolio of
       businesses served.
 - [ ] **Phase 4 — Gaming**: video/board game lists, VIP + common room
@@ -153,6 +161,48 @@ visit to `/admin` redirects to `/admin/login`; the mobile nav toggle
 opens/closes correctly at a 390px viewport. `schema.sql` and `seed.sql`
 both verified idempotent (re-run cleanly with zero duplicate rows). No
 PHP errors/warnings in the server log across any of this.
+
+### Phase 2 notes
+
+The cart is session-only (`$_SESSION['cart']`, no DB table) and never
+trusts its own cached quantities — `cart_items()` re-reads live
+price/stock on every request and silently clamps a line down (or drops
+it) if stock changed since it was added, so what the customer sees in
+their cart is never stale. The real stock check happens a second time,
+independently, at checkout: `order_create_from_cart()` runs inside a
+transaction with `SELECT ... FOR UPDATE` on every product row before
+writing the order, so two customers checking out the last unit at the
+same moment can't both succeed — whoever's transaction commits first
+wins, the second gets a clear "no longer available" error with nothing
+charged or decremented.
+
+If Paystack's `initialize` call fails (not configured, or their API is
+down) *after* the order and stock decrement already succeeded, the order
+is not lost or silently abandoned — it sits as `pending`/`unpaid` under
+its own `order_ref`, and `/checkout/pay/{ref}` re-attempts payment for
+that same order on demand rather than forcing the customer back through
+the cart. `order_mark_paid()` is idempotent (only transitions a row still
+unpaid), so it's safe to call from both the webhook and the browser
+return callback for the same payment without double-processing or
+double-emailing — verified by replaying the same signed webhook payload
+twice and confirming the second call was a no-op.
+
+Tested end-to-end against a local MySQL/MariaDB instance: full shop →
+product → add-to-cart → cart update/remove → checkout → order flow;
+stock correctly decrements on order creation and clamps cart quantities
+down when stock changes underneath an existing cart line; checkout
+correctly rejects with no state change when requested quantity exceeds
+stock; the Paystack webhook was exercised with a real HMAC-SHA512
+signed payload (accepted and marks the order paid) and an invalid
+signature (silently ignored, no state change); the browser return
+callback and the webhook were both confirmed idempotent against the same
+order; admin product create/edit/delete, category edit, and order
+status updates all round-trip correctly with image upload; CSRF
+rejection was confirmed on every POST form; bad product/category slugs
+return a real 404. `send_mail()` failing (no local MTA in the dev
+container) was confirmed to log and continue rather than break the
+checkout/webhook flow it's called from — a broken mail server should
+never undo a payment that already succeeded.
 
 ## Security Notes
 

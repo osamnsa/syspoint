@@ -19,10 +19,15 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/admin.php';
 require_once __DIR__ . '/content_blocks.php';
-// Each phase adds its own domain file here as it's built (cart/products/
-// orders/paystack/mailer/games/rooms/software_clinic/training/telegram) —
-// same incremental-require pattern as every prior build, so an unfinished
-// phase never breaks the pages that already work.
+require_once __DIR__ . '/products.php';
+require_once __DIR__ . '/cart.php';
+require_once __DIR__ . '/orders.php';
+require_once __DIR__ . '/paystack.php';
+require_once __DIR__ . '/mailer.php';
+// Each phase adds its own domain file here as it's built (games/rooms/
+// software_clinic/training/telegram) — same incremental-require pattern as
+// every prior build, so an unfinished phase never breaks the pages that
+// already work.
 
 function db(): PDO
 {

@@ -17,7 +17,9 @@ if ($base !== '' && str_starts_with($currentPath, $base)) {
         </button>
         <ul class="nav-links" id="nav-links">
             <li><a href="<?= path() ?>" class="<?= $currentPath === '' ? 'is-active' : '' ?>">Home</a></li>
+            <li><a href="<?= path('shop') ?>" class="<?= str_starts_with($currentPath, 'shop') ? 'is-active' : '' ?>">Shop</a></li>
             <li><a href="<?= path('about') ?>" class="<?= $currentPath === 'about' ? 'is-active' : '' ?>">About</a></li>
+            <li><a href="<?= path('cart') ?>" class="<?= $currentPath === 'cart' ? 'is-active' : '' ?>">Cart<?php $cartCount = cart_count(); if ($cartCount > 0): ?> <span class="badge badge-success"><?= $cartCount ?></span><?php endif; ?></a></li>
             <li><a href="<?= path('contact') ?>" class="btn btn-primary btn-sm">Contact Us</a></li>
         </ul>
     </div>

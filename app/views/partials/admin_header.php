@@ -19,6 +19,12 @@ $titleTag = 'Admin' . (isset($pageTitle) && $pageTitle !== '' ? ' — ' . $pageT
 <body class="admin-body">
 <header class="admin-topbar">
     <a class="brand" href="<?= path('admin') ?>"><span class="brand-name">Syspoint <em style="color:var(--color-accent);font-style:normal;">Admin</em></span></a>
+    <nav class="admin-nav">
+        <a href="<?= path('admin') ?>">Dashboard</a>
+        <a href="<?= path('admin/products') ?>">Products</a>
+        <a href="<?= path('admin/categories') ?>">Categories</a>
+        <a href="<?= path('admin/orders') ?>">Orders</a>
+    </nav>
     <div class="admin-topbar-user">
         <span><?= e($adminUser['name'] ?? '') ?></span>
         <form method="post" action="<?= path('admin/logout') ?>">
