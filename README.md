@@ -89,6 +89,7 @@ app/
                                   order lookups, idempotent payment marking
   paystack.php                   Paystack REST client (init/verify/webhook)
   mailer.php                      Order confirmation email
+  software_clinic.php              Deployed-business portfolio lookups
   views/
     partials/            header.php, nav.php, footer.php,
                            admin_header.php, admin_footer.php
@@ -115,8 +116,9 @@ public/
       landing, category, product detail), session cart, checkout with
       transactional stock-locking, Paystack payment (init/verify/webhook),
       order confirmation, admin product/category/order management.
-- [ ] **Phase 3 — Software Clinic**: request-a-build form, portfolio of
-      businesses served.
+- [x] **Phase 3 — Software Clinic**: request-a-build form (with
+      honeypot), portfolio of deployed businesses, admin request triage
+      and portfolio management.
 - [ ] **Phase 4 — Gaming**: video/board game lists, VIP + common room
       showcase and booking/reservation system.
 - [ ] **Phase 5 — Training & Internship**: course showcase, internship
@@ -203,6 +205,18 @@ return a real 404. `send_mail()` failing (no local MTA in the dev
 container) was confirmed to log and continue rather than break the
 checkout/webhook flow it's called from — a broken mail server should
 never undo a payment that already succeeded.
+
+### Phase 3 notes
+
+Straightforward by comparison to Phase 2 — a honeypot-gated request form
+(same pattern as the Contact form) writing into `software_requests`, and
+a read-only `deployed_businesses` portfolio next to it, both admin-managed.
+Tested end-to-end: form submission round-trips into the DB and shows up
+in the admin request list/detail with status transitions (`new` →
+`quoted`, etc.); CSRF is rejected exactly like every other form here; a
+business added in the admin panel shows up immediately on the public
+page; a bad admin business ID returns a real 404; no PHP warnings/errors
+across any of it.
 
 ## Security Notes
 

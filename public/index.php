@@ -20,6 +20,8 @@ $routes = [
     '#^paystack/webhook$#' => __DIR__ . '/../app/views/pages/paystack_webhook.php',
     '#^order/([A-Za-z0-9-]+)$#' => __DIR__ . '/../app/views/pages/order_confirmation.php',
 
+    '#^software-clinic$#' => __DIR__ . '/../app/views/pages/software_clinic.php',
+
     '#^admin/login$#' => __DIR__ . '/../app/views/pages/admin_login.php',
     '#^admin/logout$#' => __DIR__ . '/../app/views/pages/admin_logout.php',
     '#^admin$#' => __DIR__ . '/../app/views/pages/admin_dashboard.php',
@@ -32,6 +34,13 @@ $routes = [
     '#^admin/categories/(\d+)/edit$#' => __DIR__ . '/../app/views/pages/admin_category_form.php',
     '#^admin/orders$#' => __DIR__ . '/../app/views/pages/admin_orders.php',
     '#^admin/orders/(\d+)$#' => __DIR__ . '/../app/views/pages/admin_order_detail.php',
+
+    '#^admin/software-requests$#' => __DIR__ . '/../app/views/pages/admin_software_requests.php',
+    '#^admin/software-requests/(\d+)$#' => __DIR__ . '/../app/views/pages/admin_software_request_detail.php',
+    '#^admin/businesses$#' => __DIR__ . '/../app/views/pages/admin_businesses.php',
+    '#^admin/businesses/new$#' => __DIR__ . '/../app/views/pages/admin_business_form.php',
+    '#^admin/businesses/(\d+)/edit$#' => __DIR__ . '/../app/views/pages/admin_business_form.php',
+    '#^admin/businesses/(\d+)/delete$#' => __DIR__ . '/../app/views/pages/admin_business_delete.php',
 ];
 
 $requestPath = trim((string) (parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: ''), '/');
