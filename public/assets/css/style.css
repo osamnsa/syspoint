@@ -229,6 +229,21 @@ img { max-width: 100%; display: block; }
 .badge-warning { background: #fff4e0; color: #8a5a06; }
 .badge-muted { background: var(--color-bg-soft); color: var(--color-text-muted); }
 
+.demo-badge {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: #fff4d6;
+    color: #8a5a06;
+    border: 1px dashed #d99a1f;
+    vertical-align: middle;
+}
+
 .btn-outline-light { border-color: rgba(255,255,255,0.35); color: #fff; }
 .btn-outline-light:hover { border-color: #fff; color: #fff; }
 
@@ -242,43 +257,12 @@ img { max-width: 100%; display: block; }
 .shop-hero-copy { max-width: 52ch; }
 .shop-hero-copy p { color: rgba(255, 255, 255, 0.75); }
 .shop-hero-art {
-    font-size: 7rem;
-    line-height: 1;
-    width: 220px;
-    height: 220px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-lg);
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    width: 380px;
+    max-width: 44vw;
     flex-shrink: 0;
 }
-
-/* ---------- Gaming hero ---------- */
-.gaming-hero {
-    background:
-        radial-gradient(ellipse at top right, rgba(45, 212, 191, 0.25), transparent 55%),
-        radial-gradient(ellipse at bottom left, rgba(20, 184, 166, 0.18), transparent 60%),
-        linear-gradient(135deg, var(--color-ink) 0%, #060b12 100%);
-    color: #fff;
-    padding: 88px 0 72px;
-}
-.gaming-hero-inner { max-width: 62ch; }
-.gaming-hero p { color: rgba(255, 255, 255, 0.75); }
-.platform-badges { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
-.platform-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    border-radius: 999px;
-    background: rgba(45, 212, 191, 0.12);
-    border: 1px solid rgba(45, 212, 191, 0.35);
-    color: #fff;
-    font-weight: 600;
-    font-size: 0.88rem;
-}
+.shop-hero-art svg { width: 100%; height: auto; display: block; }
+@media (max-width: 700px) { .shop-hero-art { display: none; } }
 
 /* ---------- Category & product grids ---------- */
 .category-grid, .product-grid {
@@ -378,7 +362,6 @@ img { max-width: 100%; display: block; }
 }
 .shop-theme .shop-hero .eyebrow { color: var(--shop-accent); }
 .shop-theme .shop-hero-highlight { color: var(--shop-accent); }
-.shop-theme .shop-hero-art { background: rgba(224, 20, 44, 0.12); border-color: rgba(224, 20, 44, 0.3); }
 
 /* Compact category strip — icon, name, count, arrow affordance. */
 .shop-category-strip { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
@@ -424,8 +407,12 @@ img { max-width: 100%; display: block; }
     color: #fff;
     padding: 96px 0 76px;
 }
-.gaming-hero-inner { max-width: 64ch; }
+.gaming-hero-inner { display: flex; align-items: center; justify-content: space-between; gap: 36px; flex-wrap: wrap; }
+.gaming-hero-copy { max-width: 56ch; }
 .gaming-hero p { color: rgba(255, 255, 255, 0.75); }
+.gaming-hero-art { width: 380px; max-width: 44vw; flex-shrink: 0; }
+.gaming-hero-art svg { width: 100%; height: auto; display: block; }
+@media (max-width: 760px) { .gaming-hero-art { display: none; } }
 .gaming-hero h1 {
     background: linear-gradient(90deg, #fff 20%, var(--gaming-accent) 60%, var(--gaming-accent-2) 100%);
     -webkit-background-clip: text;

@@ -50,6 +50,12 @@ function format_naira(float $amount): string
     return '₦' . number_format($amount, 0);
 }
 
+/** Small inline badge marking a price as placeholder/preview, not real inventory pricing. */
+function demo_badge(): string
+{
+    return '<span class="demo-badge">Demo</span>';
+}
+
 // --- CSRF -------------------------------------------------------------------
 
 function csrf_token(): string

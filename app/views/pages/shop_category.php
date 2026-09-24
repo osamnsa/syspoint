@@ -46,7 +46,7 @@ require __DIR__ . '/../partials/header.php';
                             <?php endif; ?>
                         </div>
                         <h3><?= e($product['name']) ?></h3>
-                        <p class="product-card-price"><?= format_naira((float) $product['price']) ?></p>
+                        <p class="product-card-price"><?= format_naira((float) $product['price']) ?><?= $product['is_demo'] ? demo_badge() : '' ?></p>
                     </a>
                 <?php endforeach; ?>
             </div>

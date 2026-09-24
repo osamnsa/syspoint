@@ -60,7 +60,7 @@ require __DIR__ . '/../partials/header.php';
             <div class="product-detail-info">
                 <span class="eyebrow"><?= e($product['category_name']) ?></span>
                 <h1><?= e($product['name']) ?></h1>
-                <p class="product-detail-price"><?= format_naira((float) $product['price']) ?></p>
+                <p class="product-detail-price"><?= format_naira((float) $product['price']) ?><?= $product['is_demo'] ? demo_badge() : '' ?></p>
 
                 <?php if ($inStock): ?>
                     <span class="badge badge-success">In Stock (<?= (int) $product['stock_qty'] ?> available)</span>

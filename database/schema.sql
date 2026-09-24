@@ -50,6 +50,11 @@ CREATE TABLE IF NOT EXISTS products (
     CONSTRAINT fk_products_category FOREIGN KEY (category_id) REFERENCES product_categories (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Marks placeholder/preview listings so a "Demo" label can render next to
+-- the price and nobody mistakes them for real inventory or pricing. Real
+-- products added through the admin panel default to 0.
+ALTER TABLE products ADD COLUMN IF NOT EXISTS is_demo TINYINT(1) NOT NULL DEFAULT 0 AFTER is_active;
+
 -- Extra gallery images beyond the product's own primary image_path.
 CREATE TABLE IF NOT EXISTS product_images (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -132,6 +137,9 @@ CREATE TABLE IF NOT EXISTS games (
     sort_order INT UNSIGNED NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Same "Demo" labeling as products.is_demo — see the comment there.
+ALTER TABLE games ADD COLUMN IF NOT EXISTS is_demo TINYINT(1) NOT NULL DEFAULT 0 AFTER is_active;
 
 -- `type` started as ENUM('video','board') before the catalog split into
 -- PS5 vs VR specifically. A column can't hold a value outside its current

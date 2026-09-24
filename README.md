@@ -289,6 +289,28 @@ correctly when there are none; admin course CRUD with image upload;
 `content_block()` defaults render correctly before any admin edit; a
 bad admin course ID 404s; no PHP warnings/errors in the server log.
 
+### Demo/preview content
+
+`products.is_demo` and `games.is_demo` (both `TINYINT(1) DEFAULT 0`,
+added via `schema.sql`) mark rows as placeholder/preview listings —
+`demo_badge()` in `helpers.php` renders a small dashed "Demo" chip next
+to the price wherever one of these renders (catalog grids, product
+detail), so nobody mistakes a preview product for real inventory or
+pricing. Real products added through the admin panel default to
+`is_demo = 0` and never get the badge. The current catalog (18 products,
+14 games) is placeholder content seeded directly into the local dev
+database for client preview — deliberately **not** committed through
+`seed.sql`, since that file is one-time real starter content per the
+schema.sql/seed.sql discipline above, not a place for fake demo rows
+that would need cleaning out of a real install.
+
+Also swapped the shop/gaming hero sections' emoji-in-a-box placeholder
+for actual inline SVG illustrations (a laptop + phone mockup with a
+shopping-app screen for Shop; a monitor with a game HUD, a controller,
+and a VR headset for Gaming) — self-hosted, no external image
+dependency, matching the "no build step, nothing to fetch" approach
+used everywhere else in this project.
+
 ## Security Notes
 
 - All DB queries use PDO prepared statements (`ATTR_EMULATE_PREPARES`
