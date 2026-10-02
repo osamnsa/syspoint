@@ -32,7 +32,6 @@ require __DIR__ . '/../partials/header.php';
                     <source srcset="<?= asset('assets/img/gaming/ps5.webp') ?>" type="image/webp">
                     <img src="<?= asset('assets/img/gaming/ps5.jpg') ?>" alt="PS5 console and controller" width="680" height="907" fetchpriority="high">
                 </picture>
-                <span class="arcade-card-tag">P1</span>
                 <span class="arcade-card-body">
                     <span class="arcade-card-name">PS5</span>
                     <span class="arcade-card-sub">The latest PS5 titles</span>
@@ -44,7 +43,6 @@ require __DIR__ . '/../partials/header.php';
                     <source srcset="<?= asset('assets/img/gaming/vr.webp') ?>" type="image/webp">
                     <img src="<?= asset('assets/img/gaming/vr.jpg') ?>" alt="Player wearing a VR headset" width="406" height="473">
                 </picture>
-                <span class="arcade-card-tag">P2</span>
                 <span class="arcade-card-body">
                     <span class="arcade-card-name">VR Arena</span>
                     <span class="arcade-card-sub">Step inside the game</span>
@@ -56,7 +54,6 @@ require __DIR__ . '/../partials/header.php';
                     <source srcset="<?= asset('assets/img/gaming/board.webp') ?>" type="image/webp">
                     <img src="<?= asset('assets/img/gaming/board.jpg') ?>" alt="Dice and game pieces over a ludo board" width="640" height="695">
                 </picture>
-                <span class="arcade-card-tag">P3</span>
                 <span class="arcade-card-body">
                     <span class="arcade-card-name">Board Games</span>
                     <span class="arcade-card-sub">Classic &amp; modern table games</span>

@@ -561,17 +561,6 @@ img { max-width: 100%; display: block; }
     outline: none;
 }
 .arcade-card:hover img, .arcade-card:focus-visible img { transform: scale(1.05); }
-.arcade-card-tag {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    z-index: 2;
-    font-family: var(--font-pixel);
-    font-size: 0.62rem;
-    padding: 6px 8px;
-    background: var(--brand-gold);
-    color: var(--brand-midnight);
-}
 .arcade-card-body { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 20px; display: flex; flex-direction: column; gap: 4px; }
 .arcade-card-name { font-family: var(--font-display); font-weight: 900; font-size: 1.6rem; line-height: 1.05; text-transform: uppercase; }
 .arcade-card-sub { font-size: 0.88rem; color: var(--color-text-muted); }
