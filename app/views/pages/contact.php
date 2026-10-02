@@ -98,14 +98,21 @@ require __DIR__ . '/../partials/header.php';
         </div>
 
         <div class="card" style="margin-top:24px;">
-            <span class="eyebrow">Our office</span>
-            <address style="font-style:normal;line-height:1.7;">
-                <strong>Syspoint Solutions Consult Limited</strong><br>
-                Suite C20, Awesome Plaza<br>
-                Opposite Chicken Republic<br>
-                Apo Resettlement, Abuja
-            </address>
-            <p style="margin:12px 0 0;color:var(--color-text-muted);font-size:0.9rem;">
+            <span class="eyebrow">Find us</span>
+            <p style="margin:4px 0 14px;">Both are in Awesome Plaza, Opposite Chicken Republic, Apo Resettlement, Abuja.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+                <address style="font-style:normal;line-height:1.6;">
+                    <strong>Syspoint Hub</strong><br>
+                    Gaming &amp; IT Training<br>
+                    Suite C1
+                </address>
+                <address style="font-style:normal;line-height:1.6;">
+                    <strong>Gadget Store</strong><br>
+                    Syspoint Solutions Consult Limited<br>
+                    Suite C20
+                </address>
+            </div>
+            <p style="margin:14px 0 0;color:var(--color-text-muted);font-size:0.9rem;">
                 <a href="mailto:syspointmail@gmail.com">syspointmail@gmail.com</a> · Open 9am – 10pm
             </p>
         </div>
