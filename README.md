@@ -319,6 +319,16 @@ database for client preview — deliberately **not** committed through
 schema.sql/seed.sql discipline above, not a place for fake demo rows
 that would need cleaning out of a real install.
 
+**Sample laptop catalog** — `database/demo_products.sql` is an optional,
+re-runnable file (INSERT IGNORE on the unique slug) that adds 11 sample
+laptops/desktops to the Computers category, all `is_demo = 1`, with
+images in `public/assets/img/shop/products/`. Run it only to preview
+the shop; clear them later with `DELETE FROM products WHERE is_demo = 1`.
+The images were cut from a reference mockup, so they're low resolution
+(~100px source, upscaled) — replace with real product photos before
+launch. The shop hero photo (`public/assets/img/shop/hero-laptops.*`)
+came from the same mockup with its "25% OFF" badge painted out.
+
 Also swapped the shop/gaming hero sections' emoji-in-a-box placeholder
 for actual inline SVG illustrations (a laptop + phone mockup with a
 shopping-app screen for Shop; a monitor with a game HUD, a controller,

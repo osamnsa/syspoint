@@ -5,7 +5,7 @@ $pageTitle = 'Shop';
 $pageDescription = 'Computers and accessories — browse by category, shop online, and check out securely.';
 
 $categories = product_categories();
-$trending = products_recent(6);
+$trending = products_recent(10);
 
 require __DIR__ . '/../partials/header.php';
 ?>
@@ -25,79 +25,11 @@ require __DIR__ . '/../partials/header.php';
                 <?php endif; ?>
             </div>
         </div>
-        <div class="shop-hero-art" aria-hidden="true">
-            <svg viewBox="0 0 440 380" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="heroRed" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="#FDE414"/>
-                        <stop offset="100%" stop-color="#F7CB1E"/>
-                    </linearGradient>
-                    <linearGradient id="heroBase" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#34348A"/>
-                        <stop offset="100%" stop-color="#14143A"/>
-                    </linearGradient>
-                    <radialGradient id="heroShadow" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="#000000" stop-opacity="0.35"/>
-                        <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
-                    </radialGradient>
-                </defs>
-
-                <ellipse cx="210" cy="248" rx="150" ry="20" fill="url(#heroShadow)"/>
-
-                <circle cx="48" cy="60" r="5" fill="#F7CB1E" opacity="0.5"/>
-                <circle cx="400" cy="240" r="4" fill="#ffffff" opacity="0.25"/>
-                <circle cx="30" cy="220" r="3" fill="#ffffff" opacity="0.2"/>
-
-                <!-- Earbuds case -->
-                <rect x="4" y="150" width="56" height="40" rx="12" fill="#f4f4f6"/>
-                <circle cx="24" cy="170" r="6" fill="#d8dadf"/>
-                <circle cx="44" cy="170" r="6" fill="#d8dadf"/>
-
-                <!-- Laptop base -->
-                <path d="M60 214 L360 214 L378 234 Q380 238 375 238 L45 238 Q40 238 42 234 Z" fill="url(#heroBase)"/>
-                <rect x="196" y="216" width="28" height="4" rx="2" fill="#14143A"/>
-
-                <!-- Laptop screen -->
-                <rect x="66" y="30" width="288" height="188" rx="14" fill="#0E0E24"/>
-                <rect x="80" y="44" width="260" height="156" rx="4" fill="#fbfafa"/>
-
-                <!-- Screen: nav bar -->
-                <rect x="80" y="44" width="260" height="18" fill="#14143A"/>
-                <circle cx="92" cy="53" r="3" fill="#ff5a5f"/>
-                <circle cx="104" cy="53" r="3" fill="#ffd257"/>
-                <circle cx="116" cy="53" r="3" fill="#C9CAE8"/>
-
-                <!-- Screen: hero banner -->
-                <rect x="94" y="76" width="118" height="60" rx="6" fill="url(#heroRed)"/>
-                <rect x="106" y="90" width="60" height="6" rx="3" fill="#14143A" opacity="0.9"/>
-                <rect x="106" y="102" width="80" height="5" rx="2.5" fill="#14143A" opacity="0.5"/>
-                <rect x="106" y="118" width="36" height="12" rx="6" fill="#14143A"/>
-
-                <!-- Screen: product thumbnails -->
-                <rect x="224" y="76" width="42" height="42" rx="5" fill="#eceef1"/>
-                <circle cx="245" cy="97" r="9" fill="#34348A"/>
-                <rect x="272" y="76" width="42" height="42" rx="5" fill="#eceef1"/>
-                <circle cx="293" cy="97" r="9" fill="#C9CAE8"/>
-                <rect x="224" y="122" width="90" height="14" rx="4" fill="#f1f2f4"/>
-                <rect x="230" y="126" width="30" height="6" rx="3" fill="#F7CB1E"/>
-
-                <!-- Screen: price chips row -->
-                <rect x="94" y="150" width="52" height="16" rx="8" fill="#FFF6CC"/>
-                <rect x="102" y="155" width="30" height="6" rx="3" fill="#F7CB1E"/>
-                <rect x="154" y="150" width="52" height="16" rx="8" fill="#eceef1"/>
-                <rect x="162" y="155" width="30" height="6" rx="3" fill="#8a8f9a"/>
-                <rect x="214" y="150" width="52" height="16" rx="8" fill="#eceef1"/>
-                <rect x="222" y="155" width="30" height="6" rx="3" fill="#8a8f9a"/>
-
-                <!-- Floating phone -->
-                <rect x="294" y="150" width="74" height="140" rx="16" fill="#0E0E24"/>
-                <rect x="300" y="162" width="62" height="104" rx="6" fill="#fbfafa"/>
-                <circle cx="331" cy="172" r="2.5" fill="#c7c9cf"/>
-                <rect x="308" y="184" width="46" height="46" rx="6" fill="url(#heroRed)"/>
-                <rect x="308" y="238" width="46" height="6" rx="3" fill="#eceef1"/>
-                <rect x="308" y="248" width="30" height="6" rx="3" fill="#eceef1"/>
-                <rect x="308" y="262" width="46" height="14" rx="7" fill="#14143A"/>
-            </svg>
+        <div class="shop-hero-art">
+            <picture>
+                <source srcset="<?= asset('assets/img/shop/hero-laptops.webp') ?>" type="image/webp">
+                <img src="<?= asset('assets/img/shop/hero-laptops.jpg') ?>" alt="Two slim laptops, one open showing a colourful screen" width="728" height="520" fetchpriority="high">
+            </picture>
         </div>
     </div>
 </section>

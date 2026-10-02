@@ -295,12 +295,27 @@ img { max-width: 100%; display: block; }
 .shop-hero-copy { max-width: 52ch; }
 .shop-hero-copy p { color: rgba(255, 255, 255, 0.75); }
 .shop-hero-art {
-    width: 380px;
-    max-width: 44vw;
+    width: 560px;
+    max-width: 50vw;
     flex-shrink: 0;
 }
-.shop-hero-art svg { width: 100%; height: auto; display: block; }
-@media (max-width: 700px) { .shop-hero-art { display: none; } }
+.shop-hero-art img {
+    width: 100%;
+    height: auto;
+    display: block;
+    /* Feather the photo's edges into the hero background so there's no seam. */
+    -webkit-mask-image:
+        linear-gradient(to right, transparent 0, #000 8%, #000 86%, transparent 100%),
+        linear-gradient(to bottom, transparent 0, #000 10%, #000 82%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+        linear-gradient(to right, transparent 0, #000 8%, #000 86%, transparent 100%),
+        linear-gradient(to bottom, transparent 0, #000 10%, #000 82%, transparent 100%);
+    mask-composite: intersect;
+}
+@media (max-width: 700px) {
+    .shop-hero-art { width: 100%; max-width: 100%; order: 2; }
+}
 
 /* ---------- Category & product grids ---------- */
 .category-grid, .product-grid {
@@ -334,6 +349,11 @@ img { max-width: 100%; display: block; }
 .category-card-img img, .product-card-img img { width: 100%; height: 100%; object-fit: cover; }
 .category-card-placeholder, .product-card-placeholder { font-size: 2.75rem; }
 .product-card-badge { position: absolute; top: 10px; right: 10px; }
+@media (max-width: 520px) {
+    .category-grid, .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .category-card h3, .product-card h3 { font-size: 0.9rem; margin: 10px 10px 4px; }
+    .category-card p, .product-card-price { margin: 0 10px 12px; font-size: 0.85rem; }
+}
 
 /* ---------- Trust badges ---------- */
 .trust-badges { padding: 40px 0; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
@@ -346,7 +366,8 @@ img { max-width: 100%; display: block; }
 /* ---------- Product detail ---------- */
 .product-detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
 .product-detail-img { aspect-ratio: 1 / 1; background: var(--color-bg-soft); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 4rem; }
-.product-detail-img img { width: 100%; height: 100%; object-fit: cover; }
+.product-detail-img img { width: 100%; height: 100%; object-fit: contain; }
+.product-detail-img:has(img) { background: #fff; border: 1px solid var(--color-border); }
 .product-detail-thumbs { display: flex; gap: 10px; margin-top: 10px; }
 .product-detail-thumbs img { width: 64px; height: 64px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--color-border); }
 .product-detail-price { font-size: 1.6rem; font-weight: 800; margin: 6px 0 14px; }
@@ -391,10 +412,17 @@ img { max-width: 100%; display: block; }
 .shop-theme .order-summary-total { border-top-color: var(--shop-ink); }
 
 .shop-theme .shop-hero {
-    background: radial-gradient(ellipse at top right, rgba(52, 52, 138, 0.9), transparent 60%), var(--shop-ink);
+    /* Light ground matched to the hero photo's backdrop (Chrome family). */
+    background: linear-gradient(180deg, #EDF0F9 0%, #F6F8FD 100%);
+    color: var(--brand-ink);
+    padding: 56px 0;
 }
-.shop-theme .shop-hero .eyebrow { color: var(--shop-accent); }
-.shop-theme .shop-hero-highlight { color: var(--shop-accent); }
+.shop-theme .shop-hero-copy p { color: var(--color-text-muted); }
+.shop-theme .shop-hero .eyebrow { color: var(--shop-accent-text); }
+.shop-theme .shop-hero-highlight { color: var(--shop-accent-text); }
+.shop-theme .shop-hero .btn-outline-light { border-color: var(--brand-ink); color: var(--brand-ink); }
+.shop-theme .shop-hero .btn-outline-light:hover { background: var(--brand-ink); color: #fff; }
+.shop-theme .shop-hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
 
 /* Compact category strip — icon, name, count, arrow affordance. */
 .shop-category-strip { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
