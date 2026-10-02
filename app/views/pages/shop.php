@@ -89,6 +89,25 @@ require __DIR__ . '/../partials/header.php';
 </section>
 <?php endif; ?>
 
+<section class="section shop-visit">
+    <div class="container">
+        <div class="shop-visit-card">
+            <div class="shop-visit-icon" aria-hidden="true">📍</div>
+            <div class="shop-visit-copy">
+                <span class="eyebrow">Visit the gadget store</span>
+                <h2>See it, try it, take it home</h2>
+                <address>
+                    <strong>Syspoint Solutions Consult Limited</strong><br>
+                    Suite C20, Awesome Plaza, Opposite Chicken Republic,<br>
+                    Apo Resettlement, Abuja
+                </address>
+                <p class="shop-visit-meta">Open 9am – 10pm · <a href="mailto:syspointmail@gmail.com">syspointmail@gmail.com</a></p>
+            </div>
+            <a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&amp;query=Awesome+Plaza+Apo+Resettlement+Abuja" target="_blank" rel="noopener">Get Directions →</a>
+        </div>
+    </div>
+</section>
+
 <section class="trust-badges">
     <div class="container trust-badges-grid">
         <div class="trust-badge">

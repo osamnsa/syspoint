@@ -425,6 +425,31 @@ img { max-width: 100%; display: block; }
 .shop-theme .shop-hero .btn-outline-light:hover { background: var(--brand-ink); color: #fff; }
 .shop-theme .shop-hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
 
+/* "Visit the gadget store" band on the shop page. */
+.shop-visit-card {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 28px 32px;
+    border-radius: var(--radius-lg);
+    background: var(--brand-midnight);
+    color: #fff;
+}
+.shop-visit-icon {
+    width: 56px; height: 56px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    background: var(--brand-gold);
+    font-size: 1.5rem;
+}
+.shop-visit-copy { flex: 1 1 320px; }
+.shop-theme .shop-visit-copy .eyebrow { color: var(--brand-gold); }
+.shop-visit-copy h2 { color: #fff; margin-bottom: 10px; font-size: clamp(1.3rem, 2.5vw, 1.7rem); }
+.shop-visit-copy address { font-style: normal; line-height: 1.6; color: rgba(255, 255, 255, 0.9); }
+.shop-visit-meta { margin: 8px 0 0; font-size: 0.88rem; color: #C9CAE8; }
+.shop-visit-meta a { color: var(--brand-gold); }
+
 /* Compact category strip — icon, name, count, arrow affordance. */
 .shop-category-strip { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
 .shop-category-strip-item {
