@@ -17,11 +17,11 @@ function game_by_id(int $id): ?array
     return $stmt->fetch() ?: null;
 }
 
-/** Display label for a games.type value — ucfirst() alone can't get "PC Gaming" or "VR" right. */
+/** Display label for a games.type value — ucfirst() alone can't get "PS5" or "VR" right. */
 function game_type_label(string $type): string
 {
     return match ($type) {
-        'pc' => 'PC Gaming',
+        'ps5' => 'PS5',
         'vr' => 'VR',
         'board' => 'Board Game',
         default => ucfirst($type),

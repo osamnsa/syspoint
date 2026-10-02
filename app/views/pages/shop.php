@@ -20,11 +20,13 @@ require __DIR__ . '/../partials/header.php';
             <p><?= e(content_block('shop.hero_subtitle', 'Genuine gadgets and accessories, in stock now, with secure checkout and fast local delivery.')) ?></p>
             <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:24px;">
                 <a href="#categories" class="btn btn-primary">Shop Now →</a>
-                <a href="#trending" class="btn btn-outline btn-outline-light">Browse Collection</a>
+                <?php if ($trending): ?>
+                    <a href="#trending" class="btn btn-outline btn-outline-light">Browse Collection</a>
+                <?php endif; ?>
             </div>
         </div>
         <div class="shop-hero-art" aria-hidden="true">
-            <svg viewBox="0 0 440 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of a laptop and phone showing a shopping app">
+            <svg viewBox="0 0 440 380" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="heroRed" x1="0" y1="0" x2="1" y2="1">
                         <stop offset="0%" stop-color="#FDE414"/>
@@ -47,9 +49,9 @@ require __DIR__ . '/../partials/header.php';
                 <circle cx="30" cy="220" r="3" fill="#ffffff" opacity="0.2"/>
 
                 <!-- Earbuds case -->
-                <rect x="36" y="140" width="56" height="40" rx="12" fill="#f4f4f6"/>
-                <circle cx="56" cy="160" r="6" fill="#d8dadf"/>
-                <circle cx="76" cy="160" r="6" fill="#d8dadf"/>
+                <rect x="4" y="150" width="56" height="40" rx="12" fill="#f4f4f6"/>
+                <circle cx="24" cy="170" r="6" fill="#d8dadf"/>
+                <circle cx="44" cy="170" r="6" fill="#d8dadf"/>
 
                 <!-- Laptop base -->
                 <path d="M60 214 L360 214 L378 234 Q380 238 375 238 L45 238 Q40 238 42 234 Z" fill="url(#heroBase)"/>
@@ -130,7 +132,7 @@ require __DIR__ . '/../partials/header.php';
         <div class="admin-header-row" style="margin-bottom:12px;">
             <div>
                 <span class="eyebrow">Just In</span>
-                <h2 style="margin-bottom:0;">Trending Products</h2>
+                <h2 style="margin-bottom:0;">New Arrivals</h2>
             </div>
         </div>
         <div class="product-grid">

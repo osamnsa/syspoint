@@ -36,7 +36,7 @@ require __DIR__ . '/../partials/header.php';
             <a class="offer-card" href="<?= path('gaming') ?>" style="text-decoration:none;color:inherit;">
                 <div class="offer-icon">🎮</div>
                 <h3>Gaming Lounge</h3>
-                <p style="color:var(--color-text-muted);font-size:0.92rem;">PC gaming, a VR arena, and board games — free internet for every gamer, plus a VIP room and a common room to reserve.</p>
+                <p style="color:var(--color-text-muted);font-size:0.92rem;">PS5, a VR arena, and board games — free internet for every gamer, plus a VIP room and a common room to reserve.</p>
             </a>
             <?php $consultingUrl = config()['app']['consulting_url']; ?>
             <?php if ($consultingUrl): ?>

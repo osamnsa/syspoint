@@ -20,6 +20,6 @@ INSERT IGNORE INTO product_categories (id, name, slug, sort_order) VALUES
 
 -- The two physical rooms mentioned in the brief — real hourly rates/photos
 -- to be set by the admin once Phase 4 (gaming) lands.
-INSERT IGNORE INTO gaming_rooms (id, name, slug, description, hourly_rate, capacity) VALUES
-    (1, 'VIP Room', 'vip-room', 'A private room for a smaller group.', 5000.00, 6),
-    (2, 'Common Room', 'common-room', 'Open shared gaming space.', 1500.00, 20);
+INSERT IGNORE INTO gaming_rooms (id, name, slug, description, hourly_rate, capacity, is_demo) VALUES
+    (1, 'VIP Room', 'vip-room', 'A private room for a smaller group.', 5000.00, 6, 1),
+    (2, 'Common Room', 'common-room', 'Open shared gaming space.', 1500.00, 20, 1);

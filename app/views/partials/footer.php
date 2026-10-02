@@ -12,7 +12,7 @@
                     </span>
                 </a>
                 <p style="color:rgba(255,255,255,0.65);font-size:0.9rem;max-width:34ch;">
-                    PC gaming, VR, board games, IT training, computers &amp; gadgets — all under one roof, with free internet for every gamer.
+                    PS5, VR, board games, IT training, computers &amp; gadgets — all under one roof, with free internet for every gamer.
                 </p>
             </div>
             <div>

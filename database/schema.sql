@@ -123,12 +123,12 @@ CREATE TABLE IF NOT EXISTS deployed_businesses (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---------------------------------------------------------------------------
--- Gaming: three catalogs — PC gaming, VR, and board games (type distinguishes
+-- Gaming: three catalogs — PS5, VR, and board games (type distinguishes
 -- them) — plus the two physical rooms and their bookings.
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS games (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    type ENUM('pc', 'vr', 'board') NOT NULL,
+    type ENUM('ps5', 'vr', 'board') NOT NULL,
     name VARCHAR(190) NOT NULL,
     description TEXT NULL,
     price DECIMAL(12,2) NULL,
@@ -141,15 +141,15 @@ CREATE TABLE IF NOT EXISTS games (
 -- Same "Demo" labeling as products.is_demo — see the comment there.
 ALTER TABLE games ADD COLUMN IF NOT EXISTS is_demo TINYINT(1) NOT NULL DEFAULT 0 AFTER is_active;
 
--- `type` started as ENUM('video','board'), became ('ps5','vr','board'),
--- then 'ps5' was renamed 'pc' to match the brand (PC gaming, not PS5).
--- A column can't hold a value outside its current enum, so widen it first
--- (union of every old + new value), remap 'video' and 'ps5' rows to 'pc',
--- then narrow to the final three — safe to re-run against a database at
--- any of those stages, with games in it or not.
+-- `type` started as ENUM('video','board') before the catalog split into
+-- PS5 vs VR specifically (a branch briefly renamed 'ps5' to 'pc' — the
+-- catalog is PS5, so that was reverted). A column can't hold a value
+-- outside its current enum, so widen it first (union of every old + new
+-- value), remap 'video' and 'pc' rows to 'ps5', then narrow to the final
+-- three — safe to re-run against a database at any of those stages.
 ALTER TABLE games MODIFY COLUMN type ENUM('video', 'board', 'ps5', 'vr', 'pc') NOT NULL;
-UPDATE games SET type = 'pc' WHERE type IN ('video', 'ps5');
-ALTER TABLE games MODIFY COLUMN type ENUM('pc', 'vr', 'board') NOT NULL;
+UPDATE games SET type = 'ps5' WHERE type IN ('video', 'pc');
+ALTER TABLE games MODIFY COLUMN type ENUM('ps5', 'vr', 'board') NOT NULL;
 
 -- Two rows expected (VIP, Common) but not hardcoded as an enum, so a third
 -- room is just another admin-added row, not a schema change.
@@ -163,6 +163,11 @@ CREATE TABLE IF NOT EXISTS gaming_rooms (
     image_path VARCHAR(255) NULL,
     is_active TINYINT(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Same "Demo" labeling as products.is_demo: the seeded room rates are
+-- placeholders until the admin sets real ones, and they lead straight to
+-- a booking, so they must be marked as such on the public page.
+ALTER TABLE gaming_rooms ADD COLUMN IF NOT EXISTS is_demo TINYINT(1) NOT NULL DEFAULT 0 AFTER is_active;
 
 -- A reservation request, not a paid booking — admin confirms/declines from
 -- the admin panel (see "Phase 4" notes in README once built). idx_room_date

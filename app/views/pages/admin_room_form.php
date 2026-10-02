@@ -19,6 +19,7 @@ $values = [
     'hourly_rate' => $room['hourly_rate'],
     'capacity' => $room['capacity'],
     'is_active' => $room['is_active'],
+    'is_demo' => $room['is_demo'],
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -30,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $values['hourly_rate'] = (string) ($_POST['hourly_rate'] ?? '');
         $values['capacity'] = trim((string) ($_POST['capacity'] ?? ''));
         $values['is_active'] = isset($_POST['is_active']) ? 1 : 0;
+        $values['is_demo'] = isset($_POST['is_demo']) ? 1 : 0;
 
         if ($values['name'] === '') $errors[] = 'Please enter a room name.';
         if (!is_numeric($values['hourly_rate']) || (float) $values['hourly_rate'] < 0) $errors[] = 'Please enter a valid hourly rate.';
@@ -46,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             db()->prepare(
                 'UPDATE gaming_rooms SET name = :name, slug = :slug, description = :description, hourly_rate = :hourly_rate,
-                 capacity = :capacity, is_active = :is_active, image_path = :image_path WHERE id = :id'
+                 capacity = :capacity, is_active = :is_active, is_demo = :is_demo, image_path = :image_path WHERE id = :id'
             )->execute([
                 'name' => $values['name'],
                 'slug' => $slug,
@@ -54,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'hourly_rate' => $values['hourly_rate'],
                 'capacity' => $values['capacity'] !== '' ? $values['capacity'] : null,
                 'is_active' => $values['is_active'],
+                'is_demo' => $values['is_demo'],
                 'image_path' => $imagePath,
                 'id' => $room['id'],
             ]);
@@ -108,6 +111,10 @@ require __DIR__ . '/../partials/admin_header.php';
     </div>
     <div class="form-group">
         <label><input type="checkbox" name="is_active" value="1" <?= $values['is_active'] ? 'checked' : '' ?> style="width:auto;margin-right:8px;"> Visible on the site</label>
+    </div>
+    <div class="form-group">
+        <label><input type="checkbox" name="is_demo" value="1" <?= $values['is_demo'] ? 'checked' : '' ?> style="width:auto;margin-right:8px;"> Rate is a placeholder (shows a "Demo" badge)</label>
+        <div class="form-note">Untick this once the hourly rate is the real price.</div>
     </div>
     <button type="submit" class="btn btn-primary">Save Room</button>
 </form>

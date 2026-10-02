@@ -244,11 +244,12 @@ it (confirmed idempotent: a second run is a no-op). `game_type_label()`
 in `app/gaming.php` renders the display label (`ucfirst()` alone can't
 get "PS5" or "VR" capitalized right).
 
-**Rebranded to SYSPOINT HUB**: the client's brand identity guide calls
-the gaming catalog **PC gaming**, not PS5, so `games.type` was renamed
-from `'ps5'` to `'pc'` (labelled "PC Gaming"). The same widen → remap →
-narrow migration in `schema.sql` now accepts a database at any earlier
-stage (`'video'`, `'ps5'`) and moves those rows to `'pc'`. The site also
+**Rebranded to SYSPOINT HUB**: the gaming catalog stays **PS5** (the
+brand creatives say "PC Gaming", but the lounge runs PS5 — the website
+is the source of truth here). A branch briefly renamed `games.type`
+`'ps5'` to `'pc'`; the widen → remap → narrow migration in `schema.sql`
+now also moves any `'pc'` rows back to `'ps5'`, so it's safe to run
+against a database at any stage. The site also
 picked up the brand palette (Midnight `#14143A`, Hub Indigo `#34348A`,
 Signal Gold `#F7CB1E`, Lemon Flash `#FDE414`, Chrome `#E4E6E5`, Ink
 `#0E0E24`) as CSS variables in `style.css`, the brand fonts (Nunito,

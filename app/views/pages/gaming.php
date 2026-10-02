@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 $pageTitle = 'Gaming Lounge';
-$pageDescription = 'PC gaming, a VR arena, and board games — plus free internet for every gamer and a VIP room and common room you can reserve.';
+$pageDescription = 'PS5, a VR arena, and board games — plus free internet for every gamer and a VIP room and common room you can reserve.';
 
-$pcGames = games_by_type('pc');
+$ps5Games = games_by_type('ps5');
 $vrGames = games_by_type('vr');
 $boardGames = games_by_type('board');
 $rooms = gaming_rooms_active();
@@ -21,20 +21,20 @@ require __DIR__ . '/../partials/header.php';
         <div class="gaming-hero-copy">
             <span class="eyebrow">...challenging conventions</span>
             <h1><?= e(content_block('gaming.hero_title', 'Play. Immerse. Learn.')) ?></h1>
-            <p><?= e(content_block('gaming.hero_subtitle', 'PC gaming, VR and board games — all under one roof, with free internet for every gamer. Grab a rig, step into VR, or book the VIP room for your squad.')) ?></p>
+            <p><?= e(content_block('gaming.hero_subtitle', 'PS5, VR and board games — all under one roof, with free internet for every gamer. Grab a controller, step into VR, or book the VIP room for your squad.')) ?></p>
             <div class="platform-badges">
-                <span class="platform-badge">🖥️ PC Gaming</span>
+                <span class="platform-badge">🎮 PS5</span>
                 <span class="platform-badge">🥽 VR Arena</span>
                 <span class="platform-badge">🎲 Board Games</span>
             </div>
             <span class="gold-tag">Free internet for all gamers</span>
             <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:28px;">
                 <a href="#rooms" class="btn btn-primary">Book a Room</a>
-                <a href="#pc" class="btn btn-outline btn-outline-light">Browse Games</a>
+                <a href="#ps5" class="btn btn-outline btn-outline-light">Browse Games</a>
             </div>
         </div>
         <div class="gaming-hero-art" aria-hidden="true">
-            <svg viewBox="0 0 440 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of a gaming monitor, controller, and VR headset">
+            <svg viewBox="0 0 440 380" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="gamingGlow" x1="0" y1="0" x2="1" y2="1">
                         <stop offset="0%" stop-color="#FDE414"/>
@@ -140,7 +140,7 @@ require __DIR__ . '/../partials/header.php';
                             <?php endif; ?>
                         </div>
                         <h3><?= e($room['name']) ?></h3>
-                        <p><?= format_naira((float) $room['hourly_rate']) ?>/hour<?= $room['capacity'] ? ' · Up to ' . (int) $room['capacity'] . ' people' : '' ?></p>
+                        <p><?= format_naira((float) $room['hourly_rate']) ?>/hour<?= $room['is_demo'] ? demo_badge() : '' ?><?= $room['capacity'] ? ' · Up to ' . (int) $room['capacity'] . ' people' : '' ?></p>
                         <?php if ($room['description']): ?>
                             <p style="font-size:0.85rem;"><?= e($room['description']) ?></p>
                         <?php endif; ?>
@@ -152,22 +152,22 @@ require __DIR__ . '/../partials/header.php';
     </div>
 </section>
 
-<section class="section section-soft" id="pc">
+<section class="section section-soft" id="ps5">
     <div class="container">
-        <span class="eyebrow">PC Gaming</span>
-        <h2>PC Game List</h2>
-        <p class="section-lede">Latest titles on high-performance rigs.</p>
-        <?php if (!$pcGames): ?>
-            <p style="color:var(--color-text-muted);">Our PC game list is being updated — check back soon.</p>
+        <span class="eyebrow">PS5</span>
+        <h2>PS5 Game List</h2>
+        <p class="section-lede">The latest PS5 titles, ready to play.</p>
+        <?php if (!$ps5Games): ?>
+            <p style="color:var(--color-text-muted);">Our PS5 game list is being updated — check back soon.</p>
         <?php else: ?>
             <div class="product-grid">
-                <?php foreach ($pcGames as $game): ?>
+                <?php foreach ($ps5Games as $game): ?>
                     <div class="product-card game-card">
                         <div class="product-card-img">
                             <?php if ($game['image_path']): ?>
                                 <img src="<?= asset(e($game['image_path'])) ?>" alt="<?= e($game['name']) ?>">
                             <?php else: ?>
-                                <span class="product-card-placeholder">🖥️</span>
+                                <span class="product-card-placeholder">🎮</span>
                             <?php endif; ?>
                         </div>
                         <h3><?= e($game['name']) ?></h3>
@@ -238,7 +238,7 @@ require __DIR__ . '/../partials/header.php';
         <div class="gaming-cta-banner">
             <div>
                 <h3>Ready to Play?</h3>
-                <p>Fire up a rig, strap in for VR, or pull up a board — book your room now.</p>
+                <p>Grab a PS5 controller, strap in for VR, or pull up a board — book your room now.</p>
             </div>
             <a href="#rooms" class="btn btn-primary">Book Your Session →</a>
         </div>
@@ -249,7 +249,7 @@ require __DIR__ . '/../partials/header.php';
     <div class="container trust-badges-grid">
         <div class="trust-badge">
             <span class="trust-badge-icon">🎮</span>
-            <div><strong>Premium Setups</strong><span>High-performance PCs &amp; VR rigs</span></div>
+            <div><strong>Premium Setups</strong><span>Latest PS5 consoles &amp; VR rigs</span></div>
         </div>
         <div class="trust-badge">
             <span class="trust-badge-icon">🥽</span>
