@@ -106,7 +106,6 @@ require __DIR__ . '/../partials/header.php';
                 Apo Resettlement, Abuja
             </address>
             <p style="margin:12px 0 0;color:var(--color-text-muted);font-size:0.9rem;">
-                Syspoint Hub (gaming &amp; training) is in the same plaza at Suite C1.<br>
                 <a href="mailto:syspointmail@gmail.com">syspointmail@gmail.com</a> · Open 9am – 10pm
             </p>
         </div>

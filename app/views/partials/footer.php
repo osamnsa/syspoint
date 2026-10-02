@@ -31,9 +31,6 @@
             </div>
             <div>
                 <h4>Visit Us</h4>
-                <p class="footer-address-label">Syspoint Hub</p>
-                <address>Suite C1, Awesome Plaza,<br>Opposite Chicken Republic,<br>Apo Resettlement, Abuja</address>
-                <p class="footer-address-label">Office · Syspoint Solutions Consult Limited</p>
                 <address>Suite C20, Awesome Plaza,<br>Opposite Chicken Republic,<br>Apo Resettlement, Abuja</address>
             </div>
         </div>
