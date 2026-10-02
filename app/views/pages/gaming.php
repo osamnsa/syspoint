@@ -19,12 +19,6 @@ require __DIR__ . '/../partials/header.php';
 <section class="arcade-hero">
     <div class="arcade-floor" aria-hidden="true"></div>
     <div class="container arcade-hero-inner">
-        <div class="arcade-hud" aria-hidden="true">
-            <span>1UP <b>000000</b></span>
-            <span class="arcade-blink">Insert coin</span>
-            <span>Free play · Free Wi-Fi</span>
-        </div>
-
         <div class="arcade-hero-copy">
             <span class="eyebrow">...challenging conventions</span>
             <h1 class="arcade-title"><?= e(content_block('gaming.hero_title', 'Play. Immerse. Learn.')) ?></h1>
