@@ -17,7 +17,7 @@ $metaDescription = $pageDescription ?? 'Syspoint — computers & accessories, so
     <link rel="icon" type="image/png" href="<?= asset('assets/img/logo.png') ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Press+Start+2P&display=swap">
     <link rel="stylesheet" href="<?= versioned_asset('assets/css/style.css') ?>">
 </head>
 <body>

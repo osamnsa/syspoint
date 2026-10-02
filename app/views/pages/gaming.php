@@ -14,102 +14,74 @@ $successMessage = flash('booking_success');
 require __DIR__ . '/../partials/header.php';
 ?>
 
-<div class="gaming-theme">
+<div class="gaming-theme gaming-arcade">
 
-<section class="gaming-hero">
-    <div class="container gaming-hero-inner">
-        <div class="gaming-hero-copy">
-            <span class="eyebrow">...challenging conventions</span>
-            <h1><?= e(content_block('gaming.hero_title', 'Play. Immerse. Learn.')) ?></h1>
-            <p><?= e(content_block('gaming.hero_subtitle', 'PS5, VR and board games — all under one roof, with free internet for every gamer. Grab a controller, step into VR, or book the VIP room for your squad.')) ?></p>
-            <div class="platform-badges">
-                <span class="platform-badge">🎮 PS5</span>
-                <span class="platform-badge">🥽 VR Arena</span>
-                <span class="platform-badge">🎲 Board Games</span>
-            </div>
-            <span class="gold-tag">Free internet for all gamers</span>
-            <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:28px;">
-                <a href="#rooms" class="btn btn-primary">Book a Room</a>
-                <a href="#ps5" class="btn btn-outline btn-outline-light">Browse Games</a>
-            </div>
+<section class="arcade-hero">
+    <div class="arcade-floor" aria-hidden="true"></div>
+    <div class="container arcade-hero-inner">
+        <div class="arcade-hud" aria-hidden="true">
+            <span>1UP <b>000000</b></span>
+            <span class="arcade-blink">Insert coin</span>
+            <span>Free play · Free Wi-Fi</span>
         </div>
-        <div class="gaming-hero-art" aria-hidden="true">
-            <svg viewBox="0 0 440 380" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="gamingGlow" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="#FDE414"/>
-                        <stop offset="100%" stop-color="#F7CB1E"/>
-                    </linearGradient>
-                    <linearGradient id="gamingBase" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#34348A"/>
-                        <stop offset="100%" stop-color="#14143A"/>
-                    </linearGradient>
-                    <radialGradient id="gamingShadow" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="#000000" stop-opacity="0.4"/>
-                        <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
-                    </radialGradient>
-                </defs>
 
-                <ellipse cx="210" cy="300" rx="160" ry="20" fill="url(#gamingShadow)"/>
+        <div class="arcade-hero-copy">
+            <span class="eyebrow">...challenging conventions</span>
+            <h1 class="arcade-title"><?= e(content_block('gaming.hero_title', 'Play. Immerse. Learn.')) ?></h1>
+            <p><?= e(content_block('gaming.hero_subtitle', 'PS5, VR and board games — all under one roof, with free internet for every gamer. Grab a controller, step into VR, or book the VIP room for your squad.')) ?></p>
+        </div>
 
-                <circle cx="50" cy="50" r="5" fill="#F7CB1E" opacity="0.5"/>
-                <circle cx="400" cy="90" r="4" fill="#FDE414" opacity="0.5"/>
-                <circle cx="30" cy="230" r="3" fill="#ffffff" opacity="0.2"/>
+        <p class="arcade-select-label">Select your game</p>
+        <div class="arcade-select">
+            <a class="arcade-card" href="#ps5">
+                <picture>
+                    <source srcset="<?= asset('assets/img/gaming/ps5.webp') ?>" type="image/webp">
+                    <img src="<?= asset('assets/img/gaming/ps5.jpg') ?>" alt="PS5 console and controller" width="680" height="907" fetchpriority="high">
+                </picture>
+                <span class="arcade-card-tag">P1</span>
+                <span class="arcade-card-body">
+                    <span class="arcade-card-name">PS5</span>
+                    <span class="arcade-card-sub">The latest PS5 titles</span>
+                    <span class="arcade-card-cta">▶ Press start</span>
+                </span>
+            </a>
+            <a class="arcade-card" href="#vr">
+                <picture>
+                    <source srcset="<?= asset('assets/img/gaming/vr.webp') ?>" type="image/webp">
+                    <img src="<?= asset('assets/img/gaming/vr.jpg') ?>" alt="Player wearing a VR headset" width="406" height="473">
+                </picture>
+                <span class="arcade-card-tag">P2</span>
+                <span class="arcade-card-body">
+                    <span class="arcade-card-name">VR Arena</span>
+                    <span class="arcade-card-sub">Step inside the game</span>
+                    <span class="arcade-card-cta">▶ Press start</span>
+                </span>
+            </a>
+            <a class="arcade-card" href="#board">
+                <picture>
+                    <source srcset="<?= asset('assets/img/gaming/board.webp') ?>" type="image/webp">
+                    <img src="<?= asset('assets/img/gaming/board.jpg') ?>" alt="Dice and game pieces over a ludo board" width="640" height="695">
+                </picture>
+                <span class="arcade-card-tag">P3</span>
+                <span class="arcade-card-body">
+                    <span class="arcade-card-name">Board Games</span>
+                    <span class="arcade-card-sub">Classic &amp; modern table games</span>
+                    <span class="arcade-card-cta">▶ Press start</span>
+                </span>
+            </a>
+        </div>
 
-                <!-- Monitor stand -->
-                <rect x="196" y="196" width="28" height="24" fill="url(#gamingBase)"/>
-                <path d="M150 220 L270 220 L282 234 Q284 238 279 238 L141 238 Q136 238 138 234 Z" fill="url(#gamingBase)"/>
+        <div class="arcade-actions">
+            <a href="#rooms" class="btn btn-primary">Book a Room</a>
+            <span class="gold-tag">Free internet for all gamers</span>
+        </div>
+    </div>
 
-                <!-- Monitor -->
-                <rect x="56" y="26" width="308" height="176" rx="12" fill="#34348A"/>
-                <rect x="70" y="40" width="280" height="148" rx="4" fill="#0E0E24"/>
-
-                <!-- HUD: crosshair -->
-                <circle cx="210" cy="112" r="22" fill="none" stroke="url(#gamingGlow)" stroke-width="2" opacity="0.8"/>
-                <line x1="210" y1="90" x2="210" y2="100" stroke="url(#gamingGlow)" stroke-width="2"/>
-                <line x1="210" y1="124" x2="210" y2="134" stroke="url(#gamingGlow)" stroke-width="2"/>
-                <line x1="188" y1="112" x2="198" y2="112" stroke="url(#gamingGlow)" stroke-width="2"/>
-                <line x1="222" y1="112" x2="232" y2="112" stroke="url(#gamingGlow)" stroke-width="2"/>
-
-                <!-- HUD: health bar -->
-                <rect x="84" y="52" width="90" height="8" rx="4" fill="#1C1C48"/>
-                <rect x="84" y="52" width="66" height="8" rx="4" fill="#F7CB1E"/>
-
-                <!-- HUD: minimap -->
-                <circle cx="322" cy="70" r="24" fill="#1C1C48"/>
-                <circle cx="322" cy="70" r="24" fill="none" stroke="url(#gamingGlow)" stroke-width="1.5"/>
-                <circle cx="316" cy="64" r="3" fill="#F7CB1E"/>
-                <circle cx="330" cy="76" r="3" fill="#FDE414"/>
-
-                <!-- HUD: score chip -->
-                <rect x="270" y="148" width="64" height="18" rx="9" fill="#1C1C48"/>
-                <rect x="278" y="153" width="30" height="6" rx="3" fill="url(#gamingGlow)"/>
-
-                <!-- VR headset, floating lower-left, clear of the monitor -->
-                <g transform="translate(24,196)">
-                    <path d="M-16 30 Q-24 44 -12 58" fill="none" stroke="url(#gamingBase)" stroke-width="10" stroke-linecap="round"/>
-                    <rect x="0" y="6" width="88" height="52" rx="20" fill="url(#gamingBase)"/>
-                    <circle cx="24" cy="32" r="15" fill="#0E0E24"/>
-                    <circle cx="64" cy="32" r="15" fill="#0E0E24"/>
-                    <circle cx="24" cy="32" r="7" fill="url(#gamingGlow)" opacity="0.75"/>
-                    <circle cx="64" cy="32" r="7" fill="url(#gamingGlow)" opacity="0.75"/>
-                    <rect x="38" y="26" width="12" height="4" rx="2" fill="#0E0E24"/>
-                </g>
-
-                <!-- Controller, floating front-center -->
-                <g transform="translate(140,244)">
-                    <path d="M10 20 Q10 0 34 0 L106 0 Q130 0 130 20 L130 34 Q130 58 108 54 L98 40 L42 40 L32 54 Q10 58 10 34 Z" fill="url(#gamingBase)"/>
-                    <circle cx="40" cy="20" r="10" fill="#0E0E24"/>
-                    <rect x="36" y="16" width="8" height="8" fill="#E4E6E5"/>
-                    <rect x="33" y="17" width="14" height="6" fill="#E4E6E5"/>
-                    <circle cx="100" cy="14" r="5" fill="#F7CB1E" opacity="0.85"/>
-                    <circle cx="114" cy="20" r="5" fill="#FDE414" opacity="0.85"/>
-                    <circle cx="100" cy="26" r="5" fill="#ffffff" opacity="0.5"/>
-                    <circle cx="86" cy="20" r="5" fill="#ffffff" opacity="0.7"/>
-                    <circle cx="70" cy="30" r="9" fill="#0E0E24"/>
-                    <circle cx="70" cy="30" r="5" fill="#34348A"/>
-                </g>
-            </svg>
+    <div class="arcade-marquee" aria-hidden="true">
+        <div class="arcade-marquee-track">
+            <?php for ($i = 0; $i < 2; $i++): ?>
+                <span>PS5</span><span>★</span><span>VR Arena</span><span>★</span><span>Board Games</span><span>★</span><span>Free internet for all gamers</span><span>★</span><span>VIP &amp; Common Rooms</span><span>★</span><span>Open 9am – 10pm</span><span>★</span>
+            <?php endfor; ?>
         </div>
     </div>
 </section>
@@ -124,7 +96,7 @@ require __DIR__ . '/../partials/header.php';
 
 <section class="section" id="rooms">
     <div class="container">
-        <span class="eyebrow">Reserve a Room</span>
+        <span class="eyebrow">Stage 01 · Reserve a room</span>
         <h2>Rooms</h2>
         <?php if (!$rooms): ?>
             <p style="color:var(--color-text-muted);">Room details are being updated — check back soon.</p>
@@ -154,7 +126,7 @@ require __DIR__ . '/../partials/header.php';
 
 <section class="section section-soft" id="ps5">
     <div class="container">
-        <span class="eyebrow">PS5</span>
+        <span class="eyebrow">Stage 02 · PS5</span>
         <h2>PS5 Game List</h2>
         <p class="section-lede">The latest PS5 titles, ready to play.</p>
         <?php if (!$ps5Games): ?>
@@ -181,7 +153,7 @@ require __DIR__ . '/../partials/header.php';
 
 <section class="section" id="vr">
     <div class="container">
-        <span class="eyebrow">VR Arena</span>
+        <span class="eyebrow">Stage 03 · VR Arena</span>
         <h2>VR Experience List</h2>
         <p class="section-lede">Step inside the game with virtual reality.</p>
         <?php if (!$vrGames): ?>
@@ -208,7 +180,7 @@ require __DIR__ . '/../partials/header.php';
 
 <section class="section section-soft" id="board">
     <div class="container">
-        <span class="eyebrow">Board Games</span>
+        <span class="eyebrow">Stage 04 · Board Games</span>
         <h2>Board Game List</h2>
         <p class="section-lede">Classic and modern indoor table games.</p>
         <?php if (!$boardGames): ?>
@@ -237,10 +209,10 @@ require __DIR__ . '/../partials/header.php';
     <div class="container">
         <div class="gaming-cta-banner">
             <div>
-                <h3>Ready to Play?</h3>
+                <h3>Ready, Player One?</h3>
                 <p>Grab a PS5 controller, strap in for VR, or pull up a board — book your room now.</p>
             </div>
-            <a href="#rooms" class="btn btn-primary">Book Your Session →</a>
+            <a href="#rooms" class="btn btn-primary">▶ Press Start</a>
         </div>
     </div>
 </section>

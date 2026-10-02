@@ -420,46 +420,226 @@ img { max-width: 100%; display: block; }
 
 /* ============================================================
    GAMING THEME — scoped to .gaming-theme, same isolation rule.
-   Midnight → Indigo ground with Gold/Lemon highlights.
+   An arcade "select your game" home: the whole page sits on
+   Midnight, with Gold neon, a perspective grid floor, CRT
+   scanlines and a pixel HUD (Press Start 2P, HUD labels only —
+   it echoes the brand's Pixel Ellipsis; headings stay Nunito).
    ============================================================ */
 .gaming-theme {
+    --font-pixel: 'Press Start 2P', var(--font-mono);
     --gaming-accent: var(--brand-gold);
     --gaming-accent-2: var(--brand-lemon);
 }
-.gaming-theme .btn-primary:hover { transform: translateY(-1px); }
-.gaming-theme .product-card-price { color: var(--brand-indigo); }
-.gaming-theme .category-card:hover, .gaming-theme .product-card:hover { border-color: var(--gaming-accent); box-shadow: 0 10px 28px rgba(52, 52, 138, 0.18); }
+.gaming-theme .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 22px rgba(247, 203, 30, 0.45); }
 .gaming-theme .breadcrumb a { color: var(--brand-indigo); }
 
-.gaming-hero {
-    background:
-        radial-gradient(ellipse at top right, rgba(52, 52, 138, 0.95), transparent 60%),
-        radial-gradient(ellipse at bottom left, rgba(247, 203, 30, 0.12), transparent 55%),
-        var(--brand-midnight);
-    color: #fff;
-    padding: 96px 0 76px;
+/* The dark arcade page itself (gaming.php only — the booking form keeps
+   the light layout, where white form cards need dark text). */
+.gaming-arcade {
+    --color-text: #fff;
+    --color-text-muted: #C9CAE8;
+    --color-border: rgba(201, 202, 232, 0.16);
+    --color-bg-soft: #1C1C48;
+    background: var(--brand-midnight);
+    color: var(--color-text);
 }
-.gaming-hero .eyebrow { color: var(--gaming-accent); text-transform: none; }
-.gaming-hero-inner { display: flex; align-items: center; justify-content: space-between; gap: 36px; flex-wrap: wrap; }
-.gaming-hero-copy { max-width: 56ch; }
-.gaming-hero p { color: rgba(255, 255, 255, 0.78); }
-.gaming-hero-art { width: 380px; max-width: 44vw; flex-shrink: 0; }
-.gaming-hero-art svg { width: 100%; height: auto; display: block; }
-@media (max-width: 760px) { .gaming-hero-art { display: none; } }
-.gaming-hero h1 { color: #fff; }
-.platform-badges { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
-.platform-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(247, 203, 30, 0.45);
+.gaming-arcade .section-soft { background: #18183F; }
+.gaming-arcade .eyebrow { color: var(--gaming-accent); }
+.gaming-arcade h2 { color: #fff; }
+.gaming-arcade .category-card,
+.gaming-arcade .product-card { background: #1C1C48; border-color: var(--color-border); color: #fff; }
+.gaming-arcade .category-card-img,
+.gaming-arcade .product-card-img { background: #14143A; }
+.gaming-arcade .category-card p { color: var(--color-text-muted); }
+.gaming-arcade .product-card-price { color: var(--gaming-accent); }
+.gaming-arcade .category-card:hover, .gaming-arcade .product-card:hover {
+    border-color: var(--gaming-accent);
+    box-shadow: 0 0 0 1px var(--gaming-accent), 0 0 28px rgba(247, 203, 30, 0.25);
+}
+.gaming-arcade .trust-badges { border-color: var(--color-border); }
+.gaming-arcade .trust-badge span { color: var(--color-text-muted); }
+.gaming-arcade .alert-success { background: rgba(31, 157, 85, 0.15); color: #b7e8c9; border-color: rgba(31, 157, 85, 0.4); }
+
+/* ---------- Arcade hero ---------- */
+.arcade-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 28px 0 0;
     color: #fff;
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-size: 0.88rem;
+    background:
+        radial-gradient(ellipse 70% 55% at 50% 0%, rgba(52, 52, 138, 0.95), transparent 70%),
+        var(--brand-midnight);
+    isolation: isolate;
+}
+/* CRT scanlines over everything in the hero. */
+.arcade-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 3px);
+    pointer-events: none;
+    z-index: 3;
+}
+/* Retro perspective grid floor. */
+.arcade-floor {
+    position: absolute;
+    left: -50%;
+    right: -50%;
+    bottom: 0;
+    height: 55%;
+    background:
+        linear-gradient(to top, rgba(247, 203, 30, 0.35) 1px, transparent 1px) 0 0 / 100% 48px,
+        linear-gradient(to right, rgba(247, 203, 30, 0.35) 1px, transparent 1px) 0 0 / 64px 100%;
+    transform: perspective(420px) rotateX(62deg);
+    transform-origin: bottom center;
+    mask-image: linear-gradient(to top, #000 10%, transparent 90%);
+    -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 90%);
+    z-index: -1;
+}
+.arcade-hero-inner { position: relative; z-index: 1; text-align: center; }
+
+.arcade-hud {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--font-pixel);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding-bottom: 14px;
+    border-bottom: 2px dashed rgba(247, 203, 30, 0.35);
+    margin-bottom: 44px;
+}
+.arcade-hud b { color: var(--brand-gold); font-weight: 400; }
+.arcade-blink { color: var(--brand-lemon); animation: arcade-blink 1.1s steps(1) infinite; }
+@keyframes arcade-blink { 50% { opacity: 0; } }
+
+.arcade-hero-copy { max-width: 760px; margin: 0 auto; }
+.arcade-hero-copy .eyebrow { text-transform: none; }
+.arcade-hero-copy p { color: rgba(255, 255, 255, 0.8); max-width: 60ch; margin: 0 auto 8px; }
+.arcade-title {
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow:
+        0 0 2px #fff,
+        0 0 18px rgba(247, 203, 30, 0.55),
+        4px 4px 0 var(--brand-indigo);
+    margin-bottom: 18px;
+}
+
+.arcade-select-label {
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    color: var(--brand-gold);
+    text-transform: uppercase;
+    margin: 40px 0 18px;
+}
+.arcade-select-label::before, .arcade-select-label::after { content: " ◆ "; color: var(--brand-lemon); }
+
+.arcade-select {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    max-width: 1040px;
+    margin: 0 auto;
+    text-align: left;
+}
+.arcade-card {
+    position: relative;
+    display: block;
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    color: #fff;
+    background: #0E0E24;
+    border: 2px solid rgba(201, 202, 232, 0.22);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.arcade-card picture, .arcade-card img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.arcade-card img { object-fit: cover; object-position: center 30%; transition: transform 0.35s ease; }
+.arcade-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(14, 14, 36, 0.96) 0%, rgba(14, 14, 36, 0.55) 34%, transparent 62%);
+}
+.arcade-card:hover, .arcade-card:focus-visible {
+    text-decoration: none;
+    transform: translateY(-6px);
+    border-color: var(--brand-gold);
+    box-shadow: 0 0 0 2px var(--brand-gold), 0 0 36px rgba(247, 203, 30, 0.45), 0 22px 44px rgba(0, 0, 0, 0.5);
+    outline: none;
+}
+.arcade-card:hover img, .arcade-card:focus-visible img { transform: scale(1.05); }
+.arcade-card-tag {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
+    font-family: var(--font-pixel);
+    font-size: 0.62rem;
+    padding: 6px 8px;
+    background: var(--brand-gold);
+    color: var(--brand-midnight);
+}
+.arcade-card-body { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 20px; display: flex; flex-direction: column; gap: 4px; }
+.arcade-card-name { font-family: var(--font-display); font-weight: 900; font-size: 1.6rem; line-height: 1.05; text-transform: uppercase; }
+.arcade-card-sub { font-size: 0.88rem; color: var(--color-text-muted); }
+.arcade-card-cta {
+    margin-top: 10px;
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    color: var(--brand-gold);
+}
+.arcade-card:hover .arcade-card-cta, .arcade-card:focus-visible .arcade-card-cta { animation: arcade-blink 0.8s steps(1) infinite; }
+
+.arcade-actions { display: flex; justify-content: center; align-items: center; gap: 18px; flex-wrap: wrap; margin: 36px 0 44px; }
+.arcade-actions .gold-tag { margin-top: 0; }
+
+.arcade-marquee {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    background: var(--brand-gold);
+    color: var(--brand-midnight);
+    border-top: 3px solid var(--brand-lemon);
+    padding: 12px 0;
+}
+.arcade-marquee-track {
+    display: flex;
+    gap: 22px;
+    width: max-content;
+    font-family: var(--font-pixel);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+    animation: arcade-marquee 28s linear infinite;
+}
+@keyframes arcade-marquee { to { transform: translateX(-50%); } }
+
+@media (max-width: 760px) {
+    .arcade-hud span:last-child { display: none; }
+    .arcade-select {
+        grid-template-columns: repeat(3, minmax(220px, 78%));
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 8px;
+        margin: 0 -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .arcade-card { scroll-snap-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .arcade-blink, .arcade-card:hover .arcade-card-cta, .arcade-card:focus-visible .arcade-card-cta { animation: none; }
+    .arcade-marquee-track { animation: none; }
+    .arcade-card, .arcade-card img { transition: none; }
 }
 
 /* Gold CTA banner — the brand's Gold Tag device at banner scale. */
@@ -473,10 +653,11 @@ img { max-width: 100%; display: block; }
     gap: 20px;
     flex-wrap: wrap;
     color: var(--brand-midnight);
+    box-shadow: 0 0 40px rgba(247, 203, 30, 0.25);
 }
 .gaming-cta-banner h3 { margin: 0 0 4px; color: var(--brand-midnight); }
 .gaming-cta-banner p { margin: 0; color: rgba(20, 20, 58, 0.8); }
-.gaming-cta-banner .btn-primary { background: var(--brand-midnight); color: #fff; }
+.gaming-cta-banner .btn-primary { background: var(--brand-midnight); color: #fff; font-family: var(--font-pixel); font-weight: 400; font-size: 0.72rem; text-transform: uppercase; }
 .gaming-cta-banner .btn-primary:hover { background: var(--brand-indigo); }
 
 /* ---------- Checkout ---------- */
@@ -484,3 +665,4 @@ img { max-width: 100%; display: block; }
 .order-summary-line { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 8px 0; border-bottom: 1px solid var(--color-border); }
 .order-summary-total { border-bottom: none; border-top: 2px solid var(--color-ink); margin-top: 6px; padding-top: 14px; font-weight: 700; font-size: 1rem; }
 @media (max-width: 800px) { .checkout-grid { grid-template-columns: 1fr; } }
+main:has(.gaming-arcade) + .site-footer { margin-top: 0; }
