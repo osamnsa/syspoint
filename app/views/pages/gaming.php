@@ -35,7 +35,6 @@ require __DIR__ . '/../partials/header.php';
                 <span class="arcade-card-body">
                     <span class="arcade-card-name">PS5</span>
                     <span class="arcade-card-sub">The latest PS5 titles</span>
-                    <span class="arcade-card-cta">▶ Press start</span>
                 </span>
             </a>
             <a class="arcade-card" href="#vr">
@@ -46,7 +45,6 @@ require __DIR__ . '/../partials/header.php';
                 <span class="arcade-card-body">
                     <span class="arcade-card-name">VR Arena</span>
                     <span class="arcade-card-sub">Step inside the game</span>
-                    <span class="arcade-card-cta">▶ Press start</span>
                 </span>
             </a>
             <a class="arcade-card" href="#board">
@@ -57,7 +55,6 @@ require __DIR__ . '/../partials/header.php';
                 <span class="arcade-card-body">
                     <span class="arcade-card-name">Board Games</span>
                     <span class="arcade-card-sub">Classic &amp; modern table games</span>
-                    <span class="arcade-card-cta">▶ Press start</span>
                 </span>
             </a>
         </div>
@@ -203,7 +200,7 @@ require __DIR__ . '/../partials/header.php';
                 <h3>Ready, Player One?</h3>
                 <p>Grab a PS5 controller, strap in for VR, or pull up a board — book your room now.</p>
             </div>
-            <a href="#rooms" class="btn btn-primary">▶ Press Start</a>
+            <a href="#rooms" class="btn btn-primary">Book Your Session →</a>
         </div>
     </div>
 </section>

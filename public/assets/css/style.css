@@ -498,7 +498,6 @@ img { max-width: 100%; display: block; }
 }
 .arcade-hero-inner { position: relative; z-index: 1; text-align: center; }
 
-@keyframes arcade-blink { 50% { opacity: 0; } }
 
 .arcade-hero-copy { max-width: 760px; margin: 0 auto; }
 .arcade-hero-copy .eyebrow { text-transform: none; }
@@ -564,14 +563,6 @@ img { max-width: 100%; display: block; }
 .arcade-card-body { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 20px; display: flex; flex-direction: column; gap: 4px; }
 .arcade-card-name { font-family: var(--font-display); font-weight: 900; font-size: 1.6rem; line-height: 1.05; text-transform: uppercase; }
 .arcade-card-sub { font-size: 0.88rem; color: var(--color-text-muted); }
-.arcade-card-cta {
-    margin-top: 10px;
-    font-family: var(--font-pixel);
-    font-size: 0.6rem;
-    text-transform: uppercase;
-    color: var(--brand-gold);
-}
-.arcade-card:hover .arcade-card-cta, .arcade-card:focus-visible .arcade-card-cta { animation: arcade-blink 0.8s steps(1) infinite; }
 
 .arcade-actions { display: flex; justify-content: center; align-items: center; gap: 18px; flex-wrap: wrap; margin: 36px 0 44px; }
 .arcade-actions .gold-tag { margin-top: 0; }
@@ -610,7 +601,6 @@ img { max-width: 100%; display: block; }
     .arcade-card { scroll-snap-align: center; }
 }
 @media (prefers-reduced-motion: reduce) {
-    .arcade-card:hover .arcade-card-cta, .arcade-card:focus-visible .arcade-card-cta { animation: none; }
     .arcade-marquee-track { animation: none; }
     .arcade-card, .arcade-card img { transition: none; }
 }
@@ -630,7 +620,7 @@ img { max-width: 100%; display: block; }
 }
 .gaming-cta-banner h3 { margin: 0 0 4px; color: var(--brand-midnight); }
 .gaming-cta-banner p { margin: 0; color: rgba(20, 20, 58, 0.8); }
-.gaming-cta-banner .btn-primary { background: var(--brand-midnight); color: #fff; font-family: var(--font-pixel); font-weight: 400; font-size: 0.72rem; text-transform: uppercase; }
+.gaming-cta-banner .btn-primary { background: var(--brand-midnight); color: #fff; }
 .gaming-cta-banner .btn-primary:hover { background: var(--brand-indigo); }
 
 /* ---------- Checkout ---------- */
