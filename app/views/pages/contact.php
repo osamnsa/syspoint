@@ -96,6 +96,20 @@ require __DIR__ . '/../partials/header.php';
                 <button type="submit" class="btn btn-primary btn-block">Send Message</button>
             </form>
         </div>
+
+        <div class="card" style="margin-top:24px;">
+            <span class="eyebrow">Our office</span>
+            <address style="font-style:normal;line-height:1.7;">
+                <strong>Syspoint Solutions Consult Limited</strong><br>
+                Suite C20, Awesome Plaza<br>
+                Opposite Chicken Republic<br>
+                Apo Resettlement, Abuja
+            </address>
+            <p style="margin:12px 0 0;color:var(--color-text-muted);font-size:0.9rem;">
+                Syspoint Hub (gaming &amp; training) is in the same plaza at Suite C1.<br>
+                <a href="mailto:syspointmail@gmail.com">syspointmail@gmail.com</a> · Open 9am – 10pm
+            </p>
+        </div>
     </div>
 </section>
 
