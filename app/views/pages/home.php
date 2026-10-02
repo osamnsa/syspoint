@@ -9,7 +9,7 @@ require __DIR__ . '/../partials/header.php';
 
 <section class="hero">
     <div class="container">
-        <span class="eyebrow" style="color:var(--color-accent);">Syspoint</span>
+        <span class="eyebrow" style="color:var(--color-accent);text-transform:none;">...challenging conventions</span>
         <h1><?= e(content_block('home.hero_title', 'Everything tech, in one place.')) ?></h1>
         <p><?= e(content_block('home.hero_subtitle', 'Computers and accessories, a software clinic that builds what your business needs, a gaming lounge with a VIP and common room, and a training centre turning out interns ready to work.')) ?></p>
         <div style="display:flex;gap:14px;margin-top:28px;flex-wrap:wrap;">
@@ -36,7 +36,7 @@ require __DIR__ . '/../partials/header.php';
             <a class="offer-card" href="<?= path('gaming') ?>" style="text-decoration:none;color:inherit;">
                 <div class="offer-icon">🎮</div>
                 <h3>Gaming Lounge</h3>
-                <p style="color:var(--color-text-muted);font-size:0.92rem;">Video games and board games, a VIP room and a common room — reserve your session.</p>
+                <p style="color:var(--color-text-muted);font-size:0.92rem;">PC gaming, a VR arena, and board games — free internet for every gamer, plus a VIP room and a common room to reserve.</p>
             </a>
             <?php $consultingUrl = config()['app']['consulting_url']; ?>
             <?php if ($consultingUrl): ?>

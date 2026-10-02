@@ -9,8 +9,12 @@ if ($base !== '' && str_starts_with($currentPath, $base)) {
 ?>
 <header class="site-header">
     <div class="container">
-        <a class="brand" href="<?= path() ?>">
-            <span class="brand-name">Syspoint</span>
+        <a class="brand" href="<?= path() ?>" aria-label="Syspoint Hub home">
+            <img class="brand-logo" src="<?= asset('assets/img/logo.png') ?>" alt="" width="40" height="40">
+            <span class="brand-text">
+                <span class="brand-name">Syspoint <em>Hub</em></span>
+                <span class="brand-tagline">...challenging conventions</span>
+            </span>
         </a>
         <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
             <span></span><span></span><span></span>

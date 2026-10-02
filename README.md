@@ -244,6 +244,20 @@ it (confirmed idempotent: a second run is a no-op). `game_type_label()`
 in `app/gaming.php` renders the display label (`ucfirst()` alone can't
 get "PS5" or "VR" capitalized right).
 
+**Rebranded to SYSPOINT HUB**: the client's brand identity guide calls
+the gaming catalog **PC gaming**, not PS5, so `games.type` was renamed
+from `'ps5'` to `'pc'` (labelled "PC Gaming"). The same widen → remap →
+narrow migration in `schema.sql` now accepts a database at any earlier
+stage (`'video'`, `'ps5'`) and moves those rows to `'pc'`. The site also
+picked up the brand palette (Midnight `#14143A`, Hub Indigo `#34348A`,
+Signal Gold `#F7CB1E`, Lemon Flash `#FDE414`, Chrome `#E4E6E5`, Ink
+`#0E0E24`) as CSS variables in `style.css`, the brand fonts (Nunito,
+IBM Plex Sans, IBM Plex Mono via Google Fonts), and the logo at
+`public/assets/img/logo.png` in the header, footer, admin bar and
+favicon. If an admin already overrode the `gaming.hero_title` /
+`gaming.hero_subtitle` content blocks with PS5 wording, edit those in
+the admin panel — the stored text wins over the new defaults.
+
 `room_bookings` is a reservation *request*, not a paid booking — a
 customer's submission lands as `pending` and an admin confirms or
 declines it from `/admin/bookings`, matching the brief (no payment

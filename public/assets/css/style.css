@@ -1,25 +1,38 @@
 /* ---------- Design tokens ----------
-   Placeholder palette until real branding is supplied — dark slate + an
-   electric-cyan accent (tech/gaming retail feel), same "swap the variables,
-   not the markup" approach used on every other build. */
+   SYSPOINT HUB brand palette (Brand Identity Guide v1.0). Ratio guide:
+   60% Midnight/Indigo · 25% Chrome/white · 15% Gold — Gold is the call to
+   action, so it's reserved for buttons and tags; on light grounds the text
+   accent is Hub Indigo, since gold text on white isn't readable. */
 :root {
-    --color-ink: #0b1420;
-    --color-ink-soft: #131f30;
-    --color-accent: #2dd4bf;
-    --color-accent-dark: #14b8a6;
-    --color-gold: #f5a524;
-    --color-text: #1a2233;
-    --color-text-muted: #5b6472;
+    --brand-midnight: #14143A;
+    --brand-indigo: #34348A;
+    --brand-gold: #F7CB1E;
+    --brand-lemon: #FDE414;
+    --brand-chrome: #E4E6E5;
+    --brand-ink: #0E0E24;
+
+    --font-display: 'Nunito', 'Segoe UI', sans-serif;
+    --font-body: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+    --font-mono: 'IBM Plex Mono', Consolas, monospace;
+
+    --color-ink: var(--brand-midnight);
+    --color-ink-soft: var(--brand-indigo);
+    --color-accent: var(--brand-gold);
+    --color-accent-hover: var(--brand-lemon);
+    --color-accent-dark: var(--brand-indigo);
+    --color-gold: var(--brand-gold);
+    --color-text: var(--brand-ink);
+    --color-text-muted: #55576E;
     --color-bg: #ffffff;
-    --color-bg-soft: #f5f7f9;
-    --color-border: #e2e8ed;
+    --color-bg-soft: #F1F2F1;
+    --color-border: #D9DBDA;
     --color-danger: #d64545;
     --color-success: #1f9d55;
     --radius-sm: 6px;
     --radius-md: 10px;
     --radius-lg: 16px;
-    --shadow-sm: 0 1px 3px rgba(11, 20, 32, 0.08);
-    --shadow-md: 0 8px 24px rgba(11, 20, 32, 0.12);
+    --shadow-sm: 0 1px 3px rgba(20, 20, 58, 0.08);
+    --shadow-md: 0 8px 24px rgba(20, 20, 58, 0.14);
     --container-width: 1180px;
 }
 
@@ -27,13 +40,13 @@
 
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: var(--font-body);
     color: var(--color-text);
     background: var(--color-bg);
     line-height: 1.55;
 }
 
-h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 0.5em; font-weight: 700; }
+h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; margin: 0 0 0.5em; font-weight: 900; }
 h1 { font-size: clamp(2rem, 4vw, 2.75rem); }
 h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
 h3 { font-size: 1.25rem; }
@@ -46,9 +59,10 @@ img { max-width: 100%; display: block; }
 
 .eyebrow {
     display: inline-block;
+    font-family: var(--font-mono);
     font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-weight: 600;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--color-accent-dark);
     margin-bottom: 8px;
@@ -65,7 +79,8 @@ img { max-width: 100%; display: block; }
     gap: 8px;
     padding: 12px 24px;
     border-radius: var(--radius-md);
-    font-weight: 600;
+    font-family: var(--font-display);
+    font-weight: 900;
     font-size: 0.95rem;
     cursor: pointer;
     border: 1px solid transparent;
@@ -74,7 +89,7 @@ img { max-width: 100%; display: block; }
 }
 .btn:hover { text-decoration: none; }
 .btn-primary { background: var(--color-accent); color: var(--color-ink); }
-.btn-primary:hover { background: var(--color-accent-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-primary:hover { background: var(--color-accent-hover); transform: translateY(-1px); box-shadow: var(--shadow-md); }
 .btn-outline { background: transparent; border-color: var(--color-border); color: var(--color-text); }
 .btn-outline:hover { border-color: var(--color-accent-dark); color: var(--color-accent-dark); }
 .btn-block { width: 100%; }
@@ -109,7 +124,7 @@ img { max-width: 100%; display: block; }
 .form-group textarea:focus {
     outline: none;
     border-color: var(--color-accent-dark);
-    box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.18);
+    box-shadow: 0 0 0 3px rgba(52, 52, 138, 0.18);
 }
 .form-group textarea { min-height: 120px; resize: vertical; }
 .form-note { font-size: 0.82rem; color: var(--color-text-muted); margin-top: 4px; }
@@ -129,11 +144,18 @@ img { max-width: 100%; display: block; }
 .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 68px; }
 
 .brand { display: inline-flex; align-items: center; gap: 10px; color: #fff; }
-.brand-name { font-weight: 800; font-size: 1.15rem; letter-spacing: -0.01em; }
+.brand-logo { width: 40px; height: 40px; object-fit: contain; flex-shrink: 0; }
+.brand-text { display: flex; flex-direction: column; }
+.brand-name { font-family: var(--font-display); font-weight: 900; font-size: 1.25rem; line-height: 0.95; letter-spacing: 0.02em; text-transform: uppercase; color: #fff; }
+.brand-name em { font-style: normal; color: var(--brand-gold); }
+.brand-tagline { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.04em; color: var(--brand-gold); margin-top: 4px; }
+.brand:hover { text-decoration: none; }
+@media (max-width: 420px) { .brand-tagline { display: none; } }
 
 .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; margin: 0; padding: 0; }
 .nav-links a { color: rgba(255, 255, 255, 0.82); font-weight: 500; font-size: 0.92rem; }
 .nav-links a:hover, .nav-links a.is-active { color: #fff; text-decoration: none; }
+.nav-links a.btn-primary, .nav-links a.btn-primary:hover { color: var(--color-ink); }
 
 .nav-toggle {
     display: none;
@@ -154,7 +176,7 @@ img { max-width: 100%; display: block; }
         justify-content: flex-start;
         gap: 22px;
         padding: 32px 20px;
-        background: rgba(11, 20, 32, 0.97);
+        background: rgba(20, 20, 58, 0.97);
         backdrop-filter: blur(10px);
         transform: translateY(-10px);
         opacity: 0;
@@ -191,7 +213,7 @@ img { max-width: 100%; display: block; }
     width: 44px; height: 44px;
     display: flex; align-items: center; justify-content: center;
     border-radius: 12px;
-    background: rgba(45, 212, 191, 0.12);
+    background: rgba(247, 203, 30, 0.18);
     color: var(--color-accent-dark);
     margin-bottom: 14px;
 }
@@ -207,9 +229,10 @@ img { max-width: 100%; display: block; }
 /* ---------- Footer ---------- */
 .site-footer { background: var(--color-ink); color: rgba(255, 255, 255, 0.75); padding: 56px 0 24px; margin-top: 40px; }
 .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 28px; margin-bottom: 36px; }
-.site-footer h4 { color: #fff; font-size: 0.9rem; margin-bottom: 12px; }
+.site-footer h4 { color: var(--brand-gold); font-family: var(--font-mono); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; }
+.site-footer address { font-style: normal; font-size: 0.9rem; line-height: 1.6; }
 .site-footer ul { list-style: none; margin: 0; padding: 0; }
-.site-footer li { margin-bottom: 8px; }
+.site-footer li { margin-bottom: 8px; font-size: 0.9rem; }
 .site-footer a { color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; }
 .site-footer a:hover { color: #fff; }
 .footer-bottom {
@@ -224,7 +247,7 @@ img { max-width: 100%; display: block; }
 }
 
 /* ---------- Utility ---------- */
-.badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
 .badge-success { background: #e7f8ee; color: #146c37; }
 .badge-warning { background: #fff4e0; color: #8a5a06; }
 .badge-muted { background: var(--color-bg-soft); color: var(--color-text-muted); }
@@ -243,6 +266,21 @@ img { max-width: 100%; display: block; }
     border: 1px dashed #d99a1f;
     vertical-align: middle;
 }
+
+/* The Gold Tag — brand device for offers and CTAs (e.g. free internet). */
+.gold-tag {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 6px 14px;
+    background: var(--brand-gold);
+    color: var(--brand-midnight);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.section-lede { color: var(--color-text-muted); margin-top: -4px; }
 
 .btn-outline-light { border-color: rgba(255,255,255,0.35); color: #fff; }
 .btn-outline-light:hover { border-color: #fff; color: #fff; }
@@ -338,27 +376,22 @@ img { max-width: 100%; display: block; }
 
 /* ============================================================
    SHOP THEME — scoped to .shop-theme (wraps shop/cart/checkout
-   page content only, never the shared header/nav/footer) so the
-   rest of the site keeps its teal/navy identity untouched.
+   page content only, never the shared header/nav/footer). Uses the
+   brand palette: Gold for CTAs, Indigo for text accents on light.
    ============================================================ */
 .shop-theme {
-    --shop-accent: #e0142c;
-    --shop-accent-dark: #b30f22;
-    --shop-ink: #0c0c0f;
+    --shop-accent: var(--brand-gold);
+    --shop-accent-text: var(--brand-indigo);
+    --shop-ink: var(--brand-midnight);
 }
-.shop-theme .eyebrow { color: var(--shop-accent); }
-.shop-theme .btn-primary { background: var(--shop-accent); color: #fff; }
-.shop-theme .btn-primary:hover { background: var(--shop-accent-dark); }
-.shop-theme .product-card-price { color: var(--shop-accent); }
-.shop-theme .category-card:hover, .shop-theme .product-card:hover { border-color: var(--shop-accent); box-shadow: 0 10px 28px rgba(224, 20, 44, 0.18); }
-.shop-theme .breadcrumb a { color: var(--shop-accent-dark); }
-.shop-theme .form-group input:focus,
-.shop-theme .form-group select:focus,
-.shop-theme .form-group textarea:focus { border-color: var(--shop-accent); box-shadow: 0 0 0 3px rgba(224, 20, 44, 0.15); }
+.shop-theme .eyebrow { color: var(--shop-accent-text); }
+.shop-theme .product-card-price { color: var(--shop-accent-text); }
+.shop-theme .category-card:hover, .shop-theme .product-card:hover { border-color: var(--shop-accent); box-shadow: 0 10px 28px rgba(52, 52, 138, 0.18); }
+.shop-theme .breadcrumb a { color: var(--shop-accent-text); }
 .shop-theme .order-summary-total { border-top-color: var(--shop-ink); }
 
 .shop-theme .shop-hero {
-    background: radial-gradient(ellipse at top right, rgba(224, 20, 44, 0.35), transparent 55%), var(--shop-ink);
+    background: radial-gradient(ellipse at top right, rgba(52, 52, 138, 0.9), transparent 60%), var(--shop-ink);
 }
 .shop-theme .shop-hero .eyebrow { color: var(--shop-accent); }
 .shop-theme .shop-hero-highlight { color: var(--shop-accent); }
@@ -376,49 +409,44 @@ img { max-width: 100%; display: block; }
     color: inherit;
     transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
 }
-.shop-category-strip-item:hover { border-color: var(--shop-accent); box-shadow: 0 8px 20px rgba(224, 20, 44, 0.16); transform: translateY(-2px); text-decoration: none; }
+.shop-category-strip-item:hover { border-color: var(--shop-accent); box-shadow: 0 8px 20px rgba(52, 52, 138, 0.16); transform: translateY(-2px); text-decoration: none; }
 .shop-category-strip-icon { font-size: 1.3rem; }
 .shop-category-strip-item strong { display: block; font-size: 0.92rem; }
 .shop-category-strip-item span { display: block; font-size: 0.78rem; color: var(--color-text-muted); }
-.shop-category-strip-arrow { margin-left: 6px; color: var(--shop-accent); font-weight: 700; }
+.shop-category-strip-arrow { margin-left: 6px; color: var(--shop-accent-text); font-weight: 700; }
 
 .shop-theme .trust-badges { border-color: var(--color-border); }
-.shop-theme .trust-badge-icon { color: var(--shop-accent); }
+.shop-theme .trust-badge-icon { color: var(--shop-accent-text); }
 
 /* ============================================================
    GAMING THEME — scoped to .gaming-theme, same isolation rule.
+   Midnight → Indigo ground with Gold/Lemon highlights.
    ============================================================ */
 .gaming-theme {
-    --gaming-accent: #4fd1ff;
-    --gaming-accent-2: #9b6bff;
+    --gaming-accent: var(--brand-gold);
+    --gaming-accent-2: var(--brand-lemon);
 }
-.gaming-theme .btn-primary { background: linear-gradient(135deg, var(--gaming-accent), var(--gaming-accent-2)); color: #05070d; border: none; }
-.gaming-theme .btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
-.gaming-theme .eyebrow { color: var(--gaming-accent); }
-.gaming-theme .product-card-price { color: var(--gaming-accent-2); }
-.gaming-theme .category-card:hover, .gaming-theme .product-card:hover { border-color: var(--gaming-accent); box-shadow: 0 10px 28px rgba(79, 209, 255, 0.18); }
-.gaming-theme .breadcrumb a { color: var(--gaming-accent-2); }
+.gaming-theme .btn-primary:hover { transform: translateY(-1px); }
+.gaming-theme .product-card-price { color: var(--brand-indigo); }
+.gaming-theme .category-card:hover, .gaming-theme .product-card:hover { border-color: var(--gaming-accent); box-shadow: 0 10px 28px rgba(52, 52, 138, 0.18); }
+.gaming-theme .breadcrumb a { color: var(--brand-indigo); }
 
 .gaming-hero {
     background:
-        radial-gradient(ellipse at top right, rgba(79, 209, 255, 0.28), transparent 55%),
-        radial-gradient(ellipse at bottom left, rgba(155, 107, 255, 0.22), transparent 60%),
-        linear-gradient(135deg, #05070d 0%, #0a0e18 100%);
+        radial-gradient(ellipse at top right, rgba(52, 52, 138, 0.95), transparent 60%),
+        radial-gradient(ellipse at bottom left, rgba(247, 203, 30, 0.12), transparent 55%),
+        var(--brand-midnight);
     color: #fff;
     padding: 96px 0 76px;
 }
+.gaming-hero .eyebrow { color: var(--gaming-accent); text-transform: none; }
 .gaming-hero-inner { display: flex; align-items: center; justify-content: space-between; gap: 36px; flex-wrap: wrap; }
 .gaming-hero-copy { max-width: 56ch; }
-.gaming-hero p { color: rgba(255, 255, 255, 0.75); }
+.gaming-hero p { color: rgba(255, 255, 255, 0.78); }
 .gaming-hero-art { width: 380px; max-width: 44vw; flex-shrink: 0; }
 .gaming-hero-art svg { width: 100%; height: auto; display: block; }
 @media (max-width: 760px) { .gaming-hero-art { display: none; } }
-.gaming-hero h1 {
-    background: linear-gradient(90deg, #fff 20%, var(--gaming-accent) 60%, var(--gaming-accent-2) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
+.gaming-hero h1 { color: #fff; }
 .platform-badges { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
 .platform-badge {
     display: inline-flex;
@@ -426,16 +454,17 @@ img { max-width: 100%; display: block; }
     gap: 6px;
     padding: 8px 16px;
     border-radius: 999px;
-    background: rgba(79, 209, 255, 0.1);
-    border: 1px solid rgba(79, 209, 255, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(247, 203, 30, 0.45);
     color: #fff;
-    font-weight: 600;
+    font-family: var(--font-display);
+    font-weight: 900;
     font-size: 0.88rem;
 }
 
-/* Bright gradient CTA banner, echoing the reference's bottom bar. */
+/* Gold CTA banner — the brand's Gold Tag device at banner scale. */
 .gaming-cta-banner {
-    background: linear-gradient(120deg, var(--gaming-accent-2), var(--gaming-accent));
+    background: var(--brand-gold);
     border-radius: var(--radius-lg);
     padding: 32px 36px;
     display: flex;
@@ -443,12 +472,12 @@ img { max-width: 100%; display: block; }
     justify-content: space-between;
     gap: 20px;
     flex-wrap: wrap;
-    color: #05070d;
+    color: var(--brand-midnight);
 }
-.gaming-cta-banner h3 { margin: 0 0 4px; color: #05070d; }
-.gaming-cta-banner p { margin: 0; color: rgba(5, 7, 13, 0.75); }
-.gaming-cta-banner .btn-primary { background: #05070d; color: #fff; }
-.gaming-cta-banner .btn-primary:hover { background: #15192a; filter: none; }
+.gaming-cta-banner h3 { margin: 0 0 4px; color: var(--brand-midnight); }
+.gaming-cta-banner p { margin: 0; color: rgba(20, 20, 58, 0.8); }
+.gaming-cta-banner .btn-primary { background: var(--brand-midnight); color: #fff; }
+.gaming-cta-banner .btn-primary:hover { background: var(--brand-indigo); }
 
 /* ---------- Checkout ---------- */
 .checkout-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 28px; align-items: start; margin-top: 8px; }

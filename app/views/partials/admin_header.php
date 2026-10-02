@@ -13,12 +13,14 @@ $titleTag = 'Admin' . (isset($pageTitle) && $pageTitle !== '' ? ' — ' . $pageT
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($titleTag) ?></title>
     <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" href="<?= asset('assets/img/logo.png') ?>">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
     <link rel="stylesheet" href="<?= versioned_asset('assets/css/style.css') ?>">
     <link rel="stylesheet" href="<?= versioned_asset('assets/css/admin.css') ?>">
 </head>
 <body class="admin-body">
 <header class="admin-topbar">
-    <a class="brand" href="<?= path('admin') ?>"><span class="brand-name">Syspoint <em style="color:var(--color-accent);font-style:normal;">Admin</em></span></a>
+    <a class="brand" href="<?= path('admin') ?>"><img class="brand-logo" src="<?= asset('assets/img/logo.png') ?>" alt="" width="32" height="32" style="width:32px;height:32px;"><span class="brand-name">Syspoint <em>Hub</em> Admin</span></a>
     <nav class="admin-nav">
         <a href="<?= path('admin') ?>">Dashboard</a>
         <a href="<?= path('admin/products') ?>">Products</a>
