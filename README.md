@@ -329,6 +329,15 @@ The images were cut from a reference mockup, so they're low resolution
 launch. The shop hero photo (`public/assets/img/shop/hero-laptops.*`)
 came from the same mockup with its "25% OFF" badge painted out.
 
+**Training hero** — `public/assets/img/training/hero-student.*` is the
+student-on-laptop photo from the client's reference poster, with the
+poster's lettering painted out, colour-graded to the brand blues, and a
+screenshot of our own home page warped onto the laptop screen. If the
+home page changes a lot, regenerate it (or swap in a photo of a real
+Syspoint student). The script "The" in the headline uses Yellowtail
+(Google Fonts); the strip under the hero lists the first six active
+courses from Admin → Courses.
+
 Also swapped the shop/gaming hero sections' emoji-in-a-box placeholder
 for actual inline SVG illustrations (a laptop + phone mockup with a
 shopping-app screen for Shop; a monitor with a game HUD, a controller,

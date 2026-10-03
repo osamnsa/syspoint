@@ -704,6 +704,112 @@ img { max-width: 100%; display: block; }
 .gaming-cta-banner .btn-primary { background: var(--brand-midnight); color: #fff; }
 .gaming-cta-banner .btn-primary:hover { background: var(--brand-indigo); }
 
+/* ============================================================
+   TRAINING HERO — big stacked headline with a gold script "The",
+   a round gold badge, a top-down student-on-laptop photo (the laptop
+   shows our own home page) and a course strip, on grainy Midnight blue.
+   ============================================================ */
+.training-hero {
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+        radial-gradient(ellipse 55% 75% at 12% 30%, rgba(52, 52, 138, 0.7), transparent 70%),
+        #0E0F46;
+}
+.training-hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 24px;
+    padding-top: 56px;
+}
+.training-hero .breadcrumb { color: rgba(255, 255, 255, 0.6); margin-bottom: 22px; }
+.training-hero .breadcrumb a { color: var(--brand-gold); }
+.training-kicker {
+    display: block;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #C9CAE8;
+    margin-bottom: 4px;
+}
+.training-title {
+    position: relative;
+    margin: 0 0 18px;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+    color: #E8EAFB;
+    transform: rotate(-4deg);
+    transform-origin: left center;
+}
+.training-line { display: block; white-space: nowrap; font-size: clamp(2.2rem, 5.6vw, 4.6rem); }
+.training-script {
+    display: block;
+    font-family: 'Yellowtail', cursive;
+    font-weight: 400;
+    text-transform: none;
+    font-size: clamp(2.6rem, 5vw, 4.2rem);
+    line-height: 0.8;
+    color: var(--brand-gold);
+    margin: 0 0 -0.12em -0.1em;
+    position: relative;
+    z-index: 1;
+}
+.training-intro { color: rgba(255, 255, 255, 0.82); max-width: 46ch; margin-top: 26px; }
+.training-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 22px; }
+
+.training-hero-art { position: relative; align-self: end; }
+.training-hero-art img {
+    width: 100%;
+    height: auto;
+    display: block;
+    -webkit-mask-image:
+        linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%),
+        linear-gradient(to bottom, transparent 0, #000 6%, #000 80%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+        linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%),
+        linear-gradient(to bottom, transparent 0, #000 6%, #000 80%, transparent 100%);
+    mask-composite: intersect;
+}
+.training-badge {
+    position: absolute;
+    top: 2%;
+    right: 4%;
+    width: clamp(84px, 9vw, 116px);
+    height: auto;
+    z-index: 2;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.35));
+    animation: training-badge-spin 24s linear infinite;
+}
+@keyframes training-badge-spin { to { transform: rotate(360deg); } }
+
+.training-strip { position: relative; z-index: 2; padding: 32px 0 36px; }
+.training-strip p {
+    margin: 0 auto;
+    width: fit-content;
+    max-width: 100%;
+    padding: 10px 18px;
+    border: 1px solid rgba(201, 202, 232, 0.45);
+    background: rgba(14, 14, 36, 0.55);
+    font-size: 0.95rem;
+    text-align: center;
+    color: #fff;
+}
+.training-strip span { color: var(--brand-gold); margin: 0 6px; }
+
+@media (max-width: 860px) {
+    .training-hero-inner { grid-template-columns: 1fr; padding-top: 40px; }
+    .training-hero-art { max-width: 460px; margin: 0 auto; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .training-badge { animation: none; } }
+
 /* ---------- Checkout ---------- */
 .checkout-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 28px; align-items: start; margin-top: 8px; }
 .order-summary-line { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 8px 0; border-bottom: 1px solid var(--color-border); }

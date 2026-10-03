@@ -9,15 +9,54 @@ $courses = training_courses_active();
 require __DIR__ . '/../partials/header.php';
 ?>
 
-<section class="page-header">
-    <div class="container">
-        <div class="breadcrumb"><a href="<?= path() ?>">Home</a> / Training &amp; Internship</div>
-        <h1>Training &amp; Internship</h1>
-        <p style="color:var(--color-text-muted);max-width:60ch;"><?= e(content_block('training.intro', 'Hands-on courses and an internship program built to get you job-ready.')) ?></p>
+<section class="training-hero">
+    <div class="container training-hero-inner">
+        <div class="training-hero-copy">
+            <div class="breadcrumb"><a href="<?= path() ?>">Home</a> / Training &amp; Internship</div>
+            <span class="training-kicker">Unlock your tech potential</span>
+            <h1 class="training-title">
+                <span class="training-script">The</span>
+                <span class="training-line">IT Training</span>
+                <span class="training-line">&amp; Internship</span>
+                <span class="training-line">Program</span>
+            </h1>
+            <p class="training-intro"><?= e(content_block('training.intro', 'Hands-on courses and an internship program built to get you job-ready.')) ?></p>
+            <div class="training-actions">
+                <a href="#courses" class="btn btn-primary">See Our Courses</a>
+                <a href="<?= path('contact') ?>" class="btn btn-outline btn-outline-light">Ask About Internships</a>
+            </div>
+        </div>
+
+        <div class="training-hero-art">
+            <svg class="training-badge" viewBox="0 0 120 120" aria-hidden="true">
+                <defs><path id="badgeRing" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs>
+                <circle cx="60" cy="60" r="58" fill="#F7CB1E"/>
+                <text font-family="IBM Plex Mono, monospace" font-size="8.6" font-weight="600" fill="#14143A">
+                    <textPath href="#badgeRing" textLength="272" lengthAdjust="spacing">SYSPOINT HUB • IT TRAINING • INTERNSHIP •</textPath>
+                </text>
+                <text x="60" y="69" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="900" font-size="26" fill="#14143A">IT</text>
+            </svg>
+            <picture>
+                <source srcset="<?= asset('assets/img/training/hero-student.webp') ?>" type="image/webp">
+                <img src="<?= asset('assets/img/training/hero-student.jpg') ?>" alt="A student, seen from above, working on a laptop showing the Syspoint Hub website" width="920" height="832" fetchpriority="high">
+            </picture>
+        </div>
+    </div>
+
+    <div class="training-strip">
+        <div class="container">
+            <p>
+                <?php if ($courses): ?>
+                    <?= implode(' <span aria-hidden="true">|</span> ', array_map(fn ($c) => e($c['title']), array_slice($courses, 0, 6))) ?>
+                <?php else: ?>
+                    Hands-on courses <span aria-hidden="true">|</span> Real projects <span aria-hidden="true">|</span> Mentorship <span aria-hidden="true">|</span> Internships
+                <?php endif; ?>
+            </p>
+        </div>
     </div>
 </section>
 
-<section class="section">
+<section class="section" id="courses">
     <div class="container">
         <span class="eyebrow">Courses</span>
         <h2>What We Teach</h2>
