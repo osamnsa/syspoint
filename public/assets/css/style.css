@@ -156,6 +156,33 @@ img { max-width: 100%; display: block; }
 .nav-links a { color: rgba(255, 255, 255, 0.82); font-weight: 500; font-size: 0.92rem; }
 .nav-links a:hover, .nav-links a.is-active { color: #fff; text-decoration: none; }
 .nav-links a.btn-primary, .nav-links a.btn-primary:hover { color: var(--color-ink); }
+/* Cart: icon only (public/assets/img/icons/cart.png used as a mask, so it
+   takes the link colour — white on the nav, gold when active/hovered). */
+.nav-cart { position: relative; display: inline-flex; align-items: center; padding: 4px; }
+.nav-cart-icon {
+    display: block;
+    width: 28px;
+    height: 28px;
+    background: currentColor;
+    -webkit-mask: url('../img/icons/cart.png') center / contain no-repeat;
+    mask: url('../img/icons/cart.png') center / contain no-repeat;
+}
+.nav-links a.nav-cart:hover, .nav-links a.nav-cart.is-active { color: var(--brand-gold); }
+.nav-cart-count {
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--brand-gold);
+    color: var(--brand-midnight);
+    font-size: 0.7rem;
+    font-weight: 800;
+    line-height: 18px;
+    text-align: center;
+}
 
 .nav-toggle {
     display: none;

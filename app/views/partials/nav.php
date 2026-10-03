@@ -29,7 +29,11 @@ if ($base !== '' && str_starts_with($currentPath, $base)) {
                 <li><a href="<?= e(config()['app']['consulting_url']) ?>" target="_blank" rel="noopener">Consulting</a></li>
             <?php endif; ?>
             <li><a href="<?= path('about') ?>" class="<?= $currentPath === 'about' ? 'is-active' : '' ?>">About</a></li>
-            <li><a href="<?= path('cart') ?>" class="<?= $currentPath === 'cart' ? 'is-active' : '' ?>">Cart<?php $cartCount = cart_count(); if ($cartCount > 0): ?> <span class="badge badge-success"><?= $cartCount ?></span><?php endif; ?></a></li>
+            <?php $cartCount = cart_count(); ?>
+            <li><a href="<?= path('cart') ?>" class="nav-cart <?= $currentPath === 'cart' ? 'is-active' : '' ?>" aria-label="Cart<?= $cartCount > 0 ? ', ' . $cartCount . ' item' . ($cartCount === 1 ? '' : 's') : '' ?>">
+                <span class="nav-cart-icon" aria-hidden="true"></span>
+                <?php if ($cartCount > 0): ?><span class="nav-cart-count" aria-hidden="true"><?= $cartCount ?></span><?php endif; ?>
+            </a></li>
             <li><a href="<?= path('contact') ?>" class="btn btn-primary btn-sm">Contact Us</a></li>
         </ul>
     </div>
