@@ -21,6 +21,7 @@ if ($base !== '' && str_starts_with($currentPath, $base)) {
         </button>
         <ul class="nav-links" id="nav-links">
             <li><a href="<?= path() ?>" class="<?= $currentPath === '' ? 'is-active' : '' ?>">Home</a></li>
+            <li><a href="<?= path('about') ?>" class="<?= $currentPath === 'about' ? 'is-active' : '' ?>">About</a></li>
             <li><a href="<?= path('shop') ?>" class="<?= str_starts_with($currentPath, 'shop') ? 'is-active' : '' ?>">Shop</a></li>
             <li><a href="<?= path('software-clinic') ?>" class="<?= $currentPath === 'software-clinic' ? 'is-active' : '' ?>">Software Clinic</a></li>
             <li><a href="<?= path('gaming') ?>" class="<?= str_starts_with($currentPath, 'gaming') ? 'is-active' : '' ?>">Gaming</a></li>
@@ -28,7 +29,6 @@ if ($base !== '' && str_starts_with($currentPath, $base)) {
             <?php if (config()['app']['consulting_url']): ?>
                 <li><a href="<?= e(config()['app']['consulting_url']) ?>" target="_blank" rel="noopener">Consulting</a></li>
             <?php endif; ?>
-            <li><a href="<?= path('about') ?>" class="<?= $currentPath === 'about' ? 'is-active' : '' ?>">About</a></li>
             <?php $cartCount = cart_count(); ?>
             <li><a href="<?= path('cart') ?>" class="nav-cart <?= $currentPath === 'cart' ? 'is-active' : '' ?>" aria-label="Cart<?= $cartCount > 0 ? ', ' . $cartCount . ' item' . ($cartCount === 1 ? '' : 's') : '' ?>">
                 <span class="nav-cart-icon" aria-hidden="true"></span>
