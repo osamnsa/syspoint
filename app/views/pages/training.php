@@ -49,7 +49,7 @@ require __DIR__ . '/../partials/header.php';
                 <?php if ($courses): ?>
                     <?= implode(' <span aria-hidden="true">|</span> ', array_map(fn ($c) => e($c['title']), array_slice($courses, 0, 6))) ?>
                 <?php else: ?>
-                    Hands-on courses <span aria-hidden="true">|</span> Real projects <span aria-hidden="true">|</span> Mentorship <span aria-hidden="true">|</span> Internships
+                    Web Development <span aria-hidden="true">|</span> Networking <span aria-hidden="true">|</span> Programming <span aria-hidden="true">|</span> Data Analysis <span aria-hidden="true">|</span> Computer Basics
                 <?php endif; ?>
             </p>
         </div>

@@ -334,9 +334,9 @@ student-on-laptop photo from the client's reference poster, with the
 poster's lettering painted out, colour-graded to the brand blues, and a
 screenshot of our own home page warped onto the laptop screen. If the
 home page changes a lot, regenerate it (or swap in a photo of a real
-Syspoint student). The script "The" in the headline uses Yellowtail
-(Google Fonts); the strip under the hero lists the first six active
-courses from Admin → Courses.
+Syspoint student). The hero uses only the brand fonts (Nunito, IBM
+Plex Sans, IBM Plex Mono). The strip under the hero lists the first six
+active courses from Admin → Courses (fallback list when there are none).
 
 Also swapped the shop/gaming hero sections' emoji-in-a-box placeholder
 for actual inline SVG illustrations (a laptop + phone mockup with a

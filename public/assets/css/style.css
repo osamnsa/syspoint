@@ -705,7 +705,8 @@ img { max-width: 100%; display: block; }
 .gaming-cta-banner .btn-primary:hover { background: var(--brand-indigo); }
 
 /* ============================================================
-   TRAINING HERO — big stacked headline with a gold script "The",
+   TRAINING HERO — brand fonts only: Nunito Black (title, gold italic
+   "The"), IBM Plex Mono (kicker, badge), IBM Plex Sans (intro, strip) —
    a round gold badge, a top-down student-on-laptop photo (the laptop
    shows our own home page) and a course strip, on grainy Midnight blue.
    ============================================================ */
@@ -751,11 +752,12 @@ img { max-width: 100%; display: block; }
 .training-line { display: block; white-space: nowrap; font-size: clamp(2.2rem, 5.6vw, 4.6rem); }
 .training-script {
     display: block;
-    font-family: 'Yellowtail', cursive;
-    font-weight: 400;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 900;
     text-transform: none;
-    font-size: clamp(2.6rem, 5vw, 4.2rem);
-    line-height: 0.8;
+    font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+    line-height: 0.9;
     color: var(--brand-gold);
     margin: 0 0 -0.12em -0.1em;
     position: relative;
@@ -793,6 +795,7 @@ img { max-width: 100%; display: block; }
 .training-strip { position: relative; z-index: 2; padding: 32px 0 36px; }
 .training-strip p {
     margin: 0 auto;
+    font-family: var(--font-body);
     width: fit-content;
     max-width: 100%;
     padding: 10px 18px;
