@@ -180,7 +180,7 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
         <?php endif; ?>
         <div class="home-training-cta">
             <p>Want real work experience? We take on interns across sales, software and IT consulting.</p>
-            <a href="https://corelink.ng/hubmember" class="btn btn-primary" target="_blank" rel="noopener">Ask About Internships</a>
+            <a href="<?= path('contact') ?>" class="btn btn-primary">Ask About Internships</a>
         </div>
     </div>
 </section>
