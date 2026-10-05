@@ -261,8 +261,7 @@ img { max-width: 100%; display: block; }
     isolation: isolate;
 }
 /* The swoosh lives in the lower two-thirds so it runs behind the laptop and cards, never through the headline. */
-.home-swoosh { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 68%; z-index: -1; filter: drop-shadow(0 0 18px rgba(247, 203, 30, 0.25)); }
-.home-swoosh-band { opacity: 0.85; }
+.home-swoosh { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 66%; z-index: -1; }
 main:has(.home-hero) + .site-footer { margin-top: 0; }
 .home-hero-head { text-align: center; max-width: 860px; }
 .home-hero-kicker {
@@ -393,7 +392,6 @@ a.home-service:hover, a.home-service:focus-visible {
     .home-stats { flex-wrap: wrap; padding: 14px; }
     .home-stat { flex: 1 1 30%; border-right: none; padding: 4px; }
     .home-stat strong { font-size: 1.1rem; white-space: nowrap; }
-    .home-swoosh { height: 60%; }
     .home-stats-cta { margin: 10px 0 0; width: 100%; }
     .home-hero-tagline { font-size: 0.8rem; letter-spacing: 0.12em; }
 }
