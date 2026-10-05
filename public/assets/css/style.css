@@ -262,6 +262,11 @@ img { max-width: 100%; display: block; }
 }
 /* The swoosh lives in the lower two-thirds so it runs behind the laptop and cards, never through the headline. */
 .home-swoosh { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 66%; z-index: -1; }
+/* A touch stronger on desktop (+3 points); phones keep the SVG's own 0.5 / 0.6. */
+@media (min-width: 641px) {
+    .home-swoosh-band { opacity: 0.53; }
+    .home-swoosh-line { opacity: 0.63; }
+}
 main:has(.home-hero) + .site-footer { margin-top: 0; }
 .home-hero-head { text-align: center; max-width: 860px; }
 .home-hero-kicker {
