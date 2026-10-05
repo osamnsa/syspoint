@@ -89,6 +89,19 @@ require __DIR__ . '/../partials/header.php';
     </div>
 </section>
 
+<section class="section training-external">
+    <div class="container">
+        <div class="training-external-card">
+            <div>
+                <span class="eyebrow">Keep learning</span>
+                <h2><?= e(content_block('training.external_title', 'Learn with Charles Onuoha')) ?></h2>
+                <p><?= e(content_block('training.external_body', 'Explore more courses, resources and mentorship at CharlesOnuoha.com.')) ?></p>
+            </div>
+            <a href="https://charlesonuoha.com" class="btn btn-primary" target="_blank" rel="noopener">Visit CharlesOnuoha.com →</a>
+        </div>
+    </div>
+</section>
+
 <section class="section section-soft">
     <div class="container" style="max-width:760px;">
         <span class="eyebrow">Internship Program</span>

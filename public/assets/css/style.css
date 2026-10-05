@@ -1068,6 +1068,18 @@ a.home-client:hover img { filter: none; opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .training-badge { animation: none; } }
 
+/* Training: call-to-action out to CharlesOnuoha.com */
+.training-external { padding-top: 0; }
+.training-external-card {
+    display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    padding: 30px 34px; border-radius: var(--radius-lg);
+    background: radial-gradient(ellipse 60% 120% at 100% 50%, rgba(52, 52, 138, 0.9), transparent 70%), var(--brand-midnight);
+    color: #fff;
+}
+.training-external-card .eyebrow { color: var(--brand-gold); }
+.training-external-card h2 { color: #fff; margin-bottom: 6px; }
+.training-external-card p { margin: 0; color: #C9CAE8; max-width: 56ch; }
+
 /* ---------- Checkout ---------- */
 .checkout-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 28px; align-items: start; margin-top: 8px; }
 .order-summary-line { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 8px 0; border-bottom: 1px solid var(--color-border); }
