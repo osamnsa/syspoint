@@ -1099,6 +1099,9 @@ a.home-client:hover img { filter: none; opacity: 1; }
 }
 @media (max-width: 640px) {
     .training-bar-cta { margin: 0 18px 18px; align-self: stretch; }
+    /* keep the two mentor buttons side by side on phones */
+    .mentor-actions { flex-wrap: nowrap; gap: 8px; }
+    .mentor-actions .btn { flex: 1 1 0; min-width: 0; padding: 11px 8px; font-size: 0.8rem; text-align: center; white-space: nowrap; }
 }
 
 /* Everything else on the page lives inside the hero: course cards + a bar

@@ -93,7 +93,7 @@ require __DIR__ . '/../partials/header.php';
                     <li>A path from student to intern to professional</li>
                 </ul>
                 <div class="mentor-actions">
-                    <a href="https://charlesonuoha.com/services/mentorship-and-internship" class="btn btn-primary" target="_blank" rel="noopener">View Mentorship Program →</a>
+                    <a href="https://charlesonuoha.com/services/mentorship-and-internship" class="btn btn-primary" target="_blank" rel="noopener">View Mentorship Program</a>
                     <a href="<?= path('contact') ?>" class="btn btn-outline btn-outline-light">Free 30-Min Clarity Call</a>
                 </div>
             </div>
