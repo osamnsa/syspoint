@@ -94,7 +94,7 @@ require __DIR__ . '/../partials/header.php';
                 </ul>
                 <div class="mentor-actions">
                     <a href="https://charlesonuoha.com/services/mentorship-and-internship" class="btn btn-primary" target="_blank" rel="noopener">View Mentorship Program →</a>
-                    <a href="<?= path('contact') ?>" class="btn btn-outline btn-outline-light">Book a Mentorship Chat</a>
+                    <a href="<?= path('contact') ?>" class="btn btn-outline btn-outline-light">Free 30-Min Clarity Call</a>
                 </div>
             </div>
         </div>
