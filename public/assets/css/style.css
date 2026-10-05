@@ -401,6 +401,105 @@ a.home-service:hover, a.home-service:focus-visible {
     .home-hero-tagline { font-size: 0.8rem; letter-spacing: 0.12em; }
 }
 
+/* ---------- Home: sections below the hero ---------- */
+.home-section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+.home-section-head h2 { margin-bottom: 0; }
+.home-section-link { font-weight: 600; color: var(--brand-indigo); white-space: nowrap; }
+.product-grid.home-product-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.home-product-grid .product-card-price { color: var(--brand-indigo); }
+
+/* Gaming band: dark, with three tilted game tiles */
+.home-gaming {
+    position: relative;
+    overflow: hidden;
+    padding: 72px 0;
+    color: #fff;
+    background:
+        radial-gradient(ellipse 50% 70% at 85% 50%, rgba(52, 52, 138, 0.9), transparent 70%),
+        var(--brand-midnight);
+}
+.home-gaming-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 40px; align-items: center; }
+.home-gaming .eyebrow { color: var(--brand-gold); }
+.home-gaming h2 { color: #fff; font-size: clamp(2rem, 4vw, 2.8rem); }
+.home-gaming p { color: rgba(255, 255, 255, 0.8); max-width: 48ch; }
+.home-rooms { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; max-width: 420px; }
+.home-rooms li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; border-radius: var(--radius-md); background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(201, 202, 232, 0.18); }
+.home-rooms strong { font-family: var(--font-display); font-weight: 900; }
+.home-rooms span { color: var(--brand-gold); font-weight: 600; text-align: right; }
+.home-gaming-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+.home-gaming-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.home-gaming-tile { position: relative; aspect-ratio: 3 / 4; border-radius: var(--radius-lg); overflow: hidden; border: 2px solid rgba(201, 202, 232, 0.2); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45); }
+.home-gaming-tile:nth-child(1) { transform: rotate(-4deg) translateY(10px); }
+.home-gaming-tile:nth-child(2) { transform: translateY(-12px); border-color: var(--brand-gold); box-shadow: 0 0 30px rgba(247, 203, 30, 0.3), 0 18px 40px rgba(0, 0, 0, 0.45); }
+.home-gaming-tile:nth-child(3) { transform: rotate(4deg) translateY(10px); }
+.home-gaming-tile img { width: 100%; height: 100%; object-fit: cover; }
+.home-gaming-tile span {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 12px 12px;
+    font-family: var(--font-display); font-weight: 900; text-transform: uppercase; font-size: 0.95rem;
+    background: linear-gradient(to top, rgba(14, 14, 36, 0.95), transparent);
+}
+
+/* Training cards */
+.home-courses { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 24px; }
+.home-course {
+    display: flex; flex-direction: column; gap: 6px; padding: 22px;
+    border-radius: var(--radius-lg); background: #fff; border: 1px solid var(--color-border); color: inherit;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.home-course:hover { text-decoration: none; transform: translateY(-3px); border-color: var(--brand-gold); box-shadow: var(--shadow-md); }
+.home-course-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: var(--brand-midnight); color: var(--brand-gold); margin-bottom: 6px; }
+.home-course-icon svg { width: 24px; height: 24px; }
+.home-course strong { font-family: var(--font-display); font-weight: 900; font-size: 1.1rem; }
+.home-course-text { font-size: 0.88rem; color: var(--color-text-muted); flex: 1; }
+.home-course-meta { font-weight: 700; color: var(--brand-indigo); font-size: 0.9rem; }
+.home-training-cta {
+    display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+    margin-top: 28px; padding: 22px 26px; border-radius: var(--radius-lg);
+    background: var(--brand-gold); color: var(--brand-midnight);
+}
+.home-training-cta p { margin: 0; font-weight: 600; }
+.home-training-cta .btn-primary { background: var(--brand-midnight); color: #fff; }
+.home-training-cta .btn-primary:hover { background: var(--brand-indigo); }
+
+/* Software clinic client logos */
+.home-clients { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px; margin-top: 24px; }
+.home-client {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    min-height: 120px; padding: 18px; border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border); background: #fff; color: inherit; text-align: center;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+a.home-client:hover { text-decoration: none; border-color: var(--brand-gold); box-shadow: var(--shadow-md); }
+.home-client img { max-height: 48px; max-width: 140px; object-fit: contain; filter: grayscale(1); opacity: 0.85; transition: filter 0.15s ease, opacity 0.15s ease; }
+a.home-client:hover img { filter: none; opacity: 1; }
+.home-client-initial { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--brand-midnight); color: var(--brand-gold); font-family: var(--font-display); font-weight: 900; font-size: 1.3rem; }
+.home-client-name { font-weight: 600; font-size: 0.9rem; }
+
+/* Visit us */
+.home-visit { padding: 72px 0; color: #fff; background: linear-gradient(180deg, #14143A 0%, #0E0E24 100%); }
+.home-visit .eyebrow { color: var(--brand-gold); }
+.home-visit h2 { color: #fff; }
+.home-visit-lede { color: #C9CAE8; margin: 8px 0 0; }
+.home-visit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 26px; }
+.home-visit-card { padding: 26px; border-radius: var(--radius-lg); background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(201, 202, 232, 0.2); }
+.home-visit-suite { display: inline-block; padding: 4px 10px; background: var(--brand-gold); color: var(--brand-midnight); font-family: var(--font-mono); font-weight: 600; font-size: 0.8rem; }
+.home-visit-card h3 { color: #fff; margin: 12px 0 6px; font-size: 1.4rem; }
+.home-visit-card p { color: #C9CAE8; }
+.home-visit-contact { margin: 22px 0 0; color: #C9CAE8; }
+.home-visit-contact a { color: var(--brand-gold); }
+
+@media (max-width: 980px) {
+    .product-grid.home-product-grid, .home-courses { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .home-gaming-inner { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+    .home-visit-grid { grid-template-columns: 1fr; }
+    .home-clients { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .home-client { min-height: 100px; padding: 14px; }
+    .home-gaming-tiles { gap: 8px; }
+    .home-gaming-tile span { font-size: 0.75rem; padding: 18px 8px 8px; }
+}
+
 /* ---------- Page header (interior pages) ---------- */
 .page-header {
     background: var(--color-bg-soft);

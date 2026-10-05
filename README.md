@@ -341,6 +341,15 @@ and `home.hero_title_highlight` (the old `home.hero_title` is unused). The
 stats are placeholders (5 services / free Wi-Fi / opening hours) until the
 client supplies real figures.
 
+**Home sections** (below the hero, all driven by admin data): New in
+the Shop (4 newest products), a dark Gaming Lounge band (room rates from
+Admin → Rooms, Demo badge if flagged, three tilted game tiles), Training &
+Internship (first 4 active courses + internship CTA), Software Clinic
+client logos (Admin → Businesses; logos greyscale until hovered, initials
+when no logo; a pitch line when none exist), and Visit Us (Hub at Suite
+C1, Gadget Store at Suite C20, directions, hours, email). The shop
+section hides itself when there are no products.
+
 **Training hero** — `public/assets/img/training/hero-student.*` is the
 student-on-laptop photo from the client's reference poster, with the
 poster's lettering painted out, colour-graded to the brand blues, and a

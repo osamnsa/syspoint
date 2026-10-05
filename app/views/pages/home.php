@@ -75,4 +75,172 @@ $services = [
     </div>
 </section>
 
+<?php
+$homeProducts = products_recent(4);
+$homeRooms = gaming_rooms_active();
+$homeCourses = array_slice(training_courses_active(), 0, 4);
+$homeBusinesses = deployed_businesses_active();
+$mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Resettlement+Abuja';
+?>
+
+<?php if ($homeProducts): ?>
+<!-- 1. New in the Shop -->
+<section class="section home-section">
+    <div class="container">
+        <div class="home-section-head">
+            <div>
+                <span class="eyebrow">Gadget Store</span>
+                <h2>New in the Shop</h2>
+            </div>
+            <a href="<?= path('shop') ?>" class="home-section-link">Visit the store →</a>
+        </div>
+        <div class="product-grid home-product-grid">
+            <?php foreach ($homeProducts as $product): ?>
+                <a class="product-card" href="<?= path('shop/' . e($product['category_slug']) . '/' . e($product['slug'])) ?>">
+                    <div class="product-card-img">
+                        <?php if ($product['image_path']): ?>
+                            <img src="<?= asset(e($product['image_path'])) ?>" alt="<?= e($product['name']) ?>" loading="lazy">
+                        <?php else: ?>
+                            <span class="product-card-placeholder">📦</span>
+                        <?php endif; ?>
+                        <?php if ((int) $product['stock_qty'] <= 0): ?>
+                            <span class="badge badge-muted product-card-badge">Out of Stock</span>
+                        <?php endif; ?>
+                    </div>
+                    <h3><?= e($product['name']) ?></h3>
+                    <p class="product-card-price"><?= format_naira((float) $product['price']) ?><?= $product['is_demo'] ? demo_badge() : '' ?></p>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
+<!-- 2. Gaming Lounge band -->
+<section class="home-gaming">
+    <div class="container home-gaming-inner">
+        <div class="home-gaming-copy">
+            <span class="eyebrow">Gaming Lounge</span>
+            <h2>Play. Immerse. Unwind.</h2>
+            <p>PS5, a VR arena and a shelf of board games — book the VIP room for your squad or drop into the common room.</p>
+            <?php if ($homeRooms): ?>
+                <ul class="home-rooms">
+                    <?php foreach ($homeRooms as $room): ?>
+                        <li>
+                            <strong><?= e($room['name']) ?></strong>
+                            <span><?= format_naira((float) $room['hourly_rate']) ?>/hour<?= $room['is_demo'] ? demo_badge() : '' ?><?= $room['capacity'] ? ' · up to ' . (int) $room['capacity'] : '' ?></span>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+            <div class="home-gaming-actions">
+                <a href="<?= path('gaming') ?>#rooms" class="btn btn-primary">Book a Room</a>
+                <a href="<?= path('gaming') ?>" class="btn btn-outline btn-outline-light">Browse Games</a>
+            </div>
+            <span class="gold-tag">Free internet for all gamers</span>
+        </div>
+        <div class="home-gaming-tiles" aria-hidden="true">
+            <?php foreach (['ps5' => 'PS5', 'vr' => 'VR Arena', 'board' => 'Board Games'] as $img => $label): ?>
+                <div class="home-gaming-tile">
+                    <img src="<?= asset('assets/img/gaming/' . $img . '.jpg') ?>" alt="" loading="lazy">
+                    <span><?= e($label) ?></span>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+
+<!-- 3. Training & Internship -->
+<section class="section section-soft home-section">
+    <div class="container">
+        <div class="home-section-head">
+            <div>
+                <span class="eyebrow">Training &amp; Internship</span>
+                <h2>Learn skills that get you hired</h2>
+            </div>
+            <a href="<?= path('training') ?>" class="home-section-link">See all courses →</a>
+        </div>
+        <?php if ($homeCourses): ?>
+            <div class="home-courses">
+                <?php foreach ($homeCourses as $course): ?>
+                    <a class="home-course" href="<?= path('training') ?>#courses">
+                        <span class="home-course-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg>
+                        </span>
+                        <strong><?= e($course['title']) ?></strong>
+                        <?php if ($course['description']): ?><span class="home-course-text"><?= e($course['description']) ?></span><?php endif; ?>
+                        <span class="home-course-meta">
+                            <?= $course['duration_label'] ? e($course['duration_label']) : '' ?><?= $course['duration_label'] && $course['price'] !== null ? ' · ' : '' ?><?= $course['price'] !== null ? format_naira((float) $course['price']) : '' ?>
+                        </span>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <p class="section-lede">Our course list is being updated — ask us about the next intake.</p>
+        <?php endif; ?>
+        <div class="home-training-cta">
+            <p>Want real work experience? We take on interns across sales, software and IT consulting.</p>
+            <a href="<?= path('contact') ?>" class="btn btn-primary">Ask About Internships</a>
+        </div>
+    </div>
+</section>
+
+<!-- 4. Software Clinic: businesses we've built for -->
+<section class="section home-section">
+    <div class="container">
+        <div class="home-section-head">
+            <div>
+                <span class="eyebrow">Software Clinic</span>
+                <h2><?= $homeBusinesses ? 'Businesses we&rsquo;ve built for' : 'Software built for your business' ?></h2>
+            </div>
+            <a href="<?= path('software-clinic') ?>" class="home-section-link">Tell us what you need →</a>
+        </div>
+        <?php if ($homeBusinesses): ?>
+            <div class="home-clients">
+                <?php foreach ($homeBusinesses as $biz): ?>
+                    <?php $tag = $biz['website_url'] ? 'a' : 'div'; ?>
+                    <<?= $tag ?> class="home-client"<?php if ($biz['website_url']): ?> href="<?= e($biz['website_url']) ?>" target="_blank" rel="noopener"<?php endif; ?>>
+                        <?php if ($biz['logo_path']): ?>
+                            <img src="<?= asset(e($biz['logo_path'])) ?>" alt="<?= e($biz['name']) ?>" loading="lazy">
+                        <?php else: ?>
+                            <span class="home-client-initial" aria-hidden="true"><?= e(mb_strtoupper(mb_substr($biz['name'], 0, 1))) ?></span>
+                        <?php endif; ?>
+                        <span class="home-client-name"><?= e($biz['name']) ?></span>
+                    </<?= $tag ?>>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <p class="section-lede">From booking systems to online stores, we build and deploy what your business is missing. Tell us what you need and we&rsquo;ll quote it.</p>
+        <?php endif; ?>
+    </div>
+</section>
+
+<!-- 5. Visit us -->
+<section class="home-visit">
+    <div class="container">
+        <div class="home-section-head">
+            <div>
+                <span class="eyebrow">Visit Us</span>
+                <h2>Two doors, one plaza</h2>
+                <p class="home-visit-lede">Awesome Plaza, Opposite Chicken Republic, Apo Resettlement, Abuja · Open 9am – 10pm</p>
+            </div>
+        </div>
+        <div class="home-visit-grid">
+            <div class="home-visit-card">
+                <span class="home-visit-suite">Suite C1</span>
+                <h3>Syspoint Hub</h3>
+                <p>Gaming lounge, VR arena and IT training.</p>
+                <a href="<?= e($mapsUrl) ?>" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Get Directions →</a>
+            </div>
+            <div class="home-visit-card">
+                <span class="home-visit-suite">Suite C20</span>
+                <h3>Gadget Store</h3>
+                <p>Syspoint Solutions Consult Limited — computers, gadgets and the software clinic.</p>
+                <a href="<?= e($mapsUrl) ?>" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Get Directions →</a>
+            </div>
+        </div>
+        <p class="home-visit-contact">Questions? <a href="mailto:syspointmail@gmail.com">syspointmail@gmail.com</a> or <a href="<?= path('contact') ?>">send us a message</a>.</p>
+    </div>
+</section>
+
 <?php require __DIR__ . '/../partials/footer.php'; ?>
