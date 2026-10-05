@@ -329,6 +329,17 @@ The images were cut from a reference mockup, so they're low resolution
 launch. The shop hero photo (`public/assets/img/shop/hero-laptops.*`)
 came from the same mockup with its "25% OFF" badge painted out.
 
+**Home hero** — modelled on the client's "Business Website Design"
+reference: headline, a desk scene (`public/assets/img/home/hero-desk.*`,
+graded to the brand with the keyboard glow turned gold) whose laptop shows
+a screenshot of our Gaming page, five glass service cards (Gaming
+featured; IT Consulting links out only when `CONSULTING_URL` is set), a
+stats bar and a "Shop • Play • Learn • Build" tagline, over the brand
+Swoosh. The headline is now two content blocks, `home.hero_title_prefix`
+and `home.hero_title_highlight` (the old `home.hero_title` is unused). The
+stats are placeholders (5 services / free Wi-Fi / opening hours) until the
+client supplies real figures.
+
 **Training hero** — `public/assets/img/training/hero-student.*` is the
 student-on-laptop photo from the client's reference poster, with the
 poster's lettering painted out, colour-graded to the brand blues, and a

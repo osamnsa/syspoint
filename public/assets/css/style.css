@@ -245,6 +245,148 @@ img { max-width: 100%; display: block; }
     margin-bottom: 14px;
 }
 
+/* ============================================================
+   HOME HERO — dark showcase: headline, a desk scene whose laptop shows
+   our Gaming page, five glass service cards, a stats bar and a tagline,
+   over the brand Swoosh (the S from the mark) in Indigo with a gold line.
+   ============================================================ */
+.home-hero {
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    padding: 64px 0 40px;
+    background:
+        radial-gradient(ellipse 70% 45% at 50% 0%, rgba(52, 52, 138, 0.75), transparent 70%),
+        linear-gradient(180deg, #14143A 0%, #0E0E24 100%);
+    isolation: isolate;
+}
+/* The swoosh lives in the lower two-thirds so it runs behind the laptop and cards, never through the headline. */
+.home-swoosh { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 66%; z-index: -1; }
+main:has(.home-hero) + .site-footer { margin-top: 0; }
+.home-hero-head { text-align: center; max-width: 860px; }
+.home-hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--brand-gold);
+}
+.home-hero-kicker::before, .home-hero-kicker::after { content: ""; width: 40px; height: 2px; background: var(--brand-gold); opacity: 0.7; }
+.home-hero h1 {
+    margin: 14px 0 16px;
+    font-size: clamp(2.4rem, 6vw, 4.4rem);
+    line-height: 1.02;
+    color: #fff;
+}
+.home-hero h1 span { display: block; color: var(--brand-gold); }
+.home-hero-head p { color: rgba(255, 255, 255, 0.78); max-width: 62ch; margin: 0 auto; }
+
+.home-hero-stage { max-width: 1120px; margin: 24px auto 0; padding: 0 12px; }
+.home-hero-stage img {
+    width: 100%;
+    height: auto;
+    display: block;
+    -webkit-mask-image:
+        linear-gradient(to right, transparent 0, #000 9%, #000 91%, transparent 100%),
+        linear-gradient(to bottom, transparent 0, #000 10%, #000 72%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+        linear-gradient(to right, transparent 0, #000 9%, #000 91%, transparent 100%),
+        linear-gradient(to bottom, transparent 0, #000 10%, #000 72%, transparent 100%);
+    mask-composite: intersect;
+}
+
+.home-services {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: -110px;
+}
+.home-service {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    padding: 22px 14px 16px;
+    border-radius: var(--radius-lg);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(201, 202, 232, 0.22);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+a.home-service:hover, a.home-service:focus-visible {
+    text-decoration: none;
+    transform: translateY(-4px);
+    border-color: var(--brand-gold);
+    box-shadow: 0 0 0 1px var(--brand-gold), 0 18px 40px rgba(0, 0, 0, 0.4), 0 0 28px rgba(247, 203, 30, 0.22);
+    outline: none;
+}
+.home-service.is-featured {
+    background: linear-gradient(160deg, rgba(52, 52, 138, 0.95), rgba(20, 20, 58, 0.95));
+    border-color: rgba(247, 203, 30, 0.55);
+}
+.home-service-icon {
+    width: 50px; height: 50px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    background: rgba(247, 203, 30, 0.14);
+    color: var(--brand-gold);
+    margin-bottom: 6px;
+}
+.home-service-icon svg { width: 26px; height: 26px; }
+.home-service strong { font-family: var(--font-display); font-weight: 900; font-size: 1rem; line-height: 1.2; }
+.home-service-text { font-size: 0.8rem; color: #C9CAE8; }
+.home-service-dots { display: flex; gap: 4px; margin-top: 6px; }
+.home-service-dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--brand-gold); opacity: 0.7; }
+
+.home-stats {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 22px;
+    padding: 16px 18px 16px 8px;
+    border-radius: var(--radius-lg);
+    background: rgba(14, 14, 36, 0.6);
+    border: 1px solid rgba(201, 202, 232, 0.18);
+}
+.home-stat { flex: 1; text-align: center; padding: 4px 12px; border-right: 1px solid rgba(201, 202, 232, 0.18); }
+.home-stat strong { display: block; font-family: var(--font-display); font-weight: 900; font-size: 1.6rem; color: #fff; line-height: 1.1; }
+.home-stat span { font-size: 0.82rem; color: #C9CAE8; }
+.home-stats-cta { margin-left: 12px; white-space: nowrap; }
+
+.home-hero-tagline {
+    margin: 26px 0 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--brand-gold);
+}
+.home-hero-tagline span { color: #fff; }
+
+@media (max-width: 980px) {
+    .home-services { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: -60px; }
+}
+@media (max-width: 640px) {
+    .home-hero { padding-top: 44px; }
+    .home-services { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: -30px; }
+    .home-service:last-child { grid-column: 1 / -1; }
+    .home-stats { flex-wrap: wrap; padding: 14px; }
+    .home-stat { flex: 1 1 30%; border-right: none; padding: 4px; }
+    .home-stat strong { font-size: 1.1rem; white-space: nowrap; }
+    .home-swoosh { height: 60%; }
+    .home-stats-cta { margin: 10px 0 0; width: 100%; }
+    .home-hero-tagline { font-size: 0.8rem; letter-spacing: 0.12em; }
+}
+
 /* ---------- Page header (interior pages) ---------- */
 .page-header {
     background: var(--color-bg-soft);
