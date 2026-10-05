@@ -111,7 +111,7 @@ require __DIR__ . '/../partials/header.php';
                 <strong><?= e(content_block('training.internship_title', 'Our Internship Concept')) ?></strong>
                 <span><?= e(content_block('training.internship_short', 'Real work on real projects across sales, software and IT consulting — mentorship built in.')) ?></span>
             </div>
-            <a href="<?= path('contact') ?>" class="btn btn-primary training-bar-cta">Ask About Internships</a>
+            <a href="https://corelink.ng/hubmember" class="btn btn-primary training-bar-cta" target="_blank" rel="noopener">Ask About Internships</a>
         </div>
 
         <p class="home-hero-tagline"><span>Learn</span> • <span>Build</span> • <span>Intern</span> • <span>Grow</span></p>
