@@ -1124,8 +1124,12 @@ a.home-client:hover img { filter: none; opacity: 1; }
 .training-course-meta { margin-top: 4px; font-weight: 700; font-size: 0.85rem; color: var(--brand-gold); }
 .training-empty { margin: 36px 0 0; color: #C9CAE8; }
 .home-stats.training-bar { padding: 0; align-items: stretch; gap: 0; background: rgba(14, 14, 36, 0.88); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
-/* mirrored and set lower than on home so the curve runs behind the mentor photos, never through text */
-.training-hero .home-swoosh { height: 78%; bottom: -32%; transform: scaleX(-1); }
+.training-swoosh { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+.training-swoosh-mobile { display: none; }
+@media (max-width: 860px) {
+    .training-swoosh { display: none; }
+    .training-swoosh-mobile { display: block; }
+}
 .training-bar-item {
     flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
     padding: 20px 24px;
@@ -1139,7 +1143,7 @@ a.home-client:hover img { filter: none; opacity: 1; }
     .home-stats.training-bar { flex-direction: column; }
     .training-bar-item { padding: 18px; }
     .home-services.training-courses { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-    .training-hero .home-swoosh { height: 60%; bottom: -24%; }
+    .training-hero .training-swoosh-mobile { height: 60%; bottom: -24%; }
     .training-courses .home-service { padding: 16px 10px 12px; }
     .training-courses .home-service-text { font-size: 0.75rem; }
 }

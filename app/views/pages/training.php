@@ -10,7 +10,14 @@ require __DIR__ . '/../partials/header.php';
 ?>
 
 <section class="training-hero">
-    <svg class="home-swoosh" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <!-- Desktop: one swoosh running top to bottom, behind the student photo,
+         across the course cards and down behind Charles's photos (text stays clear). -->
+    <svg class="training-swoosh" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M75 -2 C 76 12, 76 26, 70 36 C 62 48, 34 46, 28 58 C 22 70, 26 82, 22 92 C 20 97, 17 100, 15 102" fill="none" stroke="#34348A" stroke-width="170" stroke-linecap="round" opacity="0.5" vector-effect="non-scaling-stroke" class="home-swoosh-band"/>
+        <path d="M75 -2 C 76 12, 76 26, 70 36 C 62 48, 34 46, 28 58 C 22 70, 26 82, 22 92 C 20 97, 17 100, 15 102" fill="none" stroke="#F7CB1E" stroke-width="2.5" stroke-linecap="round" opacity="0.6" vector-effect="non-scaling-stroke" class="home-swoosh-line"/>
+    </svg>
+    <!-- Phones: the stacked layout keeps the home page's swoosh. -->
+    <svg class="home-swoosh training-swoosh-mobile" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <path d="M1320 40 C 1020 10, 820 160, 900 330 S 1040 640, 640 700 S 80 640, -120 900" fill="none" stroke="#34348A" stroke-width="170" stroke-linecap="round" opacity="0.5" class="home-swoosh-band"/>
         <path d="M1320 40 C 1020 10, 820 160, 900 330 S 1040 640, 640 700 S 80 640, -120 900" fill="none" stroke="#F7CB1E" stroke-width="2.5" stroke-linecap="round" opacity="0.6" class="home-swoosh-line"/>
     </svg>
