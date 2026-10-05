@@ -1021,7 +1021,6 @@ a.home-client:hover img { filter: none; opacity: 1; }
     z-index: 1;
 }
 .training-intro { color: rgba(255, 255, 255, 0.82); max-width: 46ch; margin-top: 26px; }
-.training-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 22px; }
 
 .training-hero-art { position: relative; align-self: end; }
 .training-hero-art img {

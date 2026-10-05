@@ -25,10 +25,6 @@ require __DIR__ . '/../partials/header.php';
                 <span class="training-line">Program</span>
             </h1>
             <p class="training-intro"><?= e(content_block('training.intro', 'Hands-on courses and an internship program built to get you job-ready.')) ?></p>
-            <div class="training-actions">
-                <a href="#courses" class="btn btn-primary">See Our Courses</a>
-                <a href="<?= path('contact') ?>" class="btn btn-outline btn-outline-light">Ask About Internships</a>
-            </div>
         </div>
 
         <div class="training-hero-art">
