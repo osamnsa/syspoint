@@ -1093,6 +1093,11 @@ a.home-client:hover img { filter: none; opacity: 1; }
 .mentor-points li { position: relative; padding-left: 26px; color: #fff; }
 .mentor-points li::before { content: ""; position: absolute; left: 0; top: 0.45em; width: 12px; height: 12px; border-radius: 50%; background: var(--brand-gold); box-shadow: 0 0 10px rgba(247, 203, 30, 0.6); }
 .mentor-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.mentor-actions .label-short { display: none; }
+@media (max-width: 640px) {
+    .mentor-actions .label-full { display: none; }
+    .mentor-actions .label-short { display: inline; }
+}
 .training-bar-cta { align-self: center; margin: 0 24px 0 0; white-space: nowrap; }
 @media (max-width: 860px) {
     .mentor { grid-template-columns: 1fr; gap: 36px; margin-top: 48px; }
@@ -1103,9 +1108,13 @@ a.home-client:hover img { filter: none; opacity: 1; }
     /* keep the two mentor buttons side by side on phones */
     .mentor-actions { flex-wrap: nowrap; gap: 8px; }
     .mentor-actions .btn { flex: 1 1 0; min-width: 0; padding: 11px 8px; font-size: 0.8rem; text-align: center; white-space: nowrap; }
+    /* keep the photos (rotation, gold ring, CEO tag) inside the same 20px margin as every other block */
+    .mentor-photos { padding: 6px 10px 40px 40px; max-width: none; }
+    .mentor-photo-main { width: 74%; }
+    .mentor-tag { right: 4px; }
 }
 @media (max-width: 380px) {
-    .mentor-actions .btn { padding: 10px 5px; font-size: 0.72rem; }
+    .mentor-actions .btn { padding: 10px 5px; font-size: 0.74rem; }
 }
 
 /* Everything else on the page lives inside the hero: course cards + a bar
