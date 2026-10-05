@@ -27,8 +27,15 @@ $services = [
 ?>
 <section class="home-hero">
     <svg class="home-swoosh" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <path d="M1320 40 C 1020 10, 820 160, 900 330 S 1040 640, 640 700 S 80 640, -120 900" fill="none" stroke="#34348A" stroke-width="170" stroke-linecap="round" opacity="0.5"/>
-        <path d="M1320 40 C 1020 10, 820 160, 900 330 S 1040 640, 640 700 S 80 640, -120 900" fill="none" stroke="#F7CB1E" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+        <defs>
+            <linearGradient id="swooshBand" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#4A4AB8"/>
+                <stop offset="1" stop-color="#34348A"/>
+            </linearGradient>
+        </defs>
+        <path class="home-swoosh-band" d="M1320 170 C 780 130, 120 200, 170 370 S 1080 480, 1040 670 S 360 860, -120 860" fill="none" stroke="url(#swooshBand)" stroke-width="190" stroke-linecap="round"/>
+        <path d="M1320 170 C 780 130, 120 200, 170 370 S 1080 480, 1040 670 S 360 860, -120 860" fill="none" stroke="#F7CB1E" stroke-width="5" stroke-linecap="round"/>
+        <path d="M1320 262 C 800 220, 240 280, 270 370 S 1170 490, 1130 670 S 400 950, -120 950" fill="none" stroke="#FDE414" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
     </svg>
 
     <div class="container home-hero-head">
@@ -37,11 +44,18 @@ $services = [
         <p><?= e(content_block('home.hero_subtitle', 'Computers and accessories, a software clinic that builds what your business needs, a gaming lounge with a VIP and common room, and a training centre turning out interns ready to work.')) ?></p>
     </div>
 
+    <!-- The laptop cycles through our page heroes: Gaming, then Shop, then Training. -->
     <div class="home-hero-stage">
-        <picture>
-            <source srcset="<?= asset('assets/img/home/hero-desk.webp') ?>" type="image/webp">
-            <img src="<?= asset('assets/img/home/hero-desk.jpg') ?>" alt="A laptop on a desk showing the Syspoint Hub gaming page" width="1472" height="844" fetchpriority="high">
+        <picture class="home-screen">
+            <source srcset="<?= asset('assets/img/home/hero-desk-gaming.webp') ?>" type="image/webp">
+            <img src="<?= asset('assets/img/home/hero-desk-gaming.jpg') ?>" alt="A laptop on a desk showing Syspoint Hub's gaming, shop and training pages in turn" width="1472" height="844" fetchpriority="high">
         </picture>
+        <?php foreach (['shop', 'training'] as $screen): ?>
+            <picture class="home-screen home-screen-<?= $screen ?>" aria-hidden="true">
+                <source srcset="<?= asset('assets/img/home/hero-desk-' . $screen . '.webp') ?>" type="image/webp">
+                <img src="<?= asset('assets/img/home/hero-desk-' . $screen . '.jpg') ?>" alt="" width="1472" height="844" loading="lazy">
+            </picture>
+        <?php endforeach; ?>
     </div>
 
     <div class="container">

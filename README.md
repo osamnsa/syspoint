@@ -330,9 +330,10 @@ launch. The shop hero photo (`public/assets/img/shop/hero-laptops.*`)
 came from the same mockup with its "25% OFF" badge painted out.
 
 **Home hero** — modelled on the client's "Business Website Design"
-reference: headline, a desk scene (`public/assets/img/home/hero-desk.*`,
-graded to the brand with the keyboard glow turned gold) whose laptop shows
-a screenshot of our Gaming page, five glass service cards (Gaming
+reference: headline, a desk scene (`public/assets/img/home/hero-desk-*.*`,
+graded to the brand with the keyboard glow turned gold) whose laptop
+cross-fades between screenshots of our Gaming, Shop and Training heroes
+(three pre-rendered images on a 15s CSS loop; static under reduced motion), five glass service cards (Gaming
 featured; IT Consulting links out only when `CONSULTING_URL` is set), a
 stats bar and a "Shop • Play • Learn • Build" tagline, over the brand
 Swoosh. The headline is now two content blocks, `home.hero_title_prefix`

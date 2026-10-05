@@ -261,7 +261,8 @@ img { max-width: 100%; display: block; }
     isolation: isolate;
 }
 /* The swoosh lives in the lower two-thirds so it runs behind the laptop and cards, never through the headline. */
-.home-swoosh { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 66%; z-index: -1; }
+.home-swoosh { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 68%; z-index: -1; filter: drop-shadow(0 0 18px rgba(247, 203, 30, 0.25)); }
+.home-swoosh-band { opacity: 0.85; }
 main:has(.home-hero) + .site-footer { margin-top: 0; }
 .home-hero-head { text-align: center; max-width: 860px; }
 .home-hero-kicker {
@@ -283,7 +284,17 @@ main:has(.home-hero) + .site-footer { margin-top: 0; }
 .home-hero h1 span { display: block; color: var(--brand-gold); }
 .home-hero-head p { color: rgba(255, 255, 255, 0.78); max-width: 62ch; margin: 0 auto; }
 
-.home-hero-stage { max-width: 1120px; margin: 24px auto 0; padding: 0 12px; }
+.home-hero-stage { position: relative; max-width: 1120px; margin: 24px auto 0; padding: 0 12px; }
+/* Cross-fade: Gaming is the base layer; Shop then Training fade in over it on a 15s loop. */
+.home-screen-shop, .home-screen-training { position: absolute; inset: 0 12px; opacity: 0; animation: home-screen-cycle 15s infinite; }
+.home-screen-shop { animation-delay: 5s; }
+.home-screen-training { animation-delay: 10s; }
+@keyframes home-screen-cycle {
+    0% { opacity: 0; }
+    6.67%, 33.33% { opacity: 1; }
+    40%, 100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .home-screen-shop, .home-screen-training { animation: none; } }
 .home-hero-stage img {
     width: 100%;
     height: auto;
