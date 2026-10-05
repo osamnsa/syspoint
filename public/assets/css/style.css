@@ -1081,6 +1081,8 @@ a.home-client:hover img { filter: none; opacity: 1; }
 .mentor-copy .home-hero-kicker::after { display: none; }
 .mentor-copy h2 { margin: 10px 0 4px; color: #fff; font-size: clamp(2rem, 4.2vw, 3.2rem); line-height: 1.05; }
 .mentor-role { margin: 0 0 18px; font-family: var(--font-mono); font-size: 0.9rem; color: var(--brand-gold); }
+.mentor-role a, .mentor-role a:hover { color: inherit; text-decoration: none; }
+.mentor-role a:hover { color: #fff; }
 .mentor-quote {
     margin: 0 0 16px; padding: 4px 0 4px 18px; border-left: 4px solid var(--brand-gold);
     font-family: var(--font-display); font-style: italic; font-weight: 900; font-size: clamp(1.15rem, 2vw, 1.45rem); line-height: 1.35; color: #fff;

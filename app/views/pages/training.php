@@ -84,7 +84,7 @@ require __DIR__ . '/../partials/header.php';
             <div class="mentor-copy">
                 <span class="home-hero-kicker">Your mentor</span>
                 <h2><?= e(content_block('training.external_title', 'Learn with Charles Onuoha')) ?></h2>
-                <p class="mentor-role">CEO, Syspoint Solutions Consult Limited</p>
+                <p class="mentor-role">CEO, Syspoint Solutions Consult Limited<br>Founder, <a href="https://thecircle.ng" target="_blank" rel="noopener">The Challenge Circle Nigeria</a></p>
                 <blockquote class="mentor-quote"><?= e(content_block('training.mentor_quote', 'Skills open doors. Mentorship shows you which ones to walk through.')) ?></blockquote>
                 <p class="mentor-text"><?= e(content_block('training.external_body', 'Explore more courses, resources and mentorship at CharlesOnuoha.com.')) ?></p>
                 <ul class="mentor-points">
