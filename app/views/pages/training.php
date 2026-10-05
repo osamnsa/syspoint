@@ -10,6 +10,10 @@ require __DIR__ . '/../partials/header.php';
 ?>
 
 <section class="training-hero">
+    <svg class="home-swoosh" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <path d="M1320 40 C 1020 10, 820 160, 900 330 S 1040 640, 640 700 S 80 640, -120 900" fill="none" stroke="#34348A" stroke-width="170" stroke-linecap="round" opacity="0.5" class="home-swoosh-band"/>
+        <path d="M1320 40 C 1020 10, 820 160, 900 330 S 1040 640, 640 700 S 80 640, -120 900" fill="none" stroke="#F7CB1E" stroke-width="2.5" stroke-linecap="round" opacity="0.6" class="home-swoosh-line"/>
+    </svg>
     <div class="container training-hero-inner">
         <div class="training-hero-copy">
             <div class="breadcrumb"><a href="<?= path() ?>">Home</a> / Training &amp; Internship</div>
@@ -43,73 +47,45 @@ require __DIR__ . '/../partials/header.php';
         </div>
     </div>
 
-    <div class="training-strip">
-        <div class="container">
-            <p>
-                <?php if ($courses): ?>
-                    <?= implode(' <span aria-hidden="true">|</span> ', array_map(fn ($c) => e($c['title']), array_slice($courses, 0, 6))) ?>
-                <?php else: ?>
-                    Web Development <span aria-hidden="true">|</span> Networking <span aria-hidden="true">|</span> Programming <span aria-hidden="true">|</span> Data Analysis <span aria-hidden="true">|</span> Computer Basics
-                <?php endif; ?>
-            </p>
-        </div>
-    </div>
-</section>
-
-<section class="section" id="courses">
     <div class="container">
-        <span class="eyebrow">Courses</span>
-        <h2>What We Teach</h2>
-        <?php if (!$courses): ?>
-            <p style="color:var(--color-text-muted);">Our course list is being updated — check back soon.</p>
-        <?php else: ?>
-            <div class="product-grid">
-                <?php foreach ($courses as $course): ?>
-                    <div class="product-card course-card">
-                        <div class="product-card-img">
+        <?php if ($courses): ?>
+            <div class="home-services training-courses" id="courses">
+                <?php foreach ($courses as $i => $course): ?>
+                    <div class="home-service<?= $i === 0 ? ' is-featured' : '' ?>">
+                        <span class="home-service-icon">
                             <?php if ($course['image_path']): ?>
-                                <img src="<?= asset(e($course['image_path'])) ?>" alt="<?= e($course['title']) ?>">
+                                <img src="<?= asset(e($course['image_path'])) ?>" alt="">
                             <?php else: ?>
-                                <span class="product-card-placeholder">🎓</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5M22 9v6"/></svg>
                             <?php endif; ?>
-                        </div>
-                        <h3><?= e($course['title']) ?></h3>
-                        <?php if ($course['description']): ?>
-                            <p style="font-size:0.85rem;margin:0 14px 8px;"><?= e($course['description']) ?></p>
+                        </span>
+                        <strong><?= e($course['title']) ?></strong>
+                        <?php if ($course['description']): ?><span class="home-service-text"><?= e($course['description']) ?></span><?php endif; ?>
+                        <?php if ($course['duration_label'] || $course['price'] !== null): ?>
+                            <span class="training-course-meta"><?= $course['duration_label'] ? e($course['duration_label']) : '' ?><?= $course['duration_label'] && $course['price'] !== null ? ' · ' : '' ?><?= $course['price'] !== null ? format_naira((float) $course['price']) : '' ?></span>
                         <?php endif; ?>
-                        <p class="product-card-price">
-                            <?php if ($course['duration_label']): ?><?= e($course['duration_label']) ?><?php endif; ?>
-                            <?php if ($course['duration_label'] && $course['price'] !== null): ?> · <?php endif; ?>
-                            <?php if ($course['price'] !== null): ?><?= format_naira((float) $course['price']) ?><?php endif; ?>
-                        </p>
+                        <span class="home-service-dots" aria-hidden="true"><i></i><i></i><i></i></span>
                     </div>
                 <?php endforeach; ?>
             </div>
+        <?php else: ?>
+            <p class="training-empty" id="courses">Our course list is being updated — ask us about the next intake.</p>
         <?php endif; ?>
-    </div>
-</section>
 
-<section class="section training-external">
-    <div class="container">
-        <div class="training-external-card">
-            <div>
-                <span class="eyebrow">Keep learning</span>
-                <h2><?= e(content_block('training.external_title', 'Learn with Charles Onuoha')) ?></h2>
-                <p><?= e(content_block('training.external_body', 'Explore more courses, resources and mentorship at CharlesOnuoha.com.')) ?></p>
+        <div class="home-stats training-bar">
+            <div class="training-bar-item">
+                <strong><?= e(content_block('training.internship_title', 'Our Internship Concept')) ?></strong>
+                <span><?= e(content_block('training.internship_short', 'Real work on real projects across sales, software and IT consulting — mentorship built in.')) ?></span>
+                <a href="<?= path('contact') ?>" class="btn btn-primary btn-sm">Ask About Internships</a>
             </div>
-            <a href="https://charlesonuoha.com" class="btn btn-primary" target="_blank" rel="noopener">Visit CharlesOnuoha.com →</a>
+            <div class="training-bar-item">
+                <strong><?= e(content_block('training.external_title', 'Learn with Charles Onuoha')) ?></strong>
+                <span><?= e(content_block('training.external_body', 'Explore more courses, resources and mentorship at CharlesOnuoha.com.')) ?></span>
+                <a href="https://charlesonuoha.com" class="btn btn-outline btn-outline-light btn-sm" target="_blank" rel="noopener">Visit CharlesOnuoha.com →</a>
+            </div>
         </div>
-    </div>
-</section>
 
-<section class="section section-soft">
-    <div class="container" style="max-width:760px;">
-        <span class="eyebrow">Internship Program</span>
-        <h2><?= e(content_block('training.internship_title', 'Our Internship Concept')) ?></h2>
-        <div style="color:var(--color-text-muted);">
-            <?= nl2br(e(content_block('training.internship_body', "We take on interns to work alongside our team across gadget sales, software development, and IT consulting — real work on real projects, with mentorship built in. Reach out through our Contact page if you'd like to apply."))) ?>
-        </div>
-        <a href="<?= path('contact') ?>" class="btn btn-primary" style="margin-top:20px;">Ask About Internships</a>
+        <p class="home-hero-tagline"><span>Learn</span> • <span>Build</span> • <span>Intern</span> • <span>Grow</span></p>
     </div>
 </section>
 

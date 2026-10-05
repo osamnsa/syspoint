@@ -267,7 +267,7 @@ img { max-width: 100%; display: block; }
     .home-swoosh-band { opacity: 0.53; }
     .home-swoosh-line { opacity: 0.63; }
 }
-main:has(.home-hero) + .site-footer { margin-top: 0; }
+main:has(.home-hero) + .site-footer, main:has(.training-hero) + .site-footer { margin-top: 0; }
 .home-hero-head { text-align: center; max-width: 860px; }
 .home-hero-kicker {
     display: inline-flex;
@@ -968,6 +968,8 @@ a.home-client:hover img { filter: none; opacity: 1; }
 .training-hero {
     position: relative;
     overflow: hidden;
+    isolation: isolate;
+    padding-bottom: 40px;
     color: #fff;
     background:
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
@@ -1047,38 +1049,38 @@ a.home-client:hover img { filter: none; opacity: 1; }
 }
 @keyframes training-badge-spin { to { transform: rotate(360deg); } }
 
-.training-strip { position: relative; z-index: 2; padding: 32px 0 36px; }
-.training-strip p {
-    margin: 0 auto;
-    font-family: var(--font-body);
-    width: fit-content;
-    max-width: 100%;
-    padding: 10px 18px;
-    border: 1px solid rgba(201, 202, 232, 0.45);
-    background: rgba(14, 14, 36, 0.55);
-    font-size: 0.95rem;
-    text-align: center;
-    color: #fff;
+/* Everything else on the page lives inside the hero: course cards + a bar
+   (internship, CharlesOnuoha.com) reusing the home page's glass cards and stats bar. */
+.home-services.training-courses { margin-top: 36px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.training-courses .home-service-icon img { width: 30px; height: 30px; object-fit: cover; border-radius: 50%; }
+.training-course-meta { margin-top: 4px; font-weight: 700; font-size: 0.85rem; color: var(--brand-gold); }
+.training-empty { margin: 36px 0 0; color: #C9CAE8; }
+.home-stats.training-bar { padding: 0; align-items: stretch; gap: 0; background: rgba(14, 14, 36, 0.88); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+/* sit the swoosh a little lower than on home so its tail passes under the tagline, not through it */
+.training-hero .home-swoosh { height: 78%; bottom: -14%; }
+.training-bar-item {
+    flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+    padding: 20px 24px;
 }
-.training-strip span { color: var(--brand-gold); margin: 0 6px; }
+.training-bar-item + .training-bar-item { border-left: 1px solid rgba(201, 202, 232, 0.18); }
+.training-bar-item strong { font-family: var(--font-display); font-weight: 900; font-size: 1.15rem; color: #fff; }
+.training-bar-item span { font-size: 0.88rem; color: #C9CAE8; flex: 1; }
+.training-bar-item .btn { margin-top: 8px; }
+@media (max-width: 640px) {
+    .training-bar-item + .training-bar-item { border-left: none; border-top: 1px solid rgba(201, 202, 232, 0.18); }
+    .home-stats.training-bar { flex-direction: column; }
+    .training-bar-item { padding: 18px; }
+    .home-services.training-courses { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .training-hero .home-swoosh { height: 60%; bottom: -24%; }
+    .training-courses .home-service { padding: 16px 10px 12px; }
+    .training-courses .home-service-text { font-size: 0.75rem; }
+}
 
 @media (max-width: 860px) {
     .training-hero-inner { grid-template-columns: 1fr; padding-top: 40px; }
     .training-hero-art { max-width: 460px; margin: 0 auto; width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) { .training-badge { animation: none; } }
-
-/* Training: call-to-action out to CharlesOnuoha.com */
-.training-external { padding-top: 0; }
-.training-external-card {
-    display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
-    padding: 30px 34px; border-radius: var(--radius-lg);
-    background: radial-gradient(ellipse 60% 120% at 100% 50%, rgba(52, 52, 138, 0.9), transparent 70%), var(--brand-midnight);
-    color: #fff;
-}
-.training-external-card .eyebrow { color: var(--brand-gold); }
-.training-external-card h2 { color: #fff; margin-bottom: 6px; }
-.training-external-card p { margin: 0; color: #C9CAE8; max-width: 56ch; }
 
 /* ---------- Checkout ---------- */
 .checkout-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 28px; align-items: start; margin-top: 8px; }
