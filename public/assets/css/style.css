@@ -1125,7 +1125,7 @@ a.home-client:hover img { filter: none; opacity: 1; }
 .training-empty { margin: 36px 0 0; color: #C9CAE8; }
 .home-stats.training-bar { padding: 0; align-items: stretch; gap: 0; background: rgba(14, 14, 36, 0.88); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 /* mirrored and set lower than on home so the curve runs behind the mentor photos, never through text */
-.training-hero .home-swoosh { height: 78%; bottom: -14%; transform: scaleX(-1); }
+.training-hero .home-swoosh { height: 78%; bottom: -32%; transform: scaleX(-1); }
 .training-bar-item {
     flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
     padding: 20px 24px;
