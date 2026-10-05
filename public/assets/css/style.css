@@ -1049,6 +1049,57 @@ a.home-client:hover img { filter: none; opacity: 1; }
 }
 @keyframes training-badge-spin { to { transform: rotate(360deg); } }
 
+/* Mentor feature (Charles Onuoha): layered photos — a Midnight duotone behind,
+   the colour portrait in front in a gold frame — beside a quote and CTAs. */
+.mentor {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 56px;
+    align-items: center;
+    margin: 64px 0 40px;
+}
+.mentor-photos { position: relative; padding: 0 0 40px 40px; max-width: 460px; justify-self: center; width: 100%; }
+.mentor-photos picture, .mentor-photos img { display: block; }
+.mentor-photos img { width: 100%; height: auto; border-radius: var(--radius-lg); }
+.mentor-photo-alt {
+    position: absolute; left: 0; bottom: 0; width: 62%;
+    transform: rotate(-6deg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    border-radius: var(--radius-lg);
+}
+.mentor-photo-main {
+    position: relative; z-index: 1; margin-left: auto; width: 78%;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 0 0 4px var(--brand-gold), 0 0 46px rgba(247, 203, 30, 0.35), 0 26px 50px rgba(0, 0, 0, 0.5);
+    transform: rotate(2deg);
+}
+.mentor-tag {
+    position: absolute; z-index: 2; right: -6px; bottom: 54px;
+    padding: 8px 14px; background: var(--brand-gold); color: var(--brand-midnight);
+    font-family: var(--font-mono); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+}
+.mentor-copy .home-hero-kicker::after { display: none; }
+.mentor-copy h2 { margin: 10px 0 4px; color: #fff; font-size: clamp(2rem, 4.2vw, 3.2rem); line-height: 1.05; }
+.mentor-role { margin: 0 0 18px; font-family: var(--font-mono); font-size: 0.9rem; color: var(--brand-gold); }
+.mentor-quote {
+    margin: 0 0 16px; padding: 4px 0 4px 18px; border-left: 4px solid var(--brand-gold);
+    font-family: var(--font-display); font-style: italic; font-weight: 900; font-size: clamp(1.15rem, 2vw, 1.45rem); line-height: 1.35; color: #fff;
+}
+.mentor-text { color: #C9CAE8; margin: 0 0 14px; }
+.mentor-points { list-style: none; margin: 0 0 22px; padding: 0; display: grid; gap: 8px; }
+.mentor-points li { position: relative; padding-left: 26px; color: #fff; }
+.mentor-points li::before { content: ""; position: absolute; left: 0; top: 0.45em; width: 12px; height: 12px; border-radius: 50%; background: var(--brand-gold); box-shadow: 0 0 10px rgba(247, 203, 30, 0.6); }
+.mentor-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.training-bar-cta { align-self: center; margin: 0 24px 0 0; white-space: nowrap; }
+@media (max-width: 860px) {
+    .mentor { grid-template-columns: 1fr; gap: 36px; margin-top: 48px; }
+    .mentor-photos { max-width: 360px; }
+}
+@media (max-width: 640px) {
+    .training-bar-cta { margin: 0 18px 18px; align-self: stretch; }
+}
+
 /* Everything else on the page lives inside the hero: course cards + a bar
    (internship, CharlesOnuoha.com) reusing the home page's glass cards and stats bar. */
 .home-services.training-courses { margin-top: 36px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
@@ -1056,8 +1107,8 @@ a.home-client:hover img { filter: none; opacity: 1; }
 .training-course-meta { margin-top: 4px; font-weight: 700; font-size: 0.85rem; color: var(--brand-gold); }
 .training-empty { margin: 36px 0 0; color: #C9CAE8; }
 .home-stats.training-bar { padding: 0; align-items: stretch; gap: 0; background: rgba(14, 14, 36, 0.88); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
-/* sit the swoosh a little lower than on home so its tail passes under the tagline, not through it */
-.training-hero .home-swoosh { height: 78%; bottom: -14%; }
+/* mirrored and set lower than on home so the curve runs behind the mentor photos, never through text */
+.training-hero .home-swoosh { height: 78%; bottom: -14%; transform: scaleX(-1); }
 .training-bar-item {
     flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
     padding: 20px 24px;

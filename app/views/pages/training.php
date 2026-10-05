@@ -72,17 +72,43 @@ require __DIR__ . '/../partials/header.php';
             <p class="training-empty" id="courses">Our course list is being updated — ask us about the next intake.</p>
         <?php endif; ?>
 
+        <!-- Mentor feature: Charles Onuoha, CEO -->
+        <div class="mentor" id="mentor">
+            <div class="mentor-photos">
+                <picture class="mentor-photo-alt">
+                    <source srcset="<?= asset('assets/img/training/charles-duotone.webp') ?>" type="image/webp">
+                    <img src="<?= asset('assets/img/training/charles-duotone.jpg') ?>" alt="" width="520" height="522" loading="lazy">
+                </picture>
+                <picture class="mentor-photo-main">
+                    <source srcset="<?= asset('assets/img/training/charles-portrait.webp') ?>" type="image/webp">
+                    <img src="<?= asset('assets/img/training/charles-portrait.jpg') ?>" alt="Charles Onuoha, CEO of Syspoint" width="720" height="790" loading="lazy">
+                </picture>
+                <span class="mentor-tag">CEO · Mentor</span>
+            </div>
+            <div class="mentor-copy">
+                <span class="home-hero-kicker">Your mentor</span>
+                <h2><?= e(content_block('training.external_title', 'Learn with Charles Onuoha')) ?></h2>
+                <p class="mentor-role">CEO, Syspoint Solutions Consult Limited</p>
+                <blockquote class="mentor-quote"><?= e(content_block('training.mentor_quote', 'Skills open doors. Mentorship shows you which ones to walk through.')) ?></blockquote>
+                <p class="mentor-text"><?= e(content_block('training.external_body', 'Explore more courses, resources and mentorship at CharlesOnuoha.com.')) ?></p>
+                <ul class="mentor-points">
+                    <li>Hands-on guidance on real projects</li>
+                    <li>Career direction from someone who builds businesses</li>
+                    <li>A path from student to intern to professional</li>
+                </ul>
+                <div class="mentor-actions">
+                    <a href="https://charlesonuoha.com" class="btn btn-primary" target="_blank" rel="noopener">Visit CharlesOnuoha.com →</a>
+                    <a href="<?= path('contact') ?>" class="btn btn-outline btn-outline-light">Book a Mentorship Chat</a>
+                </div>
+            </div>
+        </div>
+
         <div class="home-stats training-bar">
             <div class="training-bar-item">
                 <strong><?= e(content_block('training.internship_title', 'Our Internship Concept')) ?></strong>
                 <span><?= e(content_block('training.internship_short', 'Real work on real projects across sales, software and IT consulting — mentorship built in.')) ?></span>
-                <a href="<?= path('contact') ?>" class="btn btn-primary btn-sm">Ask About Internships</a>
             </div>
-            <div class="training-bar-item">
-                <strong><?= e(content_block('training.external_title', 'Learn with Charles Onuoha')) ?></strong>
-                <span><?= e(content_block('training.external_body', 'Explore more courses, resources and mentorship at CharlesOnuoha.com.')) ?></span>
-                <a href="https://charlesonuoha.com" class="btn btn-outline btn-outline-light btn-sm" target="_blank" rel="noopener">Visit CharlesOnuoha.com →</a>
-            </div>
+            <a href="<?= path('contact') ?>" class="btn btn-primary training-bar-cta">Ask About Internships</a>
         </div>
 
         <p class="home-hero-tagline"><span>Learn</span> • <span>Build</span> • <span>Intern</span> • <span>Grow</span></p>
