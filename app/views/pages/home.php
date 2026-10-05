@@ -243,4 +243,5 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
     </div>
 </section>
 
-<?php require __DIR__ . '/../partials/footer.php'; ?>
+<?php $hideFooterAddress = true; // already shown in the Visit Us section above
+require __DIR__ . '/../partials/footer.php'; ?>

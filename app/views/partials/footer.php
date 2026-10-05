@@ -29,6 +29,7 @@
                     <li>Open 9am – 10pm</li>
                 </ul>
             </div>
+            <?php if (empty($hideFooterAddress)): /* the home page shows both addresses in its own Visit Us section */ ?>
             <div>
                 <h4>Visit Us</h4>
                 <p class="footer-address-label">Syspoint Hub · Gaming &amp; Training</p>
@@ -36,6 +37,7 @@
                 <p class="footer-address-label">Gadget Store · Syspoint Solutions Consult Limited</p>
                 <address>Suite C20, Awesome Plaza,<br>Opposite Chicken Republic,<br>Apo Resettlement, Abuja</address>
             </div>
+            <?php endif; ?>
         </div>
 
         <div class="footer-bottom">
