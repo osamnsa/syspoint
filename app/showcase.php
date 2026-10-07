@@ -12,13 +12,13 @@ declare(strict_types=1);
 /** Stat keys in display order => label. */
 const HOME_STATS = [
     'home.stat_clients' => 'Clients',
-    'home.stat_years' => 'Years Experience',
+    'home.stat_years' => 'Years in Business',
     'home.stat_employees' => 'Employees',
 ];
 
 /** Shorter stat labels for phones, keyed by the full label above. */
 const HOME_STATS_SHORT = [
-    'Years Experience' => 'Experience',
+    'Years in Business' => 'Experience',
 ];
 
 function testimonials_active(): array
