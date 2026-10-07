@@ -9,12 +9,13 @@
 -- duplicates and never overwrites edits made in the admin panel.
 --
 -- Client logos go into deployed_businesses — the one list behind the
--- homepage "Organisations we've worked with" section and the Software
+-- homepage "Organisations we've consulted with" section and the Software
 -- Clinic portfolio (Admin -> Businesses).
 --
--- Logos/photos still point at the old site's media library (media_url()
--- passes absolute URLs through). RE-UPLOAD THEM in the admin before the
--- WordPress site is taken down, or they'll break. Row 3's organisation
+-- Client logos ship with the site (public/assets/img/clients/). The two
+-- testimonial photos still point at the old site's media library (media_url()
+-- passes absolute URLs through): RE-UPLOAD THEM in the admin before the
+-- WordPress site is taken down, or they'll fall back to initials. Row 3's organisation
 -- wasn't named on the old site, so it starts hidden: name it and tick
 -- "Visible" in Admin -> Businesses.
 
@@ -24,19 +25,19 @@ UPDATE deployed_businesses SET name = 'Federal Polytechnic, Bida' WHERE name = '
 UPDATE deployed_businesses SET name = 'Federal Medical Centre, Bida' WHERE name = 'FMC Bida';
 
 INSERT INTO deployed_businesses (name, logo_path, sort_order, is_active)
-    SELECT 'Access Bank', 'https://staging.syspoint.com.ng/wp-content/uploads/2026/03/Access_Bank_PLC_Logo-scaled.png', 10, 1 FROM DUAL
+    SELECT 'Access Bank', 'assets/img/clients/access-bank.png', 10, 1 FROM DUAL
     WHERE NOT EXISTS (SELECT 1 FROM deployed_businesses WHERE name = 'Access Bank');
 INSERT INTO deployed_businesses (name, logo_path, sort_order, is_active)
-    SELECT 'Obafemi Awolowo University', 'https://staging.syspoint.com.ng/wp-content/uploads/2026/03/Oau.png', 20, 1 FROM DUAL
+    SELECT 'Obafemi Awolowo University', 'assets/img/clients/oau.png', 20, 1 FROM DUAL
     WHERE NOT EXISTS (SELECT 1 FROM deployed_businesses WHERE name = 'Obafemi Awolowo University');
 INSERT INTO deployed_businesses (name, logo_path, sort_order, is_active)
     SELECT 'Unnamed client (rename me)', 'https://staging.syspoint.com.ng/wp-content/uploads/2026/03/images.png', 30, 0 FROM DUAL
     WHERE NOT EXISTS (SELECT 1 FROM deployed_businesses WHERE name = 'Unnamed client (rename me)');
 INSERT INTO deployed_businesses (name, logo_path, sort_order, is_active)
-    SELECT 'Federal Polytechnic, Bida', 'https://staging.syspoint.com.ng/wp-content/uploads/2026/03/fpb.png', 40, 1 FROM DUAL
+    SELECT 'Federal Polytechnic, Bida', 'assets/img/clients/federal-polytechnic-bida.png', 40, 1 FROM DUAL
     WHERE NOT EXISTS (SELECT 1 FROM deployed_businesses WHERE name IN ('Federal Polytechnic, Bida', 'FPB'));
 INSERT INTO deployed_businesses (name, logo_path, sort_order, is_active)
-    SELECT 'Federal Medical Centre, Bida', 'https://staging.syspoint.com.ng/wp-content/uploads/2026/03/Backup_of_FMC-BIDA-LOGO-NEW-COVERTED-188x300-1.png', 50, 1 FROM DUAL
+    SELECT 'Federal Medical Centre, Bida', 'assets/img/clients/fmc-bida.png', 50, 1 FROM DUAL
     WHERE NOT EXISTS (SELECT 1 FROM deployed_businesses WHERE name IN ('Federal Medical Centre, Bida', 'FMC Bida'));
 
 INSERT INTO testimonials (quote, author_name, author_company, photo_path, sort_order)
@@ -83,3 +84,17 @@ INSERT INTO content_blocks (block_key, content) VALUES ('home.stat_years', '10')
     ON DUPLICATE KEY UPDATE content = IF(content = '', VALUES(content), content);
 INSERT INTO content_blocks (block_key, content) VALUES ('home.stat_employees', '38')
     ON DUPLICATE KEY UPDATE content = IF(content = '', VALUES(content), content);
+
+-- Greyscale logos shipped with the site (public/assets/img/clients/), cleaned
+-- from the client's logo sheet. Applied to rows with no logo yet or still on
+-- the old site's media library; a logo uploaded in the admin is never replaced.
+UPDATE deployed_businesses SET logo_path = 'assets/img/clients/access-bank.png'
+    WHERE name = 'Access Bank' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
+UPDATE deployed_businesses SET logo_path = 'assets/img/clients/oau.png'
+    WHERE name = 'Obafemi Awolowo University' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
+UPDATE deployed_businesses SET logo_path = 'assets/img/clients/federal-polytechnic-bida.png'
+    WHERE name = 'Federal Polytechnic, Bida' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
+UPDATE deployed_businesses SET logo_path = 'assets/img/clients/fmc-bida.png'
+    WHERE name = 'Federal Medical Centre, Bida' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
+UPDATE deployed_businesses SET logo_path = 'assets/img/clients/university-of-ibadan.png'
+    WHERE name = 'University of Ibadan' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');

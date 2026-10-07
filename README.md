@@ -379,7 +379,7 @@ three headline stats, client logos and testimonials. Merged in from the
   least one is set, the bar shows placeholder facts (5 services / free
   Wi-Fi / opening hours) rather than invented numbers.
 - **Client logos** are `deployed_businesses` rows (Admin -> Businesses) —
-  one list behind the homepage "Organisations we've worked with" section
+  one list behind the homepage "Organisations we've consulted with" section
   and the Software Clinic portfolio. There is no separate clients table.
 - **Testimonials** are an admin-managed table (`/admin/testimonials`),
   shown as a dark band on the homepage, hidden when there are none.
@@ -389,10 +389,13 @@ three headline stats, client logos and testimonials. Merged in from the
   where still empty). Run it once on any install (fresh or live)
   after `schema.sql`; it is safe to re-run — rows are matched by name /
   person + quote, so it never duplicates or overwrites admin edits.
-- Seeded logos/photos still point at the old site's media library
-  (`media_url()` passes absolute URLs through). **Re-upload them in the
-  admin before the WordPress site goes away.** Until then, a logo or
-  photo that fails to load falls back to the name's initial(s).
+- Client logos ship as greyscale PNGs in `public/assets/img/clients/`
+  (Access Bank, OAU, UI, Federal Polytechnic Bida, FMC Bida so far) and
+  stay greyscale on the page by design. The two testimonial photos still
+  point at the old site's media library (`media_url()` passes absolute
+  URLs through): **re-upload them in the admin before the WordPress site
+  goes away.** Anything without a logo/photo, or one that fails to load,
+  shows the name's initial(s).
 - The old site's third logo (`images.png`) had no name, so it's added
   hidden as "Unnamed client (rename me)".
 

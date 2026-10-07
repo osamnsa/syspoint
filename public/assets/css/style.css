@@ -470,9 +470,10 @@ a.home-service:hover, a.home-service:focus-visible {
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 a.home-client:hover { text-decoration: none; border-color: var(--brand-gold); box-shadow: var(--shadow-md); }
-.home-client img { max-height: 48px; max-width: 140px; object-fit: contain; filter: grayscale(1); opacity: 0.85; transition: filter 0.15s ease, opacity 0.15s ease; }
-a.home-client:hover img { filter: none; opacity: 1; }
-.home-client-initial { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--brand-midnight); color: var(--brand-gold); font-family: var(--font-display); font-weight: 900; font-size: 1.3rem; }
+/* Client logos stay greyscale — no brand or logo colours, even on hover. */
+.home-client img { max-height: 84px; max-width: 160px; object-fit: contain; filter: grayscale(1); opacity: 0.85; transition: opacity 0.15s ease; }
+a.home-client:hover img { opacity: 1; }
+.home-client-initial { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #E4E6E5; color: #55576E; font-family: var(--font-display); font-weight: 900; font-size: 1.4rem; } /* neutral grey to sit with the greyscale logos */
 .home-client-name { font-weight: 600; font-size: 0.9rem; }
 
 /* Testimonials (from Admin -> Testimonials): dark band, glass cards, gold quote mark */

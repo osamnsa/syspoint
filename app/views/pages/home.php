@@ -215,13 +215,13 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
 </section>
 <?php endif; ?>
 
-<!-- 5. Clients & businesses we've built for — one list (Admin -> Businesses), shared with the Software Clinic portfolio -->
+<!-- 5. Organisations we've consulted with + businesses we've built for — one list (Admin -> Businesses), shared with the Software Clinic portfolio -->
 <section class="section home-section">
     <div class="container">
         <div class="home-section-head">
             <div>
                 <span class="eyebrow">Our clients</span>
-                <h2><?= $homeBusinesses ? e(content_block('home.clients_title', 'Organisations we’ve worked with')) : 'Software built for your business' ?></h2>
+                <h2><?= $homeBusinesses ? e(content_block('home.clients_title', 'Organisations we’ve consulted with')) : 'Software built for your business' ?></h2>
             </div>
             <a href="<?= path('software-clinic') ?>" class="home-section-link">Tell us what you need →</a>
         </div>
