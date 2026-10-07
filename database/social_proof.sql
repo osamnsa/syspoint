@@ -49,8 +49,8 @@ INSERT INTO testimonials (quote, author_name, author_company, photo_path, sort_o
 
 -- Institutions Syspoint has consulted for (list from Charles Onuoha, Oct 2026;
 -- Federal Polytechnic and Federal Medical Centre, Bida are added above).
--- No logos yet: they show as gold initials until a logo is uploaded in
--- Admin -> Businesses.
+-- Rows without a logo show as a grey wordmark until a logo is uploaded in
+-- Admin -> Businesses (shipped logos are applied at the bottom of this file).
 INSERT INTO deployed_businesses (name, sort_order, is_active)
     SELECT 'National Cereals Research Institute, Badeggi', 120, 1 FROM DUAL
     WHERE NOT EXISTS (SELECT 1 FROM deployed_businesses WHERE name = 'National Cereals Research Institute, Badeggi');
@@ -98,3 +98,11 @@ UPDATE deployed_businesses SET logo_path = 'assets/img/clients/fmc-bida.png'
     WHERE name = 'Federal Medical Centre, Bida' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
 UPDATE deployed_businesses SET logo_path = 'assets/img/clients/university-of-ibadan.png'
     WHERE name = 'University of Ibadan' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
+UPDATE deployed_businesses SET logo_path = 'assets/img/clients/ncri-badeggi.png'
+    WHERE name = 'National Cereals Research Institute, Badeggi' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
+UPDATE deployed_businesses SET logo_path = 'assets/img/clients/futminna.png'
+    WHERE name = 'Federal University of Technology, Minna' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
+UPDATE deployed_businesses SET logo_path = 'assets/img/clients/ivcu-ibadan.png'
+    WHERE name = 'IVCU, Ibadan' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
+UPDATE deployed_businesses SET logo_path = 'assets/img/clients/ladela-schools.png'
+    WHERE name = 'Ladela Schools' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
