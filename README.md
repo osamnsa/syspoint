@@ -384,7 +384,9 @@ three headline stats, client logos and testimonials. Merged in from the
 - **Testimonials** are an admin-managed table (`/admin/testimonials`),
   shown as a dark band on the homepage, hidden when there are none.
 - **Content**: `database/social_proof.sql` holds the old site's five
-  logos and two testimonials. Run it once on any install (fresh or live)
+  logos and two testimonials, the full list of institutions consulted for,
+  and the stats (573 clients / 10 years / 38 employees — only filled in
+  where still empty). Run it once on any install (fresh or live)
   after `schema.sql`; it is safe to re-run — rows are matched by name /
   person + quote, so it never duplicates or overwrites admin edits.
 - Seeded logos/photos still point at the old site's media library
