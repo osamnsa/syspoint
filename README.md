@@ -99,6 +99,7 @@ app/
   software_clinic.php              Deployed-business portfolio lookups
   gaming.php                         Games, rooms, and booking-overlap check
   training.php                         Training course lookups
+  showcase.php                          Homepage clients, testimonials, stats
   views/
     partials/            header.php, nav.php, footer.php,
                            admin_header.php, admin_footer.php
@@ -310,6 +311,26 @@ shopping-app screen for Shop; a monitor with a game HUD, a controller,
 and a VR headset for Gaming) — self-hosted, no external image
 dependency, matching the "no build step, nothing to fetch" approach
 used everywhere else in this project.
+
+### Homepage social proof
+
+Three sections carried over from the old WordPress site
+(staging.syspoint.com.ng): a stats band (Clients / Years in Business /
+Employees), a client-logo grid, and testimonials.
+
+- **Clients** and **Testimonials** are admin-managed tables
+  (`/admin/clients`, `/admin/testimonials`) with the same CRUD shape as
+  Businesses. `seed.sql` carries over the old site's five logos and two
+  testimonials.
+- **Stats** are three `content_blocks` (`home.stat_clients`,
+  `home.stat_years`, `home.stat_employees`) edited at `/admin/home-stats`.
+  Free text so "150+" works. The band stays hidden until at least one is
+  filled in — no invented numbers on a fresh install.
+- Seeded logos/photos still point at the old site's media library
+  (`media_url()` passes absolute URLs through). **Re-upload them in the
+  admin before the WordPress site goes away**, or they'll break.
+- The old site's third logo (`images.png`) had no name, so it's seeded
+  hidden as "Unnamed client (rename me)".
 
 ## Security Notes
 

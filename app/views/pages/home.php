@@ -4,6 +4,10 @@ declare(strict_types=1);
 $pageTitle = 'Home';
 $pageDescription = 'Syspoint — computers & accessories, a software clinic, a gaming lounge, IT consulting, and internship training, all in one place.';
 
+$stats = home_stats();
+$clients = clients_active();
+$testimonials = testimonials_active();
+
 require __DIR__ . '/../partials/header.php';
 ?>
 
@@ -17,6 +21,24 @@ require __DIR__ . '/../partials/header.php';
         </div>
     </div>
 </section>
+
+<?php if ($stats): ?>
+<section class="stats-band" aria-label="Syspoint in numbers">
+    <div class="container">
+        <span class="eyebrow">Why Syspoint</span>
+        <h2><?= e(content_block('home.stats_title', 'Solving problems with experience and expertise')) ?></h2>
+        <dl class="stats-grid">
+            <?php foreach ($stats as $label => $value): ?>
+                <div class="stat">
+                    <dt><?= e($label) ?></dt>
+                    <dd><?= e($value) ?></dd>
+                </div>
+            <?php endforeach; ?>
+        </dl>
+    </div>
+</section>
+<?php endif; ?>
+
 
 <section class="section">
     <div class="container">
@@ -60,5 +82,55 @@ require __DIR__ . '/../partials/header.php';
         </div>
     </div>
 </section>
+
+<?php if ($clients): ?>
+<section class="section section-soft">
+    <div class="container">
+        <span class="eyebrow">Our clients</span>
+        <h2><?= e(content_block('home.clients_title', 'Organisations we have worked with')) ?></h2>
+        <ul class="client-logos">
+            <?php foreach ($clients as $client): ?>
+                <li class="client-logo">
+                    <?php $logo = $client['logo_path']
+                        ? '<img src="' . media_url($client['logo_path']) . '" alt="' . e($client['name']) . '" loading="lazy">'
+                        : '<span class="client-logo-name">' . e($client['name']) . '</span>'; ?>
+                    <?php if ($client['website_url']): ?>
+                        <a href="<?= e($client['website_url']) ?>" target="_blank" rel="noopener" title="<?= e($client['name']) ?>"><?= $logo ?></a>
+                    <?php else: ?>
+                        <?= $logo ?>
+                    <?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</section>
+<?php endif; ?>
+
+<?php if ($testimonials): ?>
+<section class="section">
+    <div class="container">
+        <span class="eyebrow">Testimonials</span>
+        <h2><?= e(content_block('home.testimonials_title', 'What our clients say')) ?></h2>
+        <div class="testimonial-grid">
+            <?php foreach ($testimonials as $t): ?>
+                <figure class="testimonial">
+                    <blockquote><?= e($t['quote']) ?></blockquote>
+                    <figcaption>
+                        <?php if ($t['photo_path']): ?>
+                            <img class="testimonial-photo" src="<?= media_url($t['photo_path']) ?>" alt="" loading="lazy">
+                        <?php else: ?>
+                            <span class="testimonial-photo testimonial-initials" aria-hidden="true"><?= e(initials($t['author_name'])) ?></span>
+                        <?php endif; ?>
+                        <span>
+                            <strong><?= e($t['author_name']) ?></strong>
+                            <?php if ($t['author_company']): ?><span class="testimonial-company"><?= e($t['author_company']) ?></span><?php endif; ?>
+                        </span>
+                    </figcaption>
+                </figure>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <?php require __DIR__ . '/../partials/footer.php'; ?>
