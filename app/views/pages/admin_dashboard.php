@@ -16,29 +16,43 @@ $pageTitle = 'Dashboard';
 require __DIR__ . '/../partials/admin_header.php';
 ?>
 
-<div class="admin-header-row">
-    <h1>Dashboard</h1>
-</div>
-<p style="color:var(--color-text-muted);margin-top:-14px;margin-bottom:24px;">Welcome back, <?= e(explode(' ', (string) ($adminUser['name'] ?? ''))[0] ?: 'there') ?> — Syspoint's foundation is live. Product, gaming, software-clinic, and training tools land here as each is built.</p>
+<?php
+$firstName = explode(' ', (string) ($adminUser['name'] ?? ''))[0] ?: 'there';
+$dashStats = [
+    ['label' => 'Unread Messages', 'value' => $unreadMessages, 'href' => path('admin') . '#recent-messages'],
+    ['label' => 'Pending Orders', 'value' => $pendingOrders, 'href' => path('admin/orders')],
+    ['label' => 'New Software Requests', 'value' => $newRequests, 'href' => path('admin/software-requests')],
+    ['label' => 'Pending Bookings', 'value' => $pendingBookings, 'href' => path('admin/bookings')],
+];
+$quickActions = [
+    ['label' => 'Add product', 'href' => path('admin/products/new')],
+    ['label' => 'Add client', 'href' => path('admin/businesses/new')],
+    ['label' => 'Add course', 'href' => path('admin/courses/new')],
+    ['label' => 'Add testimonial', 'href' => path('admin/testimonials/new')],
+    ['label' => 'Home stats', 'href' => path('admin/home-stats')],
+];
+?>
+<section class="admin-dash-hero">
+    <p class="admin-kicker"><?= e((new DateTimeImmutable())->format('l, j F Y')) ?></p>
+    <h1>Welcome back, <em><?= e($firstName) ?></em></h1>
+    <p class="admin-dash-lede">Here’s what needs your attention across the Hub, the Gadget Store and the Software Clinic.</p>
+</section>
 
 <div class="admin-stats">
-    <a class="admin-stat" href="<?= path('admin') ?>#recent-messages">
-        <div class="admin-stat-label">Unread Messages</div>
-        <div class="admin-stat-value"><?= $unreadMessages ?></div>
-    </a>
-    <a class="admin-stat" href="<?= path('admin/orders') ?>">
-        <div class="admin-stat-label">Pending Orders</div>
-        <div class="admin-stat-value"><?= $pendingOrders ?></div>
-    </a>
-    <a class="admin-stat" href="<?= path('admin/software-requests') ?>">
-        <div class="admin-stat-label">New Software Requests</div>
-        <div class="admin-stat-value"><?= $newRequests ?></div>
-    </a>
-    <a class="admin-stat" href="<?= path('admin/bookings') ?>">
-        <div class="admin-stat-label">Pending Bookings</div>
-        <div class="admin-stat-value"><?= $pendingBookings ?></div>
-    </a>
+    <?php foreach ($dashStats as $stat): ?>
+        <a class="admin-stat glass-dark<?= $stat['value'] > 0 ? ' is-hot' : '' ?>" href="<?= $stat['href'] ?>">
+            <div class="admin-stat-label"><?= e($stat['label']) ?></div>
+            <div class="admin-stat-value"><?= (int) $stat['value'] ?></div>
+            <div class="admin-stat-hint"><?= $stat['value'] > 0 ? 'Needs attention &rarr;' : 'All clear' ?></div>
+        </a>
+    <?php endforeach; ?>
 </div>
+
+<nav class="admin-quick" aria-label="Quick actions">
+    <?php foreach ($quickActions as $action): ?>
+        <a class="admin-quick-link glass-dark" href="<?= $action['href'] ?>"><?= e($action['label']) ?></a>
+    <?php endforeach; ?>
+</nav>
 
 <div class="admin-header-row" id="recent-messages">
     <h2 style="font-size:1.1rem;">Recent Messages</h2>

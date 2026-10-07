@@ -5,6 +5,23 @@ declare(strict_types=1);
 /** @var array $adminUser Set by require_admin() in the calling page */
 
 $titleTag = 'Admin' . (isset($pageTitle) && $pageTitle !== '' ? ' — ' . $pageTitle : '') . ' | Syspoint';
+
+$adminNav = [
+    'admin' => 'Dashboard',
+    'admin/products' => 'Products',
+    'admin/categories' => 'Categories',
+    'admin/orders' => 'Orders',
+    'admin/software-requests' => 'Requests',
+    'admin/businesses' => 'Clients',
+    'admin/games' => 'Games',
+    'admin/rooms' => 'Rooms',
+    'admin/bookings' => 'Bookings',
+    'admin/courses' => 'Courses',
+    'admin/testimonials' => 'Testimonials',
+    'admin/home-stats' => 'Home Stats',
+];
+$currentAdminPath = $requestPath ?? '';
+$flashSuccess = flash('success');
 ?>
 <!doctype html>
 <html lang="en">
@@ -19,28 +36,25 @@ $titleTag = 'Admin' . (isset($pageTitle) && $pageTitle !== '' ? ' — ' . $pageT
     <link rel="stylesheet" href="<?= versioned_asset('assets/css/admin.css') ?>">
 </head>
 <body class="admin-body">
-<header class="admin-topbar">
-    <a class="brand" href="<?= path('admin') ?>"><img class="brand-logo" src="<?= asset('assets/img/logo.png') ?>" alt="" width="32" height="32" style="width:32px;height:32px;"><span class="brand-name">Syspoint <em>Hub</em> Admin</span></a>
-    <nav class="admin-nav">
-        <a href="<?= path('admin') ?>">Dashboard</a>
-        <a href="<?= path('admin/products') ?>">Products</a>
-        <a href="<?= path('admin/categories') ?>">Categories</a>
-        <a href="<?= path('admin/orders') ?>">Orders</a>
-        <a href="<?= path('admin/software-requests') ?>">Requests</a>
-        <a href="<?= path('admin/businesses') ?>">Clients</a>
-        <a href="<?= path('admin/games') ?>">Games</a>
-        <a href="<?= path('admin/rooms') ?>">Rooms</a>
-        <a href="<?= path('admin/bookings') ?>">Bookings</a>
-        <a href="<?= path('admin/courses') ?>">Courses</a>
-        <a href="<?= path('admin/testimonials') ?>">Testimonials</a>
-        <a href="<?= path('admin/home-stats') ?>">Home Stats</a>
+<?php require __DIR__ . '/admin_backdrop.php'; ?>
+<header class="admin-topbar glass-dark">
+    <a class="brand" href="<?= path('admin') ?>"><img class="brand-logo" src="<?= asset('assets/img/logo.png') ?>" alt="" width="36" height="36"><span class="brand-name">Syspoint <em>Hub</em> <small>Admin</small></span></a>
+    <nav class="admin-nav" aria-label="Admin">
+        <?php foreach ($adminNav as $navPath => $navLabel):
+            $isCurrent = $navPath === 'admin'
+                ? $currentAdminPath === 'admin'
+                : ($currentAdminPath === $navPath || str_starts_with($currentAdminPath, $navPath . '/')); ?>
+            <a href="<?= path($navPath) ?>"<?= $isCurrent ? ' class="is-active" aria-current="page"' : '' ?>><?= e($navLabel) ?></a>
+        <?php endforeach; ?>
     </nav>
     <div class="admin-topbar-user">
-        <span><?= e($adminUser['name'] ?? '') ?></span>
+        <a class="admin-view-site" href="<?= path() ?>" target="_blank" rel="noopener">View site &nearr;</a>
+        <span class="admin-user-name"><?= e($adminUser['name'] ?? '') ?></span>
         <form method="post" action="<?= path('admin/logout') ?>">
             <?= csrf_field() ?>
-            <button type="submit" class="btn btn-outline btn-sm" style="background:transparent;border-color:rgba(255,255,255,0.3);color:#fff;">Log out</button>
+            <button type="submit" class="btn btn-sm admin-logout">Log out</button>
         </form>
     </div>
 </header>
 <main class="admin-main">
+<?php if ($flashSuccess): ?><div class="alert alert-success"><?= e($flashSuccess) ?></div><?php endif; ?>

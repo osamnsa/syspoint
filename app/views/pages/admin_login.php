@@ -35,13 +35,20 @@ $pageTitle = 'Admin Login';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($pageTitle) ?> | Syspoint Admin</title>
     <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" href="<?= asset('assets/img/logo.png') ?>">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
     <link rel="stylesheet" href="<?= versioned_asset('assets/css/style.css') ?>">
     <link rel="stylesheet" href="<?= versioned_asset('assets/css/admin.css') ?>">
 </head>
-<body class="admin-body">
-<div class="admin-login-wrap">
-    <div class="card">
-        <h1 style="font-size:1.4rem;margin-bottom:20px;">Syspoint Admin</h1>
+<body class="admin-body admin-login-body">
+<?php require __DIR__ . '/../partials/admin_backdrop.php'; ?>
+<main class="admin-login-wrap">
+    <div class="admin-login-card glass-dark">
+        <div class="admin-login-brand">
+            <img src="<?= asset('assets/img/logo.png') ?>" alt="" width="64" height="64">
+            <span class="brand-name">Syspoint <em>Hub</em></span>
+        </div>
+        <p class="admin-kicker">Admin sign in</p>
         <?php if ($error): ?>
             <div class="alert alert-error"><?= e($error) ?></div>
         <?php endif; ?>
@@ -49,15 +56,16 @@ $pageTitle = 'Admin Login';
             <?= csrf_field() ?>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" required autofocus>
+                <input type="email" id="email" name="email" autocomplete="username" required autofocus>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" autocomplete="current-password" required>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Log In</button>
         </form>
+        <a class="admin-login-back" href="<?= path() ?>">&larr; Back to the website</a>
     </div>
-</div>
+</main>
 </body>
 </html>
