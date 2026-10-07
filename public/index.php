@@ -62,6 +62,16 @@ $routes = [
     '#^admin/businesses/(\d+)/edit$#' => __DIR__ . '/../app/views/pages/admin_business_form.php',
     '#^admin/businesses/(\d+)/delete$#' => __DIR__ . '/../app/views/pages/admin_business_delete.php',
 
+    '#^admin/clients$#' => __DIR__ . '/../app/views/pages/admin_clients.php',
+    '#^admin/clients/new$#' => __DIR__ . '/../app/views/pages/admin_client_form.php',
+    '#^admin/clients/(\d+)/edit$#' => __DIR__ . '/../app/views/pages/admin_client_form.php',
+    '#^admin/clients/(\d+)/delete$#' => __DIR__ . '/../app/views/pages/admin_client_delete.php',
+    '#^admin/testimonials$#' => __DIR__ . '/../app/views/pages/admin_testimonials.php',
+    '#^admin/testimonials/new$#' => __DIR__ . '/../app/views/pages/admin_testimonial_form.php',
+    '#^admin/testimonials/(\d+)/edit$#' => __DIR__ . '/../app/views/pages/admin_testimonial_form.php',
+    '#^admin/testimonials/(\d+)/delete$#' => __DIR__ . '/../app/views/pages/admin_testimonial_delete.php',
+    '#^admin/home-stats$#' => __DIR__ . '/../app/views/pages/admin_home_stats.php',
+
     '#^admin/games$#' => __DIR__ . '/../app/views/pages/admin_games.php',
     '#^admin/games/new$#' => __DIR__ . '/../app/views/pages/admin_game_form.php',
     '#^admin/games/(\d+)/edit$#' => __DIR__ . '/../app/views/pages/admin_game_form.php',

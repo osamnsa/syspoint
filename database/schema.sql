@@ -229,3 +229,33 @@ CREATE TABLE IF NOT EXISTS contact_messages (
     read_at TIMESTAMP NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------------
+-- Homepage social proof: client logos ("who we've worked with") and
+-- testimonials, both admin-managed. The three headline stats (clients,
+-- years in business, employees) are content_blocks, not a table — they're
+-- three numbers, not a list.
+-- ---------------------------------------------------------------------------
+
+-- logo_path is either a path under public/ (an admin upload, e.g.
+-- "uploads/clients/abc.png") or an absolute http(s) URL — see media_url().
+CREATE TABLE IF NOT EXISTS clients (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(190) NOT NULL,
+    logo_path VARCHAR(255) NULL,
+    website_url VARCHAR(255) NULL,
+    sort_order INT UNSIGNED NOT NULL DEFAULT 0,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS testimonials (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    quote TEXT NOT NULL,
+    author_name VARCHAR(150) NOT NULL,
+    author_company VARCHAR(190) NULL,
+    photo_path VARCHAR(255) NULL,
+    sort_order INT UNSIGNED NOT NULL DEFAULT 0,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
