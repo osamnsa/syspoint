@@ -511,10 +511,9 @@ a.home-service:hover, a.home-service:focus-visible {
 .home-trusted-kicker { margin: 0 0 4px; font-family: var(--font-mono); font-weight: 600; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #6B6E80; }
 .home-trusted h2 { margin: 0; font-size: clamp(1.2rem, 2.2vw, 1.5rem); color: var(--brand-ink); }
 .home-trusted-list {
-    /* Flex, not grid, so a part-filled last row sits centred. */
     --per-row: 6; --col-gap: 18px;
     list-style: none; margin: 24px 0 0; padding: 0;
-    display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 22px var(--col-gap);
+    display: flex; flex-wrap: wrap; justify-content: flex-start; align-items: flex-start; gap: 22px var(--col-gap);
 }
 .home-trusted-list > * { flex: 0 0 calc((100% - (var(--per-row) - 1) * var(--col-gap)) / var(--per-row)); min-width: 0; }
 .home-trusted-item {
@@ -522,7 +521,7 @@ a.home-service:hover, a.home-service:focus-visible {
     min-height: 92px; color: #6B6E80; text-decoration: none;
 }
 a.home-trusted-item:hover { text-decoration: none; color: var(--brand-ink); }
-.home-trusted-item img { max-height: 64px; max-width: 140px; object-fit: contain; filter: grayscale(1); opacity: 0.8; transition: opacity 0.15s ease; }
+.home-trusted-item img { max-height: 64px; max-width: 140px; object-fit: contain; filter: grayscale(1); mix-blend-mode: multiply; opacity: 0.8; transition: opacity 0.15s ease; }
 a.home-trusted-item:hover img { opacity: 1; }
 .home-trusted-name { font-family: var(--font-display); font-weight: 900; font-size: 0.95rem; line-height: 1.25; text-transform: uppercase; letter-spacing: 0.01em; }
 .home-trusted-item.has-logo .home-trusted-name { font-family: var(--font-body); font-weight: 600; font-size: 0.72rem; text-transform: none; letter-spacing: 0; }

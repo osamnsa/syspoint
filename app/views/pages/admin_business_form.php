@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $values['sort_order'] = (string) ($_POST['sort_order'] ?? '0');
         $values['is_active'] = isset($_POST['is_active']) ? 1 : 0;
 
-        if ($values['name'] === '') $errors[] = 'Please enter a business name.';
+        if ($values['name'] === '') $errors[] = 'Please enter the organisation’s name.';
         if (!ctype_digit($values['sort_order'])) $errors[] = 'Please enter a valid sort order.';
         if ($values['website_url'] !== '' && !filter_var($values['website_url'], FILTER_VALIDATE_URL)) {
             $errors[] = 'Please enter a valid website URL (including https://).';
@@ -46,6 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!$errors) {
             $logoPath = $upload['path'] ?? ($business['logo_path'] ?? null);
+            if (!$upload['path'] && isset($_POST['remove_logo'])) {
+                $logoPath = null;
+            }
 
             if ($business) {
                 db()->prepare(
@@ -74,20 +77,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
             }
 
-            flash('success', 'Business saved.');
+            flash('success', 'Client saved.');
             header('Location: ' . path('admin/businesses'));
             exit;
         }
     }
 }
 
-$pageTitle = $business ? 'Edit Business' : 'Add Business';
+$pageTitle = $business ? 'Edit Client' : 'Add Client';
 require __DIR__ . '/../partials/admin_header.php';
 ?>
 
 <div class="admin-header-row">
     <h1><?= e($pageTitle) ?></h1>
-    <a href="<?= path('admin/businesses') ?>" class="btn btn-outline btn-sm">Back to Businesses</a>
+    <a href="<?= path('admin/businesses') ?>" class="btn btn-outline btn-sm">Back to Clients</a>
 </div>
 
 <?php if ($errors): ?>
@@ -99,11 +102,11 @@ require __DIR__ . '/../partials/admin_header.php';
 <form method="post" action="<?= path($business ? 'admin/businesses/' . $business['id'] . '/edit' : 'admin/businesses/new') ?>" enctype="multipart/form-data" class="admin-form">
     <?= csrf_field() ?>
     <div class="form-group">
-        <label for="name">Name</label>
+        <label for="name">Organisation Name</label>
         <input type="text" id="name" name="name" value="<?= e((string) $values['name']) ?>" required>
     </div>
     <div class="form-group">
-        <label for="description">Short Description</label>
+        <label for="description">Short Description (optional, Software Clinic page only)</label>
         <textarea id="description" name="description"><?= e((string) $values['description']) ?></textarea>
     </div>
     <div class="form-group">
@@ -113,6 +116,7 @@ require __DIR__ . '/../partials/admin_header.php';
     <div class="form-group">
         <label for="sort_order">Sort Order</label>
         <input type="number" id="sort_order" name="sort_order" value="<?= e((string) $values['sort_order']) ?>" min="0">
+        <div class="form-note">Lower numbers show first. Leave gaps (10, 20, 30…) so you can slot new clients in between.</div>
     </div>
     <div class="form-group">
         <label for="logo">Logo</label>
@@ -120,12 +124,15 @@ require __DIR__ . '/../partials/admin_header.php';
             <img src="<?= media_url($business['logo_path']) ?>" alt="" style="width:64px;height:64px;object-fit:contain;border-radius:8px;margin-bottom:8px;display:block;">
         <?php endif; ?>
         <input type="file" id="logo" name="logo" accept="image/jpeg,image/png,image/webp">
-        <div class="form-note">JPG, PNG, or WEBP, up to 5MB. Leave empty to keep the current logo.</div>
+        <div class="form-note">JPG, PNG, or WEBP, up to 5MB. Colour logos are shown in grey on the site, and a white background blends in. Leave empty to keep the current logo. Without a logo, the name is shown as text.</div>
+        <?php if (!empty($business['logo_path'])): ?>
+            <label style="margin-top:8px;"><input type="checkbox" name="remove_logo" value="1" style="width:auto;margin-right:8px;"> Remove the current logo</label>
+        <?php endif; ?>
     </div>
     <div class="form-group">
         <label><input type="checkbox" name="is_active" value="1" <?= $values['is_active'] ? 'checked' : '' ?> style="width:auto;margin-right:8px;"> Visible on the site</label>
     </div>
-    <button type="submit" class="btn btn-primary">Save Business</button>
+    <button type="submit" class="btn btn-primary">Save Client</button>
 </form>
 
 <?php require __DIR__ . '/../partials/admin_footer.php'; ?>

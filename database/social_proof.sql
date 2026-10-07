@@ -4,20 +4,22 @@
 --
 -- Run ONCE on any install, fresh or live, after schema.sql:
 --   mysql -u root -p syspoint < database/social_proof.sql
--- Safe to re-run: each row is only inserted if no row with the same name
--- (clients) or same person + quote (testimonials) exists, so it never
--- duplicates and never overwrites edits made in the admin panel.
+-- Rows are only inserted if no row with the same name (clients) or same
+-- person + quote (testimonials) exists, and it never overwrites edits made in
+-- the admin panel. But once the team manages clients in Admin -> Clients,
+-- DON'T re-run it: a client deleted or renamed there would be added back
+-- under its old name.
 --
 -- Client logos go into deployed_businesses — the one list behind the
 -- homepage "Organisations we've consulted with" section and the Software
--- Clinic portfolio (Admin -> Businesses).
+-- Clinic portfolio (Admin -> Clients).
 --
 -- Client logos ship with the site (public/assets/img/clients/). The two
 -- testimonial photos still point at the old site's media library (media_url()
 -- passes absolute URLs through): RE-UPLOAD THEM in the admin before the
 -- WordPress site is taken down, or they'll fall back to initials. Row 3's organisation
 -- wasn't named on the old site, so it starts hidden: name it and tick
--- "Visible" in Admin -> Businesses.
+-- "Visible" in Admin -> Clients.
 
 -- Databases that ran an earlier version of this file have the two Bida
 -- institutions under their short names; give them their full names first.
@@ -50,7 +52,7 @@ INSERT INTO testimonials (quote, author_name, author_company, photo_path, sort_o
 -- Institutions Syspoint has consulted for (list from Charles Onuoha, Oct 2026;
 -- Federal Polytechnic and Federal Medical Centre, Bida are added above).
 -- Rows without a logo show as a grey wordmark until a logo is uploaded in
--- Admin -> Businesses (shipped logos are applied at the bottom of this file).
+-- Admin -> Clients (shipped logos are applied at the bottom of this file).
 INSERT INTO deployed_businesses (name, sort_order, is_active)
     SELECT 'National Cereals Research Institute, Badeggi', 120, 1 FROM DUAL
     WHERE NOT EXISTS (SELECT 1 FROM deployed_businesses WHERE name = 'National Cereals Research Institute, Badeggi');

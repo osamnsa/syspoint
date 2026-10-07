@@ -345,9 +345,7 @@ client supplies real figures.
 **Home sections** (below the hero, all driven by admin data): New in
 the Shop (4 newest products), a dark Gaming Lounge band (room rates from
 Admin → Rooms, Demo badge if flagged, three tilted game tiles), Training &
-Internship (first 4 active courses + internship CTA), Software Clinic
-client logos (Admin → Businesses; logos greyscale until hovered, initials
-when no logo; a pitch line when none exist), and Visit Us (Hub at Suite
+Internship (first 4 active courses + internship CTA), and Visit Us (Hub at Suite
 C1, Gadget Store at Suite C20, directions, hours, email). The shop
 section hides itself when there are no products.
 
@@ -378,25 +376,31 @@ three headline stats, client logos and testimonials. Merged in from the
   Free text so "150+" works. They fill the hero's stats bar; until at
   least one is set, the bar shows placeholder facts (5 services / free
   Wi-Fi / opening hours) rather than invented numbers.
-- **Client logos** are `deployed_businesses` rows (Admin -> Businesses) —
+- **Client logos** are `deployed_businesses` rows (Admin → Clients) —
   one list behind the homepage "Organisations we've consulted with" strip
   (directly under the hero, so the 573-clients stat sits next to its proof)
   and the Software Clinic portfolio. There is no separate clients table.
+  The team adds, renames, reorders (sort order, lowest first), hides and
+  deletes organisations and uploads/removes logos there. Uploaded logos
+  are always shown greyscale on the strip, and a white JPG background
+  blends into it (`mix-blend-mode: multiply`). Without a logo, the name
+  shows as a grey wordmark.
 - **Testimonials** are an admin-managed table (`/admin/testimonials`),
   shown as a light band before Visit Us, hidden when there are none.
 - **Content**: `database/social_proof.sql` holds the old site's five
   logos and two testimonials, the full list of institutions consulted for,
   and the stats (573 clients / 10 years / 38 employees — only filled in
   where still empty). Run it once on any install (fresh or live)
-  after `schema.sql`; it is safe to re-run — rows are matched by name /
-  person + quote, so it never duplicates or overwrites admin edits.
+  after `schema.sql`. Rows are matched by name / person + quote, so it
+  never duplicates or overwrites admin edits — but **don't re-run it once
+  the team is managing clients in the admin**: a client deleted or renamed
+  there would come back under its old name.
 - Client logos ship as greyscale PNGs in `public/assets/img/clients/`
-  (Access Bank, OAU, UI, Federal Polytechnic Bida, FMC Bida so far) and
-  stay greyscale on the page by design. The two testimonial photos still
+  and stay greyscale on the page by design. The two testimonial photos still
   point at the old site's media library (`media_url()` passes absolute
   URLs through): **re-upload them in the admin before the WordPress site
-  goes away.** Anything without a logo/photo, or one that fails to load,
-  shows the name's initial(s).
+  goes away.** A testimonial without a photo, or one that fails to load,
+  shows the person's initials.
 - The old site's third logo (`images.png`) had no name, so it's added
   hidden as "Unnamed client (rename me)".
 

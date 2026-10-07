@@ -27,7 +27,7 @@ $titleTag = 'Admin' . (isset($pageTitle) && $pageTitle !== '' ? ' — ' . $pageT
         <a href="<?= path('admin/categories') ?>">Categories</a>
         <a href="<?= path('admin/orders') ?>">Orders</a>
         <a href="<?= path('admin/software-requests') ?>">Requests</a>
-        <a href="<?= path('admin/businesses') ?>">Businesses</a>
+        <a href="<?= path('admin/businesses') ?>">Clients</a>
         <a href="<?= path('admin/games') ?>">Games</a>
         <a href="<?= path('admin/rooms') ?>">Rooms</a>
         <a href="<?= path('admin/bookings') ?>">Bookings</a>
