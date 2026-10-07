@@ -106,3 +106,5 @@ UPDATE deployed_businesses SET logo_path = 'assets/img/clients/ivcu-ibadan.png'
     WHERE name = 'IVCU, Ibadan' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
 UPDATE deployed_businesses SET logo_path = 'assets/img/clients/ladela-schools.png'
     WHERE name = 'Ladela Schools' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
+UPDATE deployed_businesses SET logo_path = 'assets/img/clients/unn.png'
+    WHERE name = 'University of Nigeria, Nsukka' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
