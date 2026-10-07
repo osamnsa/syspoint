@@ -155,8 +155,11 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
                 <ul class="home-rooms">
                     <?php foreach ($homeRooms as $room): ?>
                         <li>
-                            <strong><?= e($room['name']) ?></strong>
-                            <span><?= format_naira((float) $room['hourly_rate']) ?>/hour<?= $room['is_demo'] ? demo_badge() : '' ?><?= $room['capacity'] ? ' · up to ' . (int) $room['capacity'] : '' ?></span>
+                            <span class="home-room-name">
+                                <strong><?= e($room['name']) ?></strong>
+                                <?php if ($room['capacity']): ?><small>Up to <?= (int) $room['capacity'] ?> people</small><?php endif; ?>
+                            </span>
+                            <span class="home-room-rate"><?= format_naira((float) $room['hourly_rate']) ?>/hour<?= $room['is_demo'] ? demo_badge() : '' ?></span>
                         </li>
                     <?php endforeach; ?>
                 </ul>

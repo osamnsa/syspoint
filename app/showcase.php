@@ -12,7 +12,7 @@ declare(strict_types=1);
 /** Stat keys in display order => label. */
 const HOME_STATS = [
     'home.stat_clients' => 'Clients',
-    'home.stat_years' => 'Years in Business',
+    'home.stat_years' => 'Years Experience',
     'home.stat_employees' => 'Employees',
 ];
 
