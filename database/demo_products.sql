@@ -6,6 +6,9 @@
 -- Remove them later from Admin -> Products, or:
 --   DELETE FROM products WHERE is_demo = 1;
 -- Images live in public/assets/img/shop/products/ (committed with the site).
+
+-- Text below is UTF-8 (₦, —, ’); without this a latin1 client garbles it.
+SET NAMES utf8mb4;
 INSERT IGNORE INTO products (category_id, name, slug, description, specs, price, stock_qty, image_path, is_active, is_demo) VALUES
     (1, 'Apple MacBook Air M3', 'apple-macbook-air-m3', 'Featherweight, fanless and all-day battery — the everyday laptop that just works.', '13.6" Liquid Retina display\n8GB unified memory\n256GB SSD\nApple M3 chip', 1850000.00, 4, 'assets/img/shop/products/macbook-air-m3.jpg', 1, 1),
     (1, 'Dell XPS 13 Plus', 'dell-xps-13-plus', 'A seamless glass touchpad, edge-to-edge keyboard and a stunning 13.4" display.', '13.4" display\n16GB RAM\n512GB SSD\nIntel Core i7', 2150000.00, 3, 'assets/img/shop/products/dell-xps-13-plus.jpg', 1, 1),

@@ -52,6 +52,7 @@ function site_content(): array
             'site.linkedin' => $f('LinkedIn link', '', 'url'),
             'site.tiktok' => $f('TikTok link', '', 'url'),
             'site.youtube' => $f('YouTube link', '', 'url'),
+            'site.telegram' => $f('Telegram channel link', '', 'url', 'Leave empty to use the channel set in Telegram → Settings (e.g. https://t.me/syspointhub).'),
             'site.footer_blurb' => $f('Footer description', 'PS5, VR, board games, IT training, computers & gadgets — all under one roof, with free internet for every gamer.', 'textarea'),
             'site.copyright_name' => $f('Copyright name', 'Syspoint Hub'),
             'site.footer_company' => $f('Footer company line', 'A Syspoint Solutions Consult Limited company'),

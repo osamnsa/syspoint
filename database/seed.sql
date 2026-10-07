@@ -6,6 +6,9 @@
 -- restore a row someone deliberately deleted. See README "Applying
 -- Updates" for the full schema.sql-vs-seed.sql discipline.
 
+-- Text below is UTF-8 (₦, —, ’); without this a latin1 client garbles it.
+SET NAMES utf8mb4;
+
 -- Placeholder admin login — change the email/password from Admin ->
 -- Settings (once that page exists) immediately after first login.
 -- Email: admin@syspoint.example  Password: SyspointAdmin123!

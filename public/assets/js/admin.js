@@ -350,3 +350,34 @@ document.addEventListener('click', function (e) {
         nav.scrollTop = Math.max(0, active.offsetTop - nav.clientHeight / 2);
     }
 })();
+
+/* Telegram composer: live preview + character count. */
+(function () {
+    'use strict';
+    var form = document.querySelector('[data-tg-form]');
+    if (!form) return;
+    var get = function (k) { var el = form.querySelector('[data-tg="' + k + '"]'); return el ? el.value : ''; };
+    var photo = document.querySelector('[data-tg-photo-preview]');
+    var initialPhoto = photo.getAttribute('src');
+    function update() {
+        document.querySelector('[data-tg-preview="title"]').textContent = get('title');
+        document.querySelector('[data-tg-preview="body"]').textContent = get('body');
+        var btn = document.querySelector('[data-tg-preview="btext"]');
+        btn.textContent = get('btext');
+        btn.hidden = !get('btext');
+        var count = (get('title') ? get('title').length + 2 : 0) + get('body').length;
+        var counter = form.querySelector('[data-tg-count]');
+        counter.textContent = count.toLocaleString();
+        var hasPhoto = !photo.hidden;
+        counter.parentElement.classList.toggle('is-late', count > (hasPhoto ? 1024 : 4096));
+    }
+    form.addEventListener('input', update);
+    var file = form.querySelector('[data-tg="photo"]');
+    file.addEventListener('change', function () {
+        if (file.files && file.files[0]) { photo.src = URL.createObjectURL(file.files[0]); photo.hidden = false; }
+        update();
+    });
+    var none = form.querySelector('[data-tg-nophoto]');
+    if (none) none.addEventListener('change', function () { photo.hidden = none.checked; if (!none.checked && initialPhoto) photo.src = initialPhoto; update(); });
+    update();
+})();

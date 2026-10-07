@@ -6,6 +6,9 @@
 -- existing rows. See README "Applying Updates" for the full discipline
 -- (schema.sql = every deploy, seed.sql = once, at install, never again).
 
+-- Text below is UTF-8 (₦, —, ’); without this a latin1 client garbles it.
+SET NAMES utf8mb4;
+
 -- ---------------------------------------------------------------------------
 -- Admin auth
 -- ---------------------------------------------------------------------------
@@ -583,4 +586,24 @@ CREATE TABLE IF NOT EXISTS enrolment_payments (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_enrolment_payments FOREIGN KEY (enrolment_id) REFERENCES enrolments (id) ON DELETE CASCADE,
     INDEX idx_enrolment_payments_paid_on (paid_on)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------------
+-- Telegram: announcements posted to the public channel from the admin.
+-- (Bot token / channel / staff chat live in content_blocks under telegram.*
+-- or in .env; staff notifications are not stored.)
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS telegram_posts (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(190) NULL,
+    body TEXT NULL,
+    photo_path VARCHAR(255) NULL,
+    button_text VARCHAR(60) NULL,
+    button_url VARCHAR(255) NULL,
+    product_id INT UNSIGNED NULL,
+    status ENUM('sent', 'failed') NOT NULL,
+    error VARCHAR(255) NULL,
+    message_id BIGINT NULL,
+    user_id INT UNSIGNED NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

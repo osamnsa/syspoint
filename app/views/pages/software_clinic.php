@@ -35,7 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'phone' => $phone !== '' ? $phone : null,
                     'description' => $description,
                 ]);
-                crm_link('software_requests', (int) db()->lastInsertId(), $contactName, $email, $phone, 'website', $businessName);
+                $requestId = (int) db()->lastInsertId();
+                crm_link('software_requests', $requestId, $contactName, $email, $phone, 'website', $businessName);
+                telegram_notify('software_request', '💻 Software Clinic request — ' . $businessName, [
+                    $contactName . ($phone !== '' ? ' · ' . $phone : '') . ' · ' . $email,
+                    mb_strimwidth($description, 0, 300, '…'),
+                ], 'admin/software-requests/' . $requestId);
             }
 
             flash('success', "Thanks {$contactName}, we've received your request and will be in touch soon.");

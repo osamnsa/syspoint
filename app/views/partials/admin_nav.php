@@ -46,6 +46,7 @@ $adminNavGroups = [
     ]],
     ['label' => 'Website', 'items' => [
         ['path' => 'admin/website', 'label' => 'Website Editor', 'icon' => 'pen', 'area' => 'website'],
+        ['path' => 'admin/telegram', 'label' => 'Telegram', 'icon' => 'send', 'area' => 'website'],
         ['path' => 'admin/businesses', 'label' => 'Clients', 'icon' => 'star', 'area' => 'website'],
         ['path' => 'admin/testimonials', 'label' => 'Testimonials', 'icon' => 'quote', 'area' => 'website'],
         ['path' => 'admin/home-stats', 'label' => 'Home Stats', 'icon' => 'chart', 'area' => 'website'],
@@ -86,6 +87,7 @@ function admin_icon(string $name): string
         'receipt' => '<path d="M5 2h14v20l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/>',
         'mail' => '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
         'pen' => '<path d="M4 20h4L20 8l-4-4L4 16z"/><path d="M14 6l4 4"/>',
+        'send' => '<path d="M21 3L3 10.5l7 2.5 2.5 7z"/><path d="M21 3L10 13"/>',
         'menu' => '<path d="M3 6h18M3 12h18M3 18h18"/>',
         'external' => '<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v6H4V6h6"/>',
         'logout' => '<path d="M15 4h4v16h-4"/><path d="M10 8l-4 4 4 4M6 12h11"/>',

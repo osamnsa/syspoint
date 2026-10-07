@@ -593,6 +593,34 @@ if SweetAlert fails to load it falls back to the browser's `confirm()`, so
 destructive actions are never left unconfirmed. Scripts can call
 `SP.toast()`, `SP.alert()`, `SP.confirm()` and `SP.prompt()`.
 
+### Telegram (announcements + staff alerts)
+
+Two uses of one bot (`app/telegram.php`):
+
+- **Announcement channel** — *Website → Telegram* composes a post (bold
+  title, message, optional photo, optional link button) with a live
+  preview, and posts it to the public channel. Starters fill the form for
+  a gaming event, a training intake, opening hours, or any product (its
+  photo, price, description and a "View in shop" button). Every post is
+  kept in `telegram_posts`, with Telegram's error if one failed. The
+  channel link appears in the site footer and on the contact page
+  (`site.telegram` in the Website editor overrides it).
+- **Staff notifications** — a private staff group gets a message when an
+  online order is paid, a gaming room is requested, a Software Clinic
+  request or contact message comes in, a sale takes a product to its
+  reorder level, or (off by default) a walk-in sale is recorded, each with
+  a link to the admin page. Sent after the response is flushed, so a slow
+  or unreachable Telegram never slows the visitor down or breaks a form.
+
+Setup is in *Telegram → Settings* (admins only), with a five-step guide:
+create the bot with @BotFather, make it an admin of the channel with
+"Post messages", add it to the staff group and use **Find chat IDs**. The
+page checks the token (`getMe`) and that the bot can post in the channel.
+The token, channel and staff chat can instead live in `.env`
+(`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHANNEL`, `TELEGRAM_ADMIN_CHAT_ID`), which
+wins over the saved settings. `TELEGRAM_API_BASE` points the bot at a mock
+server for local testing.
+
 ## Security Notes
 
 - All DB queries use PDO prepared statements (`ATTR_EMULATE_PREPARES`

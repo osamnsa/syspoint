@@ -21,6 +21,9 @@
 -- wasn't named on the old site, so it starts hidden: name it and tick
 -- "Visible" in Admin -> Clients.
 
+-- Text below is UTF-8 (₦, —, ’); without this a latin1 client garbles it.
+SET NAMES utf8mb4;
+
 -- Databases that ran an earlier version of this file have the two Bida
 -- institutions under their short names; give them their full names first.
 UPDATE deployed_businesses SET name = 'Federal Polytechnic, Bida' WHERE name = 'FPB';

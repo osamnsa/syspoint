@@ -62,7 +62,7 @@ function inventory_move(int $productId, int $change, string $reason, ?string $re
     if (!$pdo->inTransaction()) {
         throw new LogicException('inventory_move() must run inside a transaction');
     }
-    $stmt = $pdo->prepare('SELECT id, name, stock_qty FROM products WHERE id = :id FOR UPDATE');
+    $stmt = $pdo->prepare('SELECT id, name, stock_qty, reorder_level FROM products WHERE id = :id FOR UPDATE');
     $stmt->execute(['id' => $productId]);
     $product = $stmt->fetch();
     if (!$product) {
@@ -73,6 +73,13 @@ function inventory_move(int $productId, int $change, string $reason, ?string $re
         throw new InventoryException('Not enough stock of ' . $product['name'] . ' (' . (int) $product['stock_qty'] . ' on hand).');
     }
     $pdo->prepare('UPDATE products SET stock_qty = :qty WHERE id = :id')->execute(['qty' => $balance, 'id' => $productId]);
+    // A sale that takes stock to (or below) the reorder level for the first time.
+    if (in_array($reason, ['online_sale', 'pos_sale'], true) && isset($product['reorder_level'])
+        && (int) $product['stock_qty'] > (int) $product['reorder_level'] && $balance <= (int) $product['reorder_level']) {
+        telegram_notify('low_stock', '📦 Low stock — ' . $product['name'], [
+            $balance === 0 ? 'Now OUT OF STOCK.' : 'Only ' . $balance . ' left (reorder level ' . (int) $product['reorder_level'] . ').',
+        ], 'admin/inventory/products/' . $productId);
+    }
     $pdo->prepare(
         'INSERT INTO stock_movements (product_id, change_qty, balance_after, reason, ref_type, ref_id, note, user_id)
          VALUES (:pid, :chg, :bal, :reason, :rtype, :rid, :note, :uid)'

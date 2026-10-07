@@ -31,7 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'subject' => $subject !== '' ? $subject : null,
                     'message' => $message,
                 ]);
-                crm_link('contact_messages', (int) db()->lastInsertId(), $name, $email, null);
+                $messageId = (int) db()->lastInsertId();
+                crm_link('contact_messages', $messageId, $name, $email, null);
+                telegram_notify('contact', '✉️ New message' . ($subject !== '' ? ' — ' . $subject : ''), [
+                    $name . ' · ' . $email,
+                    mb_strimwidth($message, 0, 300, '…'),
+                ], 'admin/messages/' . $messageId);
             }
 
             flash('success', str_replace('{name}', $name, site('contact.success')));
@@ -114,7 +119,7 @@ require __DIR__ . '/../partials/header.php';
                 </address>
             </div>
             <p style="margin:14px 0 0;color:var(--color-text-muted);font-size:0.9rem;">
-                <a href="mailto:<?= e(site('site.email')) ?>"><?= e(site('site.email')) ?></a><?php if (site('site.phone')): ?> · <a href="tel:<?= e(preg_replace('/[^\d+]/', '', site('site.phone'))) ?>"><?= e(site('site.phone')) ?></a><?php endif; ?><?php if ($wa = site_whatsapp_url()): ?> · <a href="<?= e($wa) ?>" target="_blank" rel="noopener">WhatsApp</a><?php endif; ?> · Open <?= e(site('site.hours')) ?>
+                <a href="mailto:<?= e(site('site.email')) ?>"><?= e(site('site.email')) ?></a><?php if (site('site.phone')): ?> · <a href="tel:<?= e(preg_replace('/[^\d+]/', '', site('site.phone'))) ?>"><?= e(site('site.phone')) ?></a><?php endif; ?><?php if ($wa = site_whatsapp_url()): ?> · <a href="<?= e($wa) ?>" target="_blank" rel="noopener">WhatsApp</a><?php endif; ?><?php if ($tg = telegram_channel_url()): ?> · <a href="<?= e($tg) ?>" target="_blank" rel="noopener">Join us on Telegram</a><?php endif; ?> · Open <?= e(site('site.hours')) ?>
             </p>
         </div>
     </div>

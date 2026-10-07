@@ -78,6 +78,8 @@ function config(): array
             'telegram' => [
                 'bot_token' => env('TELEGRAM_BOT_TOKEN', ''),
                 'admin_chat_id' => env('TELEGRAM_ADMIN_CHAT_ID', ''),
+                'channel' => env('TELEGRAM_CHANNEL', ''),
+                'api_base' => env('TELEGRAM_API_BASE', 'https://api.telegram.org'),
             ],
             'cron' => [
                 'secret' => env('CRON_SECRET', ''),

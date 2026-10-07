@@ -13,7 +13,7 @@
                 </a>
                 <p style="color:rgba(255,255,255,0.65);font-size:0.9rem;max-width:34ch;"><?= e(site('site.footer_blurb')) ?></p>
                 <?php
-                $socials = array_filter(['Instagram' => site('site.instagram'), 'Facebook' => site('site.facebook'), 'X' => site('site.x'),
+                $socials = array_filter(['Telegram' => telegram_channel_url(), 'Instagram' => site('site.instagram'), 'Facebook' => site('site.facebook'), 'X' => site('site.x'),
                     'LinkedIn' => site('site.linkedin'), 'TikTok' => site('site.tiktok'), 'YouTube' => site('site.youtube')]);
                 if ($socials): ?>
                     <ul class="footer-social">
