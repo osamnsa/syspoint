@@ -129,7 +129,7 @@ require __DIR__ . '/../partials/admin_header.php';
 <?php if ($customer && admin_is_admin()): ?>
 <details class="admin-danger-zone">
     <summary>Delete this customer</summary>
-    <form method="post" onsubmit="return confirm('Delete this customer? Their orders and bookings stay, but lose the link.');">
+    <form method="post" data-confirm="Delete this customer? Their orders and bookings stay, but lose the link." data-confirm-button="Delete" data-confirm-danger>
         <?= csrf_field() ?><input type="hidden" name="action" value="delete">
         <button type="submit" class="btn btn-outline admin-btn-on-dark">Delete Customer</button>
     </form>

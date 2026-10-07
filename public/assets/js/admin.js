@@ -254,11 +254,13 @@ document.addEventListener('click', function (e) {
             var stage = zone.closest('[data-stage]').getAttribute('data-stage');
             var from = dragged.closest('[data-stage]').getAttribute('data-stage');
             if (stage === from) return;
-            var reason = '';
-            if (stage === 'lost') {
-                reason = window.prompt('Why was this deal lost? (e.g. price, timing, chose another vendor)') || '';
-                if (!reason) return;
-            }
+            var card = dragged;
+            var ask = stage === 'lost'
+                ? SP.prompt('Why was this deal lost?', { placeholder: 'e.g. price, timing, chose another vendor', required: true, button: 'Mark as lost' })
+                : Promise.resolve('');
+            ask.then(function (reason) {
+            if (reason === null) return;
+            dragged = card;
             zone.prepend(dragged);
             var body = new FormData();
             body.append('csrf_token', board.getAttribute('data-csrf'));
@@ -270,6 +272,7 @@ document.addEventListener('click', function (e) {
             fetch(board.getAttribute('data-action'), { method: 'POST', body: body, credentials: 'same-origin' })
                 .then(function () { window.location.reload(); })
                 .catch(function () { window.location.reload(); });
+            });
         });
     });
 })();
@@ -315,12 +318,22 @@ document.addEventListener('click', function (e) {
             btn.addEventListener('click', function () {
                 var cmd = btn.getAttribute('data-cmd');
                 var arg = btn.getAttribute('data-arg');
+                var run = function (value) {
+                    area.focus();
+                    document.execCommand(cmd, false, value ? (cmd === 'formatBlock' ? '<' + value + '>' : value) : null);
+                };
                 if (cmd === 'createLink') {
-                    arg = window.prompt('Link address (https://…)', 'https://');
-                    if (!arg) return;
+                    // Keep the selected text while the dialog is open, then link it.
+                    var sel = window.getSelection();
+                    var range = sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
+                    SP.prompt('Link address', { value: 'https://', type: 'url', button: 'Add link' }).then(function (url) {
+                        if (!url || !range) return;
+                        sel.removeAllRanges(); sel.addRange(range);
+                        run(url);
+                    });
+                    return;
                 }
-                document.execCommand(cmd, false, arg ? (cmd === 'formatBlock' ? '<' + arg + '>' : arg) : null);
-                area.focus();
+                run(arg);
             });
         });
         var form = box.closest('form');

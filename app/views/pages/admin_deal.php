@@ -146,7 +146,7 @@ require __DIR__ . '/../partials/admin_header.php';
         </section>
         <?php if (admin_is_admin()): ?>
         <details class="admin-danger-zone"><summary>Delete deal</summary>
-            <form method="post" onsubmit="return confirm('Delete this deal and its history?');"><?= csrf_field() ?><input type="hidden" name="action" value="delete"><button type="submit" class="btn btn-outline btn-sm admin-btn-on-dark">Delete Deal</button></form>
+            <form method="post" data-confirm="Delete this deal and its history?" data-confirm-button="Delete" data-confirm-danger><?= csrf_field() ?><input type="hidden" name="action" value="delete"><button type="submit" class="btn btn-outline btn-sm admin-btn-on-dark">Delete Deal</button></form>
         </details>
         <?php endif; ?>
     </aside>

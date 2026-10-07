@@ -107,7 +107,7 @@ require __DIR__ . '/../partials/admin_header.php';
 </div>
 
 <?php if (!$suppliers): ?>
-    <div class="alert alert-error">Add a supplier first — <a href="<?= path('admin/suppliers/new') ?>">Add Supplier</a>.</div>
+    <div class="alert alert-error alert-static">Add a supplier first — <a href="<?= path('admin/suppliers/new') ?>">Add Supplier</a>.</div>
 <?php endif; ?>
 <?php if ($errors): ?>
     <div class="alert alert-error"><ul style="margin:0;padding-left:1.2em;"><?php foreach ($errors as $error): ?><li><?= e($error) ?></li><?php endforeach; ?></ul></div>

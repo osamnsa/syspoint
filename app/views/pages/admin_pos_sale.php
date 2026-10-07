@@ -97,7 +97,7 @@ require __DIR__ . '/../partials/admin_header.php';
             <label for="reason">Reason</label>
             <input type="text" id="reason" name="reason" maxlength="255" required placeholder="e.g. Entered by mistake / customer changed mind">
         </div>
-        <button type="submit" class="btn btn-outline" onclick="return confirm('Void this sale and put the items back in stock?');">Void Sale</button>
+        <button type="submit" class="btn btn-outline" data-confirm="Void this sale and put the items back in stock?" data-confirm-button="Void" data-confirm-danger>Void Sale</button>
     </form>
 </details>
 <?php endif; ?>

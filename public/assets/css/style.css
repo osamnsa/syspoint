@@ -1223,3 +1223,48 @@ main:has(.gaming-arcade) + .site-footer { margin-top: 0; }
 
 .footer-social { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 12px 0 0; padding: 0; }
 .footer-social a { color: var(--brand-gold); font-size: 0.85rem; font-weight: 600; }
+
+/* ---- SweetAlert2, in Syspoint colours (public site + admin) ---------------- */
+.swal2-container { z-index: 2000; }
+.swal2-container.swal2-backdrop-show { background: rgba(14, 14, 36, 0.62); backdrop-filter: blur(3px); }
+.sp-swal.swal2-popup {
+    width: min(440px, calc(100vw - 32px)); padding: 26px 24px 22px; border-radius: 20px;
+    background: linear-gradient(165deg, #23235c 0%, var(--brand-midnight) 60%, #0f0f2c 100%);
+    color: #fff; font-family: var(--font-body);
+    box-shadow: 0 30px 80px rgba(5, 5, 20, 0.55), inset 0 1px 0 rgba(255,255,255,0.14);
+    border: 1px solid rgba(247, 203, 30, 0.35);
+}
+.sp-swal .sp-swal-title { font-family: var(--font-display); font-weight: 900; font-size: 1.3rem; line-height: 1.25; color: #fff; padding: 6px 4px 0; }
+.sp-swal .sp-swal-text { color: rgba(255,255,255,0.78); font-size: 0.95rem; margin: 10px 4px 0; }
+.sp-swal .sp-swal-text p { margin: 0; }
+.sp-swal-list { margin: 4px 0 0; padding: 0; list-style: none; text-align: left; display: grid; gap: 8px; }
+.sp-swal-list li { position: relative; padding-left: 20px; }
+.sp-swal-list li::before { content: ""; position: absolute; left: 4px; top: 0.55em; width: 7px; height: 7px; border-radius: 2px; background: var(--brand-gold); transform: rotate(45deg); }
+.sp-swal .sp-swal-actions { gap: 10px; margin-top: 22px; }
+.sp-swal .sp-swal-actions .btn { min-width: 120px; }
+.sp-swal .sp-swal-cancel { background: transparent; border-color: rgba(255,255,255,0.3); color: #fff; }
+.sp-swal .sp-swal-cancel:hover { border-color: #fff; color: #fff; }
+.sp-swal .sp-swal-danger { background: #D86A50; color: #fff; border-color: #D86A50; }
+.sp-swal .sp-swal-danger:hover { background: #e47c62; }
+.sp-swal .sp-swal-input { margin: 16px 4px 0; width: calc(100% - 8px); border-radius: 10px; border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.08); color: #fff; font: inherit; box-shadow: none; }
+.sp-swal .sp-swal-input:focus { border-color: var(--brand-gold); box-shadow: 0 0 0 3px rgba(247,203,30,0.22); }
+.sp-swal .sp-swal-validation { background: rgba(216,106,80,0.18); color: #F59A86; margin: 10px 4px 0; border-radius: 8px; }
+.sp-swal .swal2-icon { margin-top: 6px; transform: scale(0.82); }
+.sp-swal .swal2-icon.swal2-success { border-color: rgba(247,203,30,0.45); color: var(--brand-gold); }
+.sp-swal .swal2-icon.swal2-success [class^='swal2-success-line'] { background-color: var(--brand-gold); }
+.sp-swal .swal2-icon.swal2-success .swal2-success-ring { border-color: rgba(247,203,30,0.35); }
+.sp-swal .swal2-icon.swal2-success [class^='swal2-success-circular-line'], .sp-swal .swal2-icon.swal2-success .swal2-success-fix { background: transparent; }
+.sp-swal .swal2-icon.swal2-error { border-color: #F59A86; color: #F59A86; }
+.sp-swal .swal2-icon.swal2-error [class^='swal2-x-mark-line'] { background-color: #F59A86; }
+.sp-swal .swal2-icon.swal2-warning { border-color: var(--brand-gold); color: var(--brand-gold); }
+.sp-swal .swal2-icon.swal2-question { border-color: #8C8CF0; color: #8C8CF0; }
+.sp-swal .swal2-timer-progress-bar { background: var(--brand-gold); }
+/* Toasts: compact, top right */
+.sp-swal.sp-toast.swal2-popup { width: auto; max-width: min(420px, calc(100vw - 24px)); padding: 12px 16px; border-radius: 14px; }
+.sp-swal.sp-toast .swal2-title { color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 0.92rem; margin: 0 4px; }
+.sp-swal.sp-toast .swal2-icon { transform: none; margin: 0 6px 0 0; }
+.sp-swal-in { animation: sp-swal-in 0.22s ease-out; }
+.sp-swal-out { animation: sp-swal-out 0.15s ease-in forwards; }
+@keyframes sp-swal-in { from { opacity: 0; transform: translateY(10px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes sp-swal-out { to { opacity: 0; transform: scale(0.97); } }
+@media (prefers-reduced-motion: reduce) { .sp-swal-in, .sp-swal-out { animation: none; } }

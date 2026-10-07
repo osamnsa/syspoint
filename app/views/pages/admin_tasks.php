@@ -103,7 +103,7 @@ require __DIR__ . '/../partials/admin_header.php';
                 </td>
                 <td style="white-space:nowrap;"><?= $t['due_date'] ? '<span class="' . ($late ? 'badge badge-danger' : ($t['due_date'] === $today ? 'badge badge-warning' : '')) . '">' . e($t['due_date'] === $today ? 'Today' : (new DateTimeImmutable($t['due_date']))->format('D j M')) . '</span>' : '—' ?></td>
                 <td><?= e($t['assignee'] ?? '—') ?></td>
-                <td><form method="post" style="margin:0;" onsubmit="return confirm('Delete this task?');"><?= csrf_field() ?><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?= (int) $t['id'] ?>"><button type="submit" class="admin-row-remove" aria-label="Delete task">×</button></form></td>
+                <td><form method="post" style="margin:0;" data-confirm="Delete this task?" data-confirm-button="Delete" data-confirm-danger><?= csrf_field() ?><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?= (int) $t['id'] ?>"><button type="submit" class="admin-row-remove" aria-label="Delete task">×</button></form></td>
             </tr>
         <?php endforeach; ?>
         <?php if (!$tasks): ?><tr><td colspan="6" class="admin-empty"><?= $view === 'done' ? 'Nothing completed yet.' : 'Nothing to do here. 🎉' ?></td></tr><?php endif; ?>

@@ -578,6 +578,21 @@ Midnight/swoosh backdrop with glass panels.
   (the fourth revenue colour), and enrolments appear on the customer
   timeline.
 
+### Alerts (SweetAlert2)
+
+All messages, confirmations and prompts — public site and admin — use
+SweetAlert2 (self-hosted in `public/assets/vendor/sweetalert2/`, MIT),
+styled in the brand colours. `public/assets/js/alerts.js` does it without
+touching each page: server messages (`.alert-success` → toast;
+`.alert-error` / `.alert-warning` → dialog listing the problems) are
+converted on load, and the original box stays in the HTML as the no-JS
+fallback (`.alert-static` opts a box out). For "are you sure?" steps, put
+`data-confirm="Delete this task?"` on the form or submit button (optional
+`data-confirm-button="Delete"`, `data-confirm-danger` for a red button);
+if SweetAlert fails to load it falls back to the browser's `confirm()`, so
+destructive actions are never left unconfirmed. Scripts can call
+`SP.toast()`, `SP.alert()`, `SP.confirm()` and `SP.prompt()`.
+
 ## Security Notes
 
 - All DB queries use PDO prepared statements (`ATTR_EMULATE_PREPARES`

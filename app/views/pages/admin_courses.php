@@ -32,7 +32,7 @@ require __DIR__ . '/../partials/admin_header.php';
                         <td><?php if ($course['is_active']): ?><span class="badge badge-success">Active</span><?php else: ?><span class="badge badge-muted">Hidden</span><?php endif; ?></td>
                         <td style="white-space:nowrap;">
                             <a href="<?= path('admin/courses/' . (int) $course['id'] . '/edit') ?>" class="btn btn-outline btn-sm">Edit</a>
-                            <form method="post" action="<?= path('admin/courses/' . (int) $course['id'] . '/delete') ?>" style="display:inline;" onsubmit="return confirm('Delete this course? This cannot be undone.');">
+                            <form method="post" action="<?= path('admin/courses/' . (int) $course['id'] . '/delete') ?>" style="display:inline;" data-confirm="Delete this course? This cannot be undone." data-confirm-button="Delete" data-confirm-danger>
                                 <?= csrf_field() ?>
                                 <button type="submit" class="btn btn-outline btn-sm">Delete</button>
                             </form>

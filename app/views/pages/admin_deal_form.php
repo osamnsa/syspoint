@@ -70,7 +70,7 @@ require __DIR__ . '/../partials/admin_header.php';
     <a href="<?= path($deal ? 'admin/deals/' . $dealId : 'admin/deals') ?>" class="btn btn-outline btn-sm">Back</a>
 </div>
 
-<?php if (!$customers): ?><div class="alert alert-error">Add a customer first — <a href="<?= path('admin/customers/new') ?>">Add Customer</a>.</div><?php endif; ?>
+<?php if (!$customers): ?><div class="alert alert-error alert-static">Add a customer first — <a href="<?= path('admin/customers/new') ?>">Add Customer</a>.</div><?php endif; ?>
 <?php if ($errors): ?>
     <div class="alert alert-error"><ul style="margin:0;padding-left:1.2em;"><?php foreach ($errors as $error): ?><li><?= e($error) ?></li><?php endforeach; ?></ul></div>
 <?php endif; ?>

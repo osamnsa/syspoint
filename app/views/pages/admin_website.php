@@ -86,7 +86,7 @@ require __DIR__ . '/../partials/admin_header.php';
                     <label for="<?= $id ?>-in"><?= e($field['label']) ?></label>
                     <?php if ($changed): ?>
                         <span class="badge badge-warning">Edited</span>
-                        <button type="submit" name="reset" value="<?= e($key) ?>" class="site-reset" formnovalidate onclick="return confirm('Put back the original?');">Reset</button>
+                        <button type="submit" name="reset" value="<?= e($key) ?>" class="site-reset" formnovalidate data-confirm="Put back the original?" data-confirm-button="Reset">Reset</button>
                     <?php endif; ?>
                 </div>
                 <?php if ($field['type'] === 'image'): ?>

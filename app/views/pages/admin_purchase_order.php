@@ -113,7 +113,7 @@ require __DIR__ . '/../partials/admin_header.php';
         <form method="post"><?= csrf_field() ?><input type="hidden" name="action" value="ordered"><button type="submit" class="btn btn-primary btn-sm">Mark as Ordered</button></form>
     <?php endif; ?>
     <?php if (!array_sum(array_column($items, 'qty_received'))): ?>
-        <form method="post" onsubmit="return confirm('Cancel this purchase order?');"><?= csrf_field() ?><input type="hidden" name="action" value="cancel"><button type="submit" class="btn btn-outline btn-sm admin-btn-on-dark">Cancel Order</button></form>
+        <form method="post" data-confirm="Cancel this purchase order?" data-confirm-button="Cancel order" data-confirm-danger><?= csrf_field() ?><input type="hidden" name="action" value="cancel"><button type="submit" class="btn btn-outline btn-sm admin-btn-on-dark">Cancel Order</button></form>
     <?php endif; ?>
 </div>
 <?php endif; ?>

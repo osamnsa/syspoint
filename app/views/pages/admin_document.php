@@ -139,7 +139,7 @@ require __DIR__ . '/../partials/admin_header.php';
                         <?php if ($doc['status'] === 'draft'): ?><button type="submit" name="to" value="sent" class="btn btn-outline btn-sm admin-btn-on-dark">Mark as sent</button><?php endif; ?>
                     </form>
                     <?php if ((float) $doc['amount_paid'] == 0.0): ?>
-                        <form method="post" onsubmit="return confirm('Void this invoice?');"><?= csrf_field() ?><input type="hidden" name="action" value="void"><button type="submit" class="btn btn-outline btn-sm admin-btn-on-dark">Void invoice</button></form>
+                        <form method="post" data-confirm="Void this invoice?" data-confirm-button="Void" data-confirm-danger><?= csrf_field() ?><input type="hidden" name="action" value="void"><button type="submit" class="btn btn-outline btn-sm admin-btn-on-dark">Void invoice</button></form>
                     <?php endif; ?>
                 <?php endif; ?>
             </section>
