@@ -99,7 +99,7 @@ app/
   software_clinic.php              Deployed-business portfolio lookups
   gaming.php                         Games, rooms, and booking-overlap check
   training.php                         Training course lookups
-  showcase.php                          Homepage clients, testimonials, stats
+  showcase.php                          Homepage testimonials, stats, media_url()
   views/
     partials/            header.php, nav.php, footer.php,
                            admin_header.php, admin_footer.php
@@ -369,22 +369,29 @@ used everywhere else in this project.
 
 ### Homepage social proof
 
-Three sections carried over from the old WordPress site
-(staging.syspoint.com.ng): a stats band (Clients / Years in Business /
-Employees), a client-logo grid, and testimonials.
+Carried over from the old WordPress site (staging.syspoint.com.ng): the
+three headline stats, client logos and testimonials. Merged in from the
+`home-social-proof` branch and fitted to the redesigned home page.
 
-- **Clients** and **Testimonials** are admin-managed tables
-  (`/admin/clients`, `/admin/testimonials`) with the same CRUD shape as
-  Businesses. `seed.sql` carries over the old site's five logos and two
-  testimonials.
 - **Stats** are three `content_blocks` (`home.stat_clients`,
   `home.stat_years`, `home.stat_employees`) edited at `/admin/home-stats`.
-  Free text so "150+" works. The band stays hidden until at least one is
-  filled in — no invented numbers on a fresh install.
+  Free text so "150+" works. They fill the hero's stats bar; until at
+  least one is set, the bar shows placeholder facts (5 services / free
+  Wi-Fi / opening hours) rather than invented numbers.
+- **Client logos** are `deployed_businesses` rows (Admin -> Businesses) —
+  one list behind the homepage "Organisations we've worked with" section
+  and the Software Clinic portfolio. There is no separate clients table.
+- **Testimonials** are an admin-managed table (`/admin/testimonials`),
+  shown as a dark band on the homepage, hidden when there are none.
+- **Content**: `database/social_proof.sql` holds the old site's five
+  logos and two testimonials. Run it once on any install (fresh or live)
+  after `schema.sql`; it is safe to re-run — rows are matched by name /
+  person + quote, so it never duplicates or overwrites admin edits.
 - Seeded logos/photos still point at the old site's media library
   (`media_url()` passes absolute URLs through). **Re-upload them in the
-  admin before the WordPress site goes away**, or they'll break.
-- The old site's third logo (`images.png`) had no name, so it's seeded
+  admin before the WordPress site goes away.** Until then, a logo or
+  photo that fails to load falls back to the name's initial(s).
+- The old site's third logo (`images.png`) had no name, so it's added
   hidden as "Unnamed client (rename me)".
 
 ## Security Notes

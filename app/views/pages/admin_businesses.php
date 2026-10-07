@@ -23,7 +23,7 @@ require __DIR__ . '/../partials/admin_header.php';
                     <tr>
                         <td>
                             <?php if ($business['logo_path']): ?>
-                                <img src="<?= asset(e($business['logo_path'])) ?>" alt="" style="width:36px;height:36px;object-fit:contain;border-radius:6px;">
+                                <img src="<?= media_url($business['logo_path']) ?>" alt="" style="width:36px;height:36px;object-fit:contain;border-radius:6px;">
                             <?php endif; ?>
                         </td>
                         <td><?= e($business['name']) ?></td>

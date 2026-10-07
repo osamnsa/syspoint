@@ -114,7 +114,7 @@ require __DIR__ . '/../partials/header.php';
                         <?php foreach ($businesses as $business): ?>
                             <div class="portfolio-item">
                                 <?php if ($business['logo_path']): ?>
-                                    <img src="<?= asset(e($business['logo_path'])) ?>" alt="<?= e($business['name']) ?>">
+                                    <img src="<?= media_url($business['logo_path']) ?>" alt="<?= e($business['name']) ?>">
                                 <?php else: ?>
                                     <span class="portfolio-item-placeholder">🏢</span>
                                 <?php endif; ?>

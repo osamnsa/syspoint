@@ -2,10 +2,11 @@
 declare(strict_types=1);
 
 /**
- * Homepage social proof: client logos, testimonials, and the three headline
- * stats (clients / years in business / employees). Logos and testimonials
- * are admin-managed tables; the stats are content_blocks, since they're
- * three numbers rather than a list.
+ * Homepage social proof: testimonials and the three headline stats
+ * (clients / years in business / employees). Testimonials are an
+ * admin-managed table; the stats are content_blocks, since they're three
+ * numbers rather than a list. Client logos are deployed_businesses rows
+ * (Admin -> Businesses), shared with the Software Clinic portfolio.
  */
 
 /** Stat keys in display order => label. */
@@ -14,20 +15,6 @@ const HOME_STATS = [
     'home.stat_years' => 'Years in Business',
     'home.stat_employees' => 'Employees',
 ];
-
-function clients_active(): array
-{
-    return db()->query(
-        'SELECT * FROM clients WHERE is_active = 1 ORDER BY sort_order ASC, name ASC'
-    )->fetchAll();
-}
-
-function client_by_id(int $id): ?array
-{
-    $stmt = db()->prepare('SELECT * FROM clients WHERE id = :id LIMIT 1');
-    $stmt->execute(['id' => $id]);
-    return $stmt->fetch() ?: null;
-}
 
 function testimonials_active(): array
 {

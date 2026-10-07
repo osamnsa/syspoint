@@ -65,9 +65,10 @@ $services = [
         </div>
 
         <div class="home-stats">
-            <div class="home-stat"><strong>5</strong><span>Services, one roof</span></div>
-            <div class="home-stat"><strong>Free</strong><span>Wi-Fi for every gamer</span></div>
-            <div class="home-stat"><strong>9am–10pm</strong><span>Opening hours</span></div>
+            <?php $heroStats = home_stats() ?: ['Services, one roof' => '5', 'Wi-Fi for every gamer' => 'Free', 'Opening hours' => '9am–10pm']; ?>
+            <?php foreach ($heroStats as $label => $value): ?>
+                <div class="home-stat"><strong><?= e($value) ?></strong><span><?= e($label) ?></span></div>
+            <?php endforeach; ?>
             <a href="<?= path('contact') ?>" class="btn btn-primary home-stats-cta">Get in Touch →</a>
         </div>
 
@@ -185,13 +186,42 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
     </div>
 </section>
 
-<!-- 4. Software Clinic: businesses we've built for -->
+<!-- 4. Testimonials (Admin -> Testimonials) -->
+<?php $testimonials = testimonials_active(); ?>
+<?php if ($testimonials): ?>
+<section class="home-testimonials">
+    <div class="container">
+        <span class="eyebrow">Testimonials</span>
+        <h2><?= e(content_block('home.testimonials_title', 'What our clients say')) ?></h2>
+        <div class="testimonial-grid">
+            <?php foreach ($testimonials as $t): ?>
+                <figure class="testimonial">
+                    <svg class="testimonial-mark" viewBox="0 0 32 24" aria-hidden="true"><path d="M0 24V14C0 6 4 1 12 0l1 4C8 5 6 8 6 12h6v12zm19 0V14c0-8 4-13 12-14l1 4c-5 1-7 4-7 8h6v12z" fill="currentColor"/></svg>
+                    <blockquote><?= e($t['quote']) ?></blockquote>
+                    <figcaption>
+                        <?php if ($t['photo_path']): ?>
+                            <img class="testimonial-photo" src="<?= media_url($t['photo_path']) ?>" alt="" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+                        <?php endif; ?>
+                        <span class="testimonial-photo testimonial-initials" aria-hidden="true"<?= $t['photo_path'] ? ' hidden' : '' ?>><?= e(initials($t['author_name'])) ?></span>
+                        <span>
+                            <strong><?= e($t['author_name']) ?></strong>
+                            <?php if ($t['author_company']): ?><span class="testimonial-company"><?= e($t['author_company']) ?></span><?php endif; ?>
+                        </span>
+                    </figcaption>
+                </figure>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
+<!-- 5. Clients & businesses we've built for — one list (Admin -> Businesses), shared with the Software Clinic portfolio -->
 <section class="section home-section">
     <div class="container">
         <div class="home-section-head">
             <div>
-                <span class="eyebrow">Software Clinic</span>
-                <h2><?= $homeBusinesses ? 'Businesses we&rsquo;ve built for' : 'Software built for your business' ?></h2>
+                <span class="eyebrow">Our clients</span>
+                <h2><?= $homeBusinesses ? e(content_block('home.clients_title', 'Organisations we’ve worked with')) : 'Software built for your business' ?></h2>
             </div>
             <a href="<?= path('software-clinic') ?>" class="home-section-link">Tell us what you need →</a>
         </div>
@@ -201,10 +231,9 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
                     <?php $tag = $biz['website_url'] ? 'a' : 'div'; ?>
                     <<?= $tag ?> class="home-client"<?php if ($biz['website_url']): ?> href="<?= e($biz['website_url']) ?>" target="_blank" rel="noopener"<?php endif; ?>>
                         <?php if ($biz['logo_path']): ?>
-                            <img src="<?= asset(e($biz['logo_path'])) ?>" alt="<?= e($biz['name']) ?>" loading="lazy">
-                        <?php else: ?>
-                            <span class="home-client-initial" aria-hidden="true"><?= e(mb_strtoupper(mb_substr($biz['name'], 0, 1))) ?></span>
+                            <img src="<?= media_url($biz['logo_path']) ?>" alt="<?= e($biz['name']) ?>" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
                         <?php endif; ?>
+                        <span class="home-client-initial" aria-hidden="true"<?= $biz['logo_path'] ? ' hidden' : '' ?>><?= e(mb_strtoupper(mb_substr($biz['name'], 0, 1))) ?></span>
                         <span class="home-client-name"><?= e($biz['name']) ?></span>
                     </<?= $tag ?>>
                 <?php endforeach; ?>
@@ -215,7 +244,7 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
     </div>
 </section>
 
-<!-- 5. Visit us -->
+<!-- 6. Visit us -->
 <section class="home-visit">
     <div class="container">
         <div class="home-section-head">

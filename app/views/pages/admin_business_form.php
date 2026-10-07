@@ -117,7 +117,7 @@ require __DIR__ . '/../partials/admin_header.php';
     <div class="form-group">
         <label for="logo">Logo</label>
         <?php if (!empty($business['logo_path'])): ?>
-            <img src="<?= asset(e($business['logo_path'])) ?>" alt="" style="width:64px;height:64px;object-fit:contain;border-radius:8px;margin-bottom:8px;display:block;">
+            <img src="<?= media_url($business['logo_path']) ?>" alt="" style="width:64px;height:64px;object-fit:contain;border-radius:8px;margin-bottom:8px;display:block;">
         <?php endif; ?>
         <input type="file" id="logo" name="logo" accept="image/jpeg,image/png,image/webp">
         <div class="form-note">JPG, PNG, or WEBP, up to 5MB. Leave empty to keep the current logo.</div>
