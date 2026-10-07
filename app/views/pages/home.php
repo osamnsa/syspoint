@@ -84,6 +84,33 @@ $homeBusinesses = deployed_businesses_active();
 $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Resettlement+Abuja';
 ?>
 
+<?php if ($homeBusinesses): ?>
+<!-- Trusted-by strip: right under the hero's "573 clients", the organisations we've
+     consulted with (Admin -> Businesses; also the Software Clinic portfolio).
+     Greyscale logos; organisations without a logo show their name as a grey wordmark. -->
+<section class="home-trusted" aria-labelledby="trusted-title">
+    <div class="container">
+        <p class="home-trusted-kicker">Our clients</p>
+        <h2 id="trusted-title"><?= e(content_block('home.clients_title', 'Organisations we’ve consulted with')) ?></h2>
+        <ul class="home-trusted-list">
+            <?php foreach ($homeBusinesses as $biz): ?>
+                <li>
+                    <?php $tag = $biz['website_url'] ? 'a' : 'div'; ?>
+                    <<?= $tag ?> class="home-trusted-item<?= $biz['logo_path'] ? ' has-logo' : '' ?>"<?php if ($biz['website_url']): ?> href="<?= e($biz['website_url']) ?>" target="_blank" rel="noopener"<?php endif; ?>>
+                        <?php if ($biz['logo_path']): ?>
+                            <img src="<?= media_url($biz['logo_path']) ?>" alt="" loading="lazy" onerror="this.hidden=true;this.parentElement.classList.remove('has-logo')">
+                        <?php endif; ?>
+                        <span class="home-trusted-name"><?= e($biz['name']) ?></span>
+                    </<?= $tag ?>>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <p class="home-trusted-more"><a href="<?= path('software-clinic') ?>">Need IT consulting or software? Tell us what you need →</a></p>
+    </div>
+</section>
+<?php endif; ?>
+
+
 <?php if ($homeProducts): ?>
 <!-- 1. New in the Shop -->
 <section class="section home-section">
@@ -186,7 +213,7 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
     </div>
 </section>
 
-<!-- 4. Testimonials (Admin -> Testimonials) -->
+<!-- 4. Testimonials (Admin -> Testimonials) — light band, so it doesn't sit dark-on-dark against Visit us -->
 <?php $testimonials = testimonials_active(); ?>
 <?php if ($testimonials): ?>
 <section class="home-testimonials">
@@ -215,36 +242,7 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
 </section>
 <?php endif; ?>
 
-<!-- 5. Organisations we've consulted with + businesses we've built for — one list (Admin -> Businesses), shared with the Software Clinic portfolio -->
-<section class="section home-section">
-    <div class="container">
-        <div class="home-section-head">
-            <div>
-                <span class="eyebrow">Our clients</span>
-                <h2><?= $homeBusinesses ? e(content_block('home.clients_title', 'Organisations we’ve consulted with')) : 'Software built for your business' ?></h2>
-            </div>
-            <a href="<?= path('software-clinic') ?>" class="home-section-link">Tell us what you need →</a>
-        </div>
-        <?php if ($homeBusinesses): ?>
-            <div class="home-clients">
-                <?php foreach ($homeBusinesses as $biz): ?>
-                    <?php $tag = $biz['website_url'] ? 'a' : 'div'; ?>
-                    <<?= $tag ?> class="home-client"<?php if ($biz['website_url']): ?> href="<?= e($biz['website_url']) ?>" target="_blank" rel="noopener"<?php endif; ?>>
-                        <?php if ($biz['logo_path']): ?>
-                            <img src="<?= media_url($biz['logo_path']) ?>" alt="<?= e($biz['name']) ?>" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
-                        <?php endif; ?>
-                        <span class="home-client-initial" aria-hidden="true"<?= $biz['logo_path'] ? ' hidden' : '' ?>><?= e(mb_strtoupper(mb_substr($biz['name'], 0, 1))) ?></span>
-                        <span class="home-client-name"><?= e($biz['name']) ?></span>
-                    </<?= $tag ?>>
-                <?php endforeach; ?>
-            </div>
-        <?php else: ?>
-            <p class="section-lede">From booking systems to online stores, we build and deploy what your business is missing. Tell us what you need and we&rsquo;ll quote it.</p>
-        <?php endif; ?>
-    </div>
-</section>
-
-<!-- 6. Visit us -->
+<!-- 5. Visit us -->
 <section class="home-visit">
     <div class="container">
         <div class="home-section-head">

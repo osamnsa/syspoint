@@ -379,10 +379,11 @@ three headline stats, client logos and testimonials. Merged in from the
   least one is set, the bar shows placeholder facts (5 services / free
   Wi-Fi / opening hours) rather than invented numbers.
 - **Client logos** are `deployed_businesses` rows (Admin -> Businesses) —
-  one list behind the homepage "Organisations we've consulted with" section
+  one list behind the homepage "Organisations we've consulted with" strip
+  (directly under the hero, so the 573-clients stat sits next to its proof)
   and the Software Clinic portfolio. There is no separate clients table.
 - **Testimonials** are an admin-managed table (`/admin/testimonials`),
-  shown as a dark band on the homepage, hidden when there are none.
+  shown as a light band before Visit Us, hidden when there are none.
 - **Content**: `database/social_proof.sql` holds the old site's five
   logos and two testimonials, the full list of institutions consulted for,
   and the stats (573 clients / 10 years / 38 employees — only filled in
