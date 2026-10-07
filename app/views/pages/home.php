@@ -67,7 +67,8 @@ $services = [
         <div class="home-stats">
             <?php $heroStats = home_stats() ?: ['Services, one roof' => '5', 'Wi-Fi for every gamer' => 'Free', 'Opening hours' => '9am–10pm']; ?>
             <?php foreach ($heroStats as $label => $value): ?>
-                <div class="home-stat"><strong><?= e($value) ?></strong><span><?= e($label) ?></span></div>
+                <?php $short = HOME_STATS_SHORT[$label] ?? null; // shorter label on phones, e.g. "Experience" ?>
+                <div class="home-stat"><strong><?= e($value) ?></strong><span><?php if ($short): ?><span class="label-full"><?= e($label) ?></span><span class="label-short"><?= e($short) ?></span><?php else: ?><?= e($label) ?><?php endif; ?></span></div>
             <?php endforeach; ?>
             <a href="<?= path('contact') ?>" class="btn btn-primary home-stats-cta">Get in Touch →</a>
         </div>

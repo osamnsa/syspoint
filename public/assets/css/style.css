@@ -374,6 +374,12 @@ a.home-service:hover, a.home-service:focus-visible {
 .home-stat { flex: 1; text-align: center; padding: 4px 12px; border-right: 1px solid rgba(201, 202, 232, 0.18); }
 .home-stat strong { display: block; font-family: var(--font-display); font-weight: 900; font-size: 1.6rem; color: #fff; line-height: 1.1; }
 .home-stat span { font-size: 0.82rem; color: #C9CAE8; }
+.home-stat .label-full, .home-stat .label-short { font-size: inherit; color: inherit; }
+.home-stat .label-short { display: none; }
+@media (max-width: 640px) {
+    .home-stat .label-full { display: none; }
+    .home-stat .label-short { display: inline; }
+}
 .home-stats-cta { margin-left: 12px; white-space: nowrap; }
 
 .home-hero-tagline {

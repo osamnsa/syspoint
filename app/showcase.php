@@ -16,6 +16,11 @@ const HOME_STATS = [
     'home.stat_employees' => 'Employees',
 ];
 
+/** Shorter stat labels for phones, keyed by the full label above. */
+const HOME_STATS_SHORT = [
+    'Years Experience' => 'Experience',
+];
+
 function testimonials_active(): array
 {
     return db()->query(
