@@ -88,7 +88,8 @@ app/
   helpers.php              e(), csrf_token()/csrf_field()/verify_csrf(),
                             flash(), path()/asset()/url(), slugify(),
                             handle_image_upload()
-  admin.php                 Session-based admin auth
+  admin.php                 Session-based admin auth, staff roles/areas and
+                              central page access (ADMIN_AREA_PATHS)
   content_blocks.php         Lightweight in-house CMS for editable copy
   products.php                Category/product query helpers
   cart.php                     Session-based cart (no DB table)
@@ -100,9 +101,12 @@ app/
   gaming.php                         Games, rooms, and booking-overlap check
   training.php                         Training course lookups
   showcase.php                          Homepage testimonials, stats, media_url()
+  charts.php                             Server-rendered SVG charts (line, bars, donut)
+  dashboard.php                           Numbers behind the admin dashboards
   views/
     partials/            header.php, nav.php, footer.php,
-                           admin_header.php, admin_footer.php
+                           admin_header.php (sidebar shell), admin_nav.php
+                           (menu + icons), admin_backdrop.php, admin_footer.php
     pages/                 One file per route
 database/
   schema.sql              Full schema, every phase, safe to re-run
@@ -403,6 +407,40 @@ three headline stats, client logos and testimonials. Merged in from the
   shows the person's initials.
 - The old site's third logo (`images.png`) had no name, so it's added
   hidden as "Unnamed client (rename me)".
+
+### Back office (admin) — roles and dashboards
+
+The admin is a sidebar app (`admin_header.php` + `admin_nav.php`) on the
+Midnight/swoosh backdrop with glass panels.
+
+- **Staff & roles** (`/admin/staff`, administrators only): an
+  *Administrator* sees everything; *Staff* see only the areas ticked for
+  them — Sales & CRM, Store & Inventory, Gaming, Training, Website. Access
+  is enforced in one place: `require_admin()` maps the URL to an area via
+  `ADMIN_AREA_PATHS` in `app/admin.php` and shows a 403 page otherwise, so
+  a new page only needs `require_admin()` plus one line in that map (an
+  unmapped admin page is administrators-only by default). The sidebar hides
+  what a person can't open. Deactivate staff rather than deleting them; a
+  deactivated account is signed out on its next click. You can't change
+  your own role or deactivate yourself, and the last active administrator
+  can't be demoted.
+- **My Account** (`/admin/account`): everyone changes their own name,
+  email and password (current password required). **Change the seeded
+  `admin@syspoint.example` login here before going live.**
+- **Overview** (`/admin`, everyone): revenue over time by stream with a
+  7-day / 30-day / 90-day / 12-month switch and change vs the previous
+  period, revenue mix, KPI tiles, "needs attention" counts, upcoming room
+  bookings, the Software Clinic funnel, bookings over time, a 6-month
+  summary and recent messages. Each block only appears for staff whose
+  areas cover it. Revenue = paid online orders + confirmed/completed room
+  bookings (hours × room rate); walk-in POS sales and CRM invoices join
+  when those modules land (`dashboard_revenue_streams()`).
+- **Charts** are server-rendered SVG (`app/charts.php`) — no chart library
+  or CDN. Hover shows a tooltip (`public/assets/js/admin.js`); every chart
+  has a "View as table" or table alternative. Series colours are a fixed,
+  colour-blind-checked order: Shop `#B48C00`, Gaming `#7A7AE6`,
+  Software/CRM `#1E9E86`, Training `#D86A50`; a single series uses brand
+  gold.
 
 ## Security Notes
 

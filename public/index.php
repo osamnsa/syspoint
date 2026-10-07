@@ -45,6 +45,10 @@ $routes = [
     '#^admin/login$#' => __DIR__ . '/../app/views/pages/admin_login.php',
     '#^admin/logout$#' => __DIR__ . '/../app/views/pages/admin_logout.php',
     '#^admin$#' => __DIR__ . '/../app/views/pages/admin_dashboard.php',
+    '#^admin/staff$#' => __DIR__ . '/../app/views/pages/admin_staff.php',
+    '#^admin/staff/new$#' => __DIR__ . '/../app/views/pages/admin_staff_form.php',
+    '#^admin/staff/(\d+)/edit$#' => __DIR__ . '/../app/views/pages/admin_staff_form.php',
+    '#^admin/account$#' => __DIR__ . '/../app/views/pages/admin_account.php',
 
     '#^admin/products$#' => __DIR__ . '/../app/views/pages/admin_products.php',
     '#^admin/products/new$#' => __DIR__ . '/../app/views/pages/admin_product_form.php',

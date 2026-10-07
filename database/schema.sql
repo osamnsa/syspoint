@@ -19,6 +19,14 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Staff roles: 'admin' sees everything; 'staff' sees only the areas ticked
+-- for them in Admin -> Staff (comma-separated keys from ADMIN_AREAS in
+-- app/admin.php, e.g. 'sales,store').
+ALTER TABLE users MODIFY COLUMN role VARCHAR(20) NOT NULL DEFAULT 'staff';
+ALTER TABLE users ADD COLUMN IF NOT EXISTS areas VARCHAR(255) NULL AFTER role;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS is_active TINYINT(1) NOT NULL DEFAULT 1 AFTER areas;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS last_login_at TIMESTAMP NULL AFTER is_active;
+
 -- ---------------------------------------------------------------------------
 -- Gadget sales: categories -> products -> cart-derived orders.
 -- Two top-level categories today (Computers, Accessories) but parent_id
