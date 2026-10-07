@@ -19,6 +19,7 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/admin.php';
 require_once __DIR__ . '/content_blocks.php';
+require_once __DIR__ . '/site_content.php';
 require_once __DIR__ . '/products.php';
 require_once __DIR__ . '/cart.php';
 require_once __DIR__ . '/orders.php';

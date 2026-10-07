@@ -15,29 +15,26 @@ require __DIR__ . '/../partials/header.php';
 <section class="shop-hero">
     <div class="container shop-hero-inner">
         <div class="shop-hero-copy">
-            <span class="eyebrow">Discover. Shop. Upgrade.</span>
-            <h1><?= e(content_block('shop.hero_title_prefix', 'Latest Tech')) ?> <span class="shop-hero-highlight"><?= e(content_block('shop.hero_title_highlight', 'Gadgets')) ?></span></h1>
-            <p><?= e(content_block('shop.hero_subtitle', 'Genuine gadgets and accessories, in stock now, with secure checkout and fast local delivery.')) ?></p>
+            <span class="eyebrow"><?= e(site('shop.eyebrow')) ?></span>
+            <h1><?= e(site('shop.hero_title_prefix')) ?> <span class="shop-hero-highlight"><?= e(site('shop.hero_title_highlight')) ?></span></h1>
+            <p><?= e(site('shop.hero_subtitle')) ?></p>
             <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:24px;">
-                <a href="#categories" class="btn btn-primary">Shop Now →</a>
+                <a href="#categories" class="btn btn-primary"><?= e(site('shop.btn_primary')) ?></a>
                 <?php if ($trending): ?>
-                    <a href="#trending" class="btn btn-outline btn-outline-light">Browse Collection</a>
+                    <a href="#trending" class="btn btn-outline btn-outline-light"><?= e(site('shop.btn_secondary')) ?></a>
                 <?php endif; ?>
             </div>
         </div>
         <div class="shop-hero-art">
-            <picture>
-                <source srcset="<?= asset('assets/img/shop/hero-laptops.webp') ?>" type="image/webp">
-                <img src="<?= asset('assets/img/shop/hero-laptops.jpg') ?>" alt="Two slim laptops, one open showing a colourful screen" width="728" height="520" fetchpriority="high">
-            </picture>
+            <?= site_picture('shop.hero_image', 'Two slim laptops, one open showing a colourful screen', ['width' => 728, 'height' => 520, 'fetchpriority' => 'high']) ?>
         </div>
     </div>
 </section>
 
 <section class="section" id="categories">
     <div class="container">
-        <span class="eyebrow">Browse</span>
-        <h2>Shop by Category</h2>
+        <span class="eyebrow"><?= e(site('shop.categories_eyebrow')) ?></span>
+        <h2><?= e(site('shop.categories_title')) ?></h2>
 
         <?php if (!$categories): ?>
             <p style="color:var(--color-text-muted);">No categories yet — check back soon.</p>
@@ -63,8 +60,8 @@ require __DIR__ . '/../partials/header.php';
     <div class="container">
         <div class="admin-header-row" style="margin-bottom:12px;">
             <div>
-                <span class="eyebrow">Just In</span>
-                <h2 style="margin-bottom:0;">New Arrivals</h2>
+                <span class="eyebrow"><?= e(site('shop.new_eyebrow')) ?></span>
+                <h2 style="margin-bottom:0;"><?= e(site('shop.new_title')) ?></h2>
             </div>
         </div>
         <div class="product-grid">
@@ -94,16 +91,16 @@ require __DIR__ . '/../partials/header.php';
         <div class="shop-visit-card">
             <div class="shop-visit-icon" aria-hidden="true">📍</div>
             <div class="shop-visit-copy">
-                <span class="eyebrow">Visit the gadget store</span>
-                <h2>See it, try it, take it home</h2>
+                <span class="eyebrow"><?= e(site('shop.visit_eyebrow')) ?></span>
+                <h2><?= e(site('shop.visit_title')) ?></h2>
                 <address>
-                    <strong>Syspoint Solutions Consult Limited</strong><br>
-                    Suite C20, Awesome Plaza, Opposite Chicken Republic,<br>
-                    Apo Resettlement, Abuja
+                    <strong><?= e(site('site.store_short')) ?></strong><br>
+                    <?php $plazaParts = explode(', ', site('site.plaza'), 3); ?>
+                    <?= e(site('site.store_suite')) ?>, <?= e(implode(', ', array_slice($plazaParts, 0, 2))) ?><?= isset($plazaParts[2]) ? ',<br>' . e($plazaParts[2]) : '' ?>
                 </address>
-                <p class="shop-visit-meta">Open 9am – 10pm · <a href="mailto:syspointmail@gmail.com">syspointmail@gmail.com</a></p>
+                <p class="shop-visit-meta">Open <?= e(site('site.hours')) ?> · <a href="mailto:<?= e(site('site.email')) ?>"><?= e(site('site.email')) ?></a><?php if (site('site.phone')): ?> · <a href="tel:<?= e(preg_replace('/[^\d+]/', '', site('site.phone'))) ?>"><?= e(site('site.phone')) ?></a><?php endif; ?></p>
             </div>
-            <a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&amp;query=Awesome+Plaza+Apo+Resettlement+Abuja" target="_blank" rel="noopener">Get Directions →</a>
+            <a class="btn btn-primary" href="<?= e(site('site.maps_url')) ?>" target="_blank" rel="noopener"><?= e(site('home.visit_btn')) ?></a>
         </div>
     </div>
 </section>
@@ -112,19 +109,19 @@ require __DIR__ . '/../partials/header.php';
     <div class="container trust-badges-grid">
         <div class="trust-badge">
             <span class="trust-badge-icon">✅</span>
-            <div><strong>100% Genuine</strong><span>Authentic products only</span></div>
+            <div><strong><?= e(site('shop.badge1_title')) ?></strong><span><?= e(site('shop.badge1_text')) ?></span></div>
         </div>
         <div class="trust-badge">
             <span class="trust-badge-icon">🔒</span>
-            <div><strong>Secure Checkout</strong><span>Paystack-protected payments</span></div>
+            <div><strong><?= e(site('shop.badge2_title')) ?></strong><span><?= e(site('shop.badge2_text')) ?></span></div>
         </div>
         <div class="trust-badge">
             <span class="trust-badge-icon">🚚</span>
-            <div><strong>Fast Delivery</strong><span>Quick local dispatch</span></div>
+            <div><strong><?= e(site('shop.badge3_title')) ?></strong><span><?= e(site('shop.badge3_text')) ?></span></div>
         </div>
         <div class="trust-badge">
             <span class="trust-badge-icon">🎧</span>
-            <div><strong>Real Support</strong><span>We answer, quote your order ref</span></div>
+            <div><strong><?= e(site('shop.badge4_title')) ?></strong><span><?= e(site('shop.badge4_text')) ?></span></div>
         </div>
     </div>
 </section>

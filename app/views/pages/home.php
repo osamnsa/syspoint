@@ -2,13 +2,13 @@
 declare(strict_types=1);
 
 $pageTitle = 'Home';
-$pageDescription = 'Syspoint — computers & accessories, a software clinic, a gaming lounge, IT consulting, and internship training, all in one place.';
+$pageDescription = site('site.meta_description');
 
 require __DIR__ . '/../partials/header.php';
 ?>
 
 <?php
-$consultingUrl = config()['app']['consulting_url'];
+$consultingUrl = site('site.consulting_url');
 // Icons: simple 24px line glyphs, stroked in currentColor (gold on the cards).
 $icons = [
     'shop' => '<path d="M3 6h18M5 6l1.5 12h11L19 6M9 10v4M15 10v4"/><path d="M9 6a3 3 0 0 1 6 0"/>',
@@ -18,11 +18,11 @@ $icons = [
     'chart' => '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
 ];
 $services = [
-    ['href' => path('shop'), 'icon' => 'shop', 'title' => 'Computers & Gadgets', 'text' => 'Genuine laptops & accessories'],
-    ['href' => path('software-clinic'), 'icon' => 'code', 'title' => 'Software Clinic', 'text' => 'We build what your business needs'],
-    ['href' => path('gaming'), 'icon' => 'game', 'title' => 'Gaming Lounge', 'text' => 'PS5, VR arena & board games', 'featured' => true],
-    ['href' => path('training'), 'icon' => 'learn', 'title' => 'IT Training', 'text' => 'Courses & internships'],
-    ['href' => $consultingUrl ?: null, 'icon' => 'chart', 'title' => 'IT Consulting', 'text' => 'Strategy for people & businesses', 'external' => true],
+    ['href' => path('shop'), 'icon' => 'shop', 'title' => site('home.svc1_title'), 'text' => site('home.svc1_text')],
+    ['href' => path('software-clinic'), 'icon' => 'code', 'title' => site('home.svc2_title'), 'text' => site('home.svc2_text')],
+    ['href' => path('gaming'), 'icon' => 'game', 'title' => site('home.svc3_title'), 'text' => site('home.svc3_text'), 'featured' => true],
+    ['href' => path('training'), 'icon' => 'learn', 'title' => site('home.svc4_title'), 'text' => site('home.svc4_text')],
+    ['href' => $consultingUrl ?: null, 'icon' => 'chart', 'title' => site('home.svc5_title'), 'text' => site('home.svc5_text'), 'external' => true],
 ];
 ?>
 <section class="home-hero">
@@ -38,22 +38,16 @@ $services = [
     </svg>
 
     <div class="container home-hero-head">
-        <span class="home-hero-kicker">...challenging conventions</span>
-        <h1><?= e(content_block('home.hero_title_prefix', 'Everything Tech,')) ?> <span><?= e(content_block('home.hero_title_highlight', 'In One Place')) ?></span></h1>
-        <p><?= e(content_block('home.hero_subtitle', 'Computers and accessories, a software clinic that builds what your business needs, a gaming lounge with a VIP and common room, and a training centre turning out interns ready to work.')) ?></p>
+        <span class="home-hero-kicker"><?= e(site('site.tagline')) ?></span>
+        <h1><?= e(site('home.hero_title_prefix')) ?> <span><?= e(site('home.hero_title_highlight')) ?></span></h1>
+        <p><?= e(site('home.hero_subtitle')) ?></p>
     </div>
 
     <!-- The laptop cycles through our page heroes: Gaming, then Shop, then Training. -->
     <div class="home-hero-stage">
-        <picture class="home-screen">
-            <source srcset="<?= asset('assets/img/home/hero-desk-gaming.webp') ?>" type="image/webp">
-            <img src="<?= asset('assets/img/home/hero-desk-gaming.jpg') ?>" alt="A laptop on a desk showing Syspoint Hub's gaming, shop and training pages in turn" width="1472" height="844" fetchpriority="high">
-        </picture>
+        <?= site_picture('home.screen_gaming', 'A laptop on a desk showing Syspoint Hub\'s gaming, shop and training pages in turn', ['width' => 1472, 'height' => 844, 'fetchpriority' => 'high'], 'home-screen') ?>
         <?php foreach (['shop', 'training'] as $screen): ?>
-            <picture class="home-screen home-screen-<?= $screen ?>" aria-hidden="true">
-                <source srcset="<?= asset('assets/img/home/hero-desk-' . $screen . '.webp') ?>" type="image/webp">
-                <img src="<?= asset('assets/img/home/hero-desk-' . $screen . '.jpg') ?>" alt="" width="1472" height="844" loading="lazy">
-            </picture>
+            <?= str_replace('<picture class=', '<picture aria-hidden="true" class=', site_picture('home.screen_' . $screen, '', ['width' => 1472, 'height' => 844, 'loading' => 'lazy'], 'home-screen home-screen-' . $screen)) ?>
         <?php endforeach; ?>
     </div>
 
@@ -76,10 +70,10 @@ $services = [
                 <?php $short = HOME_STATS_SHORT[$label] ?? null; // shorter label on phones, e.g. "Experience" ?>
                 <div class="home-stat"><strong><?= e($value) ?></strong><span><?php if ($short): ?><span class="label-full"><?= e($label) ?></span><span class="label-short"><?= e($short) ?></span><?php else: ?><?= e($label) ?><?php endif; ?></span></div>
             <?php endforeach; ?>
-            <a href="<?= path('contact') ?>" class="btn btn-primary home-stats-cta">Get in Touch →</a>
+            <a href="<?= path('contact') ?>" class="btn btn-primary home-stats-cta"><?= e(site('home.stats_cta')) ?></a>
         </div>
 
-        <p class="home-hero-tagline"><span>Shop</span> • <span>Play</span> • <span>Learn</span> • <span>Build</span></p>
+        <p class="home-hero-tagline"><?= implode(' • ', array_map(fn($w) => '<span>' . e($w) . '</span>', site_list('home.tagline'))) ?></p>
     </div>
 </section>
 
@@ -88,7 +82,7 @@ $homeProducts = products_recent(4);
 $homeRooms = gaming_rooms_active();
 $homeCourses = array_slice(training_courses_active(), 0, 4);
 $homeBusinesses = deployed_businesses_active();
-$mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Resettlement+Abuja';
+$mapsUrl = site('site.maps_url');
 ?>
 
 <?php if ($homeBusinesses): ?>
@@ -97,8 +91,8 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
      Greyscale logos; organisations without a logo show their name as a grey wordmark. -->
 <section class="home-trusted" aria-labelledby="trusted-title">
     <div class="container">
-        <p class="home-trusted-kicker">Our clients</p>
-        <h2 id="trusted-title"><?= e(content_block('home.clients_title', 'Organisations we’ve consulted with')) ?></h2>
+        <p class="home-trusted-kicker"><?= e(site('home.clients_kicker')) ?></p>
+        <h2 id="trusted-title"><?= e(site('home.clients_title')) ?></h2>
         <ul class="home-trusted-list">
             <?php foreach ($homeBusinesses as $biz): ?>
                 <li>
@@ -112,7 +106,7 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
                 </li>
             <?php endforeach; ?>
         </ul>
-        <p class="home-trusted-more"><a href="<?= path('software-clinic') ?>">Need IT consulting or software? Tell us what you need →</a></p>
+        <p class="home-trusted-more"><a href="<?= path('software-clinic') ?>"><?= e(site('home.clients_link')) ?></a></p>
     </div>
 </section>
 <?php endif; ?>
@@ -124,10 +118,10 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
     <div class="container">
         <div class="home-section-head">
             <div>
-                <span class="eyebrow">Gadget Store</span>
-                <h2>New in the Shop</h2>
+                <span class="eyebrow"><?= e(site('home.shop_eyebrow')) ?></span>
+                <h2><?= e(site('home.shop_title')) ?></h2>
             </div>
-            <a href="<?= path('shop') ?>" class="home-section-link">Visit the store →</a>
+            <a href="<?= path('shop') ?>" class="home-section-link"><?= e(site('home.shop_link')) ?></a>
         </div>
         <div class="product-grid home-product-grid">
             <?php foreach ($homeProducts as $product): ?>
@@ -155,9 +149,9 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
 <section class="home-gaming">
     <div class="container home-gaming-inner">
         <div class="home-gaming-copy">
-            <span class="eyebrow">Gaming Lounge</span>
-            <h2>Play. Immerse. Unwind.</h2>
-            <p>PS5, a VR arena and a shelf of board games — book the VIP room for your squad or drop into the common room.</p>
+            <span class="eyebrow"><?= e(site('home.gaming_eyebrow')) ?></span>
+            <h2><?= e(site('home.gaming_title')) ?></h2>
+            <p><?= e(site('home.gaming_text')) ?></p>
             <?php if ($homeRooms): ?>
                 <ul class="home-rooms">
                     <?php foreach ($homeRooms as $room): ?>
@@ -172,16 +166,16 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
                 </ul>
             <?php endif; ?>
             <div class="home-gaming-actions">
-                <a href="<?= path('gaming') ?>#rooms" class="btn btn-primary">Book a Room</a>
-                <a href="<?= path('gaming') ?>" class="btn btn-outline btn-outline-light">Browse Games</a>
+                <a href="<?= path('gaming') ?>#rooms" class="btn btn-primary"><?= e(site('home.gaming_btn_book')) ?></a>
+                <a href="<?= path('gaming') ?>" class="btn btn-outline btn-outline-light"><?= e(site('home.gaming_btn_games')) ?></a>
             </div>
-            <span class="gold-tag">Free internet for all gamers</span>
+            <span class="gold-tag"><?= e(site('home.gaming_tag')) ?></span>
         </div>
         <div class="home-gaming-tiles" aria-hidden="true">
-            <?php foreach (['ps5' => 'PS5', 'vr' => 'VR Arena', 'board' => 'Board Games'] as $img => $label): ?>
+            <?php foreach ([1, 2, 3] as $n): ?>
                 <div class="home-gaming-tile">
-                    <img src="<?= asset('assets/img/gaming/' . $img . '.jpg') ?>" alt="" loading="lazy">
-                    <span><?= e($label) ?></span>
+                    <img src="<?= e(media_url(site('gaming.card' . $n . '_image'))) ?>" alt="" loading="lazy">
+                    <span><?= e(site('gaming.card' . $n . '_name')) ?></span>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -193,10 +187,10 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
     <div class="container">
         <div class="home-section-head">
             <div>
-                <span class="eyebrow">Training &amp; Internship</span>
-                <h2>Learn skills that get you hired</h2>
+                <span class="eyebrow"><?= e(site('home.training_eyebrow')) ?></span>
+                <h2><?= e(site('home.training_title')) ?></h2>
             </div>
-            <a href="<?= path('training') ?>" class="home-section-link">See all courses →</a>
+            <a href="<?= path('training') ?>" class="home-section-link"><?= e(site('home.training_link')) ?></a>
         </div>
         <?php if ($homeCourses): ?>
             <div class="home-courses">
@@ -214,11 +208,11 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p class="section-lede">Our course list is being updated — ask us about the next intake.</p>
+            <p class="section-lede"><?= e(site('home.training_empty')) ?></p>
         <?php endif; ?>
         <div class="home-training-cta">
-            <p>Want real work experience? We take on interns across sales, software and IT consulting.</p>
-            <a href="<?= path('contact') ?>" class="btn btn-primary">Ask About Internships</a>
+            <p><?= e(site('home.internship_text')) ?></p>
+            <a href="<?= path('contact') ?>" class="btn btn-primary"><?= e(site('home.internship_btn')) ?></a>
         </div>
     </div>
 </section>
@@ -228,8 +222,8 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
 <?php if ($testimonials): ?>
 <section class="home-testimonials">
     <div class="container">
-        <span class="eyebrow">Testimonials</span>
-        <h2><?= e(content_block('home.testimonials_title', 'What our clients say')) ?></h2>
+        <span class="eyebrow"><?= e(site('home.testimonials_eyebrow')) ?></span>
+        <h2><?= e(site('home.testimonials_title')) ?></h2>
         <div class="testimonial-grid">
             <?php foreach ($testimonials as $t): ?>
                 <figure class="testimonial">
@@ -257,26 +251,26 @@ $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Awesome+Plaza+Apo+Re
     <div class="container">
         <div class="home-section-head">
             <div>
-                <span class="eyebrow">Visit Us</span>
-                <h2>Two doors, one plaza</h2>
-                <p class="home-visit-lede">Awesome Plaza, Opposite Chicken Republic, Apo Resettlement, Abuja · Open 9am – 10pm</p>
+                <span class="eyebrow"><?= e(site('home.visit_eyebrow')) ?></span>
+                <h2><?= e(site('home.visit_title')) ?></h2>
+                <p class="home-visit-lede"><?= e(site('site.plaza')) ?> · Open <?= e(site('site.hours')) ?></p>
             </div>
         </div>
         <div class="home-visit-grid">
             <div class="home-visit-card">
-                <span class="home-visit-suite">Suite C1</span>
-                <h3>Syspoint Hub</h3>
-                <p>Gaming lounge, VR arena and IT training.</p>
-                <a href="<?= e($mapsUrl) ?>" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Get Directions →</a>
+                <span class="home-visit-suite"><?= e(site('site.hub_suite')) ?></span>
+                <h3><?= e(site('site.hub_name')) ?></h3>
+                <p><?= e(site('site.hub_desc')) ?></p>
+                <a href="<?= e($mapsUrl) ?>" target="_blank" rel="noopener" class="btn btn-primary btn-sm"><?= e(site('home.visit_btn')) ?></a>
             </div>
             <div class="home-visit-card">
-                <span class="home-visit-suite">Suite C20</span>
-                <h3>Gadget Store</h3>
-                <p>Syspoint Solutions Consult Limited — computers, gadgets and the software clinic.</p>
-                <a href="<?= e($mapsUrl) ?>" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Get Directions →</a>
+                <span class="home-visit-suite"><?= e(site('site.store_suite')) ?></span>
+                <h3><?= e(site('site.store_name')) ?></h3>
+                <p><?= e(site('site.store_desc')) ?></p>
+                <a href="<?= e($mapsUrl) ?>" target="_blank" rel="noopener" class="btn btn-primary btn-sm"><?= e(site('home.visit_btn')) ?></a>
             </div>
         </div>
-        <p class="home-visit-contact">Questions? <a href="mailto:syspointmail@gmail.com">syspointmail@gmail.com</a> or <a href="<?= path('contact') ?>">send us a message</a>.</p>
+        <p class="home-visit-contact">Questions? <a href="mailto:<?= e(site('site.email')) ?>"><?= e(site('site.email')) ?></a><?php if (site('site.phone')): ?>, <a href="tel:<?= e(preg_replace('/[^\d+]/', '', site('site.phone'))) ?>"><?= e(site('site.phone')) ?></a><?php endif; ?> or <a href="<?= path('contact') ?>">send us a message</a>.</p>
     </div>
 </section>
 

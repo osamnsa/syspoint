@@ -55,9 +55,9 @@ require __DIR__ . '/../partials/header.php';
 
 <section class="page-header">
     <div class="container">
-        <div class="breadcrumb"><a href="<?= path() ?>">Home</a> / Software Clinic</div>
-        <h1>Software Clinic</h1>
-        <p style="color:var(--color-text-muted);max-width:60ch;">Tell us what your business needs — a website, an app, a system to run your operations — and we'll follow up with a plan and a quote.</p>
+        <div class="breadcrumb"><a href="<?= path() ?>">Home</a> / <?= e(site('clinic.title')) ?></div>
+        <h1><?= e(site('clinic.title')) ?></h1>
+        <p style="color:var(--color-text-muted);max-width:60ch;"><?= e(site('clinic.intro')) ?></p>
     </div>
 </section>
 
@@ -65,7 +65,7 @@ require __DIR__ . '/../partials/header.php';
     <div class="container">
         <div class="checkout-grid">
             <div class="card form-card" style="margin:0;">
-                <h3>Request Software</h3>
+                <h3><?= e(site('clinic.form_title')) ?></h3>
 
                 <?php if ($successMessage): ?>
                     <div class="alert alert-success"><?= e($successMessage) ?></div>
@@ -102,12 +102,12 @@ require __DIR__ . '/../partials/header.php';
                         <label for="description">What do you need built or deployed?</label>
                         <textarea id="description" name="description" required><?= old('description') ?></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Send Request</button>
+                    <button type="submit" class="btn btn-primary btn-block"><?= e(site('clinic.form_button')) ?></button>
                 </form>
             </div>
 
             <div>
-                <h3 style="margin-top:0;">Businesses We've Deployed For</h3>
+                <h3 style="margin-top:0;"><?= e(site('clinic.portfolio_title')) ?></h3>
                 <?php if (!$businesses): ?>
                     <p style="color:var(--color-text-muted);">Our portfolio is being updated — check back soon.</p>
                 <?php else: ?>

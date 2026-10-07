@@ -529,6 +529,35 @@ Midnight/swoosh backdrop with glass panels.
   tasks, deals closing soon, top customers and recent activity. Invoice
   payments also count as "Services" revenue on the Overview.
 
+### Back office — Website editor (Website area)
+
+`app/site_content.php` + `admin_website.php` (`/admin/website`).
+
+- **Every piece of public copy is editable** — business details used
+  site-wide (brand, tagline, email, phone, WhatsApp, hours, plaza address,
+  both suites, Google Maps link, consulting link, social links, footer
+  text), the letterhead for quotes/invoices/receipts (company details,
+  **bank details**, default terms, receipt footer), and each page's
+  headings, text, buttons, links and hero pictures (Home, About, Shop,
+  Software Clinic, Gaming, Training, Contact). Lists (products, rooms,
+  games, courses, clients, testimonials, home stats) keep their own admin
+  pages, linked from the editor.
+- `SITE_CONTENT` (in `site_content()`) is the single registry: key, label,
+  default, type (text / textarea / html / url / email / image). Views read
+  `site('key')`; images use `site_picture()` (built-in pictures keep their
+  WebP twin; uploads go to `uploads/site/`). Values are stored in
+  `content_blocks`; no row = the original text, so the site looks exactly
+  as designed until something is edited. Each edited field shows
+  "Edited", the original text, and a **Reset** button. A deliberately
+  emptied field is stored as `[empty]` (e.g. clear the consulting link to
+  hide "Consulting" from the menu).
+- The About story is rich text (headings, bold, italic, lists, links) from
+  a small built-in editor; it's sanitised on save and on output (no
+  scripts, styles, event handlers or `javascript:` links).
+- To add a new editable field: add it to the registry with its current
+  text as the default and replace the literal in the view with
+  `site('…')` — it appears in the editor automatically.
+
 ## Security Notes
 
 - All DB queries use PDO prepared statements (`ATTR_EMULATE_PREPARES`

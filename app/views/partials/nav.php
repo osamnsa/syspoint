@@ -9,11 +9,11 @@ if ($base !== '' && str_starts_with($currentPath, $base)) {
 ?>
 <header class="site-header">
     <div class="container">
-        <a class="brand" href="<?= path() ?>" aria-label="Syspoint Hub home">
+        <a class="brand" href="<?= path() ?>" aria-label="<?= e(site('site.brand_first') . ' ' . site('site.brand_second')) ?> home">
             <img class="brand-logo" src="<?= asset('assets/img/logo.png') ?>" alt="" width="40" height="40">
             <span class="brand-text">
-                <span class="brand-name">Syspoint <em>Hub</em></span>
-                <span class="brand-tagline">...challenging conventions</span>
+                <span class="brand-name"><?= e(site('site.brand_first')) ?> <em><?= e(site('site.brand_second')) ?></em></span>
+                <span class="brand-tagline"><?= e(site('site.tagline')) ?></span>
             </span>
         </a>
         <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
@@ -26,8 +26,8 @@ if ($base !== '' && str_starts_with($currentPath, $base)) {
             <li><a href="<?= path('software-clinic') ?>" class="<?= $currentPath === 'software-clinic' ? 'is-active' : '' ?>">Software Clinic</a></li>
             <li><a href="<?= path('gaming') ?>" class="<?= str_starts_with($currentPath, 'gaming') ? 'is-active' : '' ?>">Gaming</a></li>
             <li><a href="<?= path('training') ?>" class="<?= $currentPath === 'training' ? 'is-active' : '' ?>">Training</a></li>
-            <?php if (config()['app']['consulting_url']): ?>
-                <li><a href="<?= e(config()['app']['consulting_url']) ?>" target="_blank" rel="noopener">Consulting</a></li>
+            <?php if (site('site.consulting_url')): ?>
+                <li><a href="<?= e(site('site.consulting_url')) ?>" target="_blank" rel="noopener">Consulting</a></li>
             <?php endif; ?>
             <?php $cartCount = cart_count(); ?>
             <li><a href="<?= path('cart') ?>" class="nav-cart <?= $currentPath === 'cart' ? 'is-active' : '' ?>" aria-label="Cart<?= $cartCount > 0 ? ', ' . $cartCount . ' item' . ($cartCount === 1 ? '' : 's') : '' ?>">

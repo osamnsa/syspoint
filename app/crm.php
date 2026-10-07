@@ -321,9 +321,7 @@ function doc_convert_to_invoice(array $quote): int
 /** Starting terms for a new quote or invoice — editable in Website → Settings. */
 function doc_default_terms(string $type): string
 {
-    return $type === 'quote'
-        ? content_block('company.quote_terms', "This quote is valid until the date shown. Prices in Naira.\nA 70% deposit is required to begin work; balance on delivery.")
-        : content_block('company.invoice_terms', "Payment by bank transfer to " . company_details()['name'] . ".\nPlease use the invoice number as your payment reference.");
+    return site($type === 'quote' ? 'company.quote_terms' : 'company.invoice_terms');
 }
 
 /** Badge class and label, including "Overdue" for unpaid invoices past their due date. */
@@ -345,10 +343,10 @@ function doc_badge(array $doc): array
 function company_details(): array
 {
     return [
-        'name' => content_block('company.name', 'Syspoint Solutions Consult Limited'),
-        'address' => content_block('company.address', 'Awesome Plaza, Opposite Chicken Republic, Apo Resettlement, Abuja'),
-        'phone' => content_block('company.phone', ''),
-        'email' => content_block('company.email', 'syspointmail@gmail.com'),
-        'bank' => content_block('company.bank_details', ''),
+        'name' => site('company.name'),
+        'address' => site('company.address'),
+        'phone' => site('company.phone'),
+        'email' => site('company.email'),
+        'bank' => site('company.bank_details'),
     ];
 }

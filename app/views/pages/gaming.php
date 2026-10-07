@@ -20,55 +20,46 @@ require __DIR__ . '/../partials/header.php';
     <div class="arcade-floor" aria-hidden="true"></div>
     <div class="container arcade-hero-inner">
         <div class="arcade-hero-copy">
-            <span class="eyebrow">...challenging conventions</span>
-            <h1 class="arcade-title"><?= e(content_block('gaming.hero_title', 'Play. Immerse. Learn.')) ?></h1>
-            <p><?= e(content_block('gaming.hero_subtitle', 'PS5, VR and board games — all under one roof, with free internet for every gamer. Grab a controller, step into VR, or book the VIP room for your squad.')) ?></p>
+            <span class="eyebrow"><?= e(site('gaming.kicker')) ?></span>
+            <h1 class="arcade-title"><?= e(site('gaming.hero_title')) ?></h1>
+            <p><?= e(site('gaming.hero_subtitle')) ?></p>
         </div>
 
-        <p class="arcade-select-label">Select your game</p>
+        <p class="arcade-select-label"><?= e(site('gaming.select_label')) ?></p>
         <div class="arcade-select">
             <a class="arcade-card" href="#ps5">
-                <picture>
-                    <source srcset="<?= asset('assets/img/gaming/ps5.webp') ?>" type="image/webp">
-                    <img src="<?= asset('assets/img/gaming/ps5.jpg') ?>" alt="PS5 console and controller" width="680" height="907" fetchpriority="high">
-                </picture>
+                <?= site_picture('gaming.card1_image', 'PS5 console and controller', ['width' => 680, 'height' => 907, 'fetchpriority' => 'high']) ?>
                 <span class="arcade-card-body">
-                    <span class="arcade-card-name">PS5</span>
-                    <span class="arcade-card-sub">The latest PS5 titles</span>
+                    <span class="arcade-card-name"><?= e(site('gaming.card1_name')) ?></span>
+                    <span class="arcade-card-sub"><?= e(site('gaming.card1_sub')) ?></span>
                 </span>
             </a>
             <a class="arcade-card" href="#vr">
-                <picture>
-                    <source srcset="<?= asset('assets/img/gaming/vr.webp') ?>" type="image/webp">
-                    <img src="<?= asset('assets/img/gaming/vr.jpg') ?>" alt="Player wearing a VR headset" width="406" height="473">
-                </picture>
+                <?= site_picture('gaming.card2_image', 'Player wearing a VR headset', ['width' => 406, 'height' => 473]) ?>
                 <span class="arcade-card-body">
-                    <span class="arcade-card-name">VR Arena</span>
-                    <span class="arcade-card-sub">Step inside the game</span>
+                    <span class="arcade-card-name"><?= e(site('gaming.card2_name')) ?></span>
+                    <span class="arcade-card-sub"><?= e(site('gaming.card2_sub')) ?></span>
                 </span>
             </a>
             <a class="arcade-card" href="#board">
-                <picture>
-                    <source srcset="<?= asset('assets/img/gaming/board.webp') ?>" type="image/webp">
-                    <img src="<?= asset('assets/img/gaming/board.jpg') ?>" alt="Dice and game pieces over a ludo board" width="640" height="695">
-                </picture>
+                <?= site_picture('gaming.card3_image', 'Dice and game pieces over a ludo board', ['width' => 640, 'height' => 695]) ?>
                 <span class="arcade-card-body">
-                    <span class="arcade-card-name">Board Games</span>
-                    <span class="arcade-card-sub">Classic &amp; modern table games</span>
+                    <span class="arcade-card-name"><?= e(site('gaming.card3_name')) ?></span>
+                    <span class="arcade-card-sub"><?= e(site('gaming.card3_sub')) ?></span>
                 </span>
             </a>
         </div>
 
         <div class="arcade-actions">
-            <a href="#rooms" class="btn btn-primary">Book a Room</a>
-            <span class="gold-tag">Free internet for all gamers</span>
+            <a href="#rooms" class="btn btn-primary"><?= e(site('gaming.book_btn')) ?></a>
+            <span class="gold-tag"><?= e(site('gaming.free_tag')) ?></span>
         </div>
     </div>
 
     <div class="arcade-marquee" aria-hidden="true">
         <div class="arcade-marquee-track">
             <?php for ($i = 0; $i < 2; $i++): ?>
-                <span>PS5</span><span>★</span><span>VR Arena</span><span>★</span><span>Board Games</span><span>★</span><span>Free internet for all gamers</span><span>★</span><span>VIP &amp; Common Rooms</span><span>★</span><span>Open 9am – 10pm</span><span>★</span>
+                <?php foreach (site_list('gaming.marquee') as $phrase): ?><span><?= e($phrase) ?></span><span>★</span><?php endforeach; ?>
             <?php endfor; ?>
         </div>
     </div>
@@ -84,8 +75,8 @@ require __DIR__ . '/../partials/header.php';
 
 <section class="section" id="rooms">
     <div class="container">
-        <span class="eyebrow">Stage 01 · Reserve a room</span>
-        <h2>Rooms</h2>
+        <span class="eyebrow"><?= e(site('gaming.rooms_eyebrow')) ?></span>
+        <h2><?= e(site('gaming.rooms_title')) ?></h2>
         <?php if (!$rooms): ?>
             <p style="color:var(--color-text-muted);">Room details are being updated — check back soon.</p>
         <?php else: ?>
@@ -114,9 +105,9 @@ require __DIR__ . '/../partials/header.php';
 
 <section class="section section-soft" id="ps5">
     <div class="container">
-        <span class="eyebrow">Stage 02 · PS5</span>
-        <h2>PS5 Game List</h2>
-        <p class="section-lede">The latest PS5 titles, ready to play.</p>
+        <span class="eyebrow"><?= e(site('gaming.ps5_eyebrow')) ?></span>
+        <h2><?= e(site('gaming.ps5_title')) ?></h2>
+        <p class="section-lede"><?= e(site('gaming.ps5_lede')) ?></p>
         <?php if (!$ps5Games): ?>
             <p style="color:var(--color-text-muted);">Our PS5 game list is being updated — check back soon.</p>
         <?php else: ?>
@@ -141,9 +132,9 @@ require __DIR__ . '/../partials/header.php';
 
 <section class="section" id="vr">
     <div class="container">
-        <span class="eyebrow">Stage 03 · VR Arena</span>
-        <h2>VR Experience List</h2>
-        <p class="section-lede">Step inside the game with virtual reality.</p>
+        <span class="eyebrow"><?= e(site('gaming.vr_eyebrow')) ?></span>
+        <h2><?= e(site('gaming.vr_title')) ?></h2>
+        <p class="section-lede"><?= e(site('gaming.vr_lede')) ?></p>
         <?php if (!$vrGames): ?>
             <p style="color:var(--color-text-muted);">Our VR experience list is being updated — check back soon.</p>
         <?php else: ?>
@@ -168,9 +159,9 @@ require __DIR__ . '/../partials/header.php';
 
 <section class="section section-soft" id="board">
     <div class="container">
-        <span class="eyebrow">Stage 04 · Board Games</span>
-        <h2>Board Game List</h2>
-        <p class="section-lede">Classic and modern indoor table games.</p>
+        <span class="eyebrow"><?= e(site('gaming.board_eyebrow')) ?></span>
+        <h2><?= e(site('gaming.board_title')) ?></h2>
+        <p class="section-lede"><?= e(site('gaming.board_lede')) ?></p>
         <?php if (!$boardGames): ?>
             <p style="color:var(--color-text-muted);">Our board game list is being updated — check back soon.</p>
         <?php else: ?>
@@ -197,10 +188,10 @@ require __DIR__ . '/../partials/header.php';
     <div class="container">
         <div class="gaming-cta-banner">
             <div>
-                <h3>Ready, Player One?</h3>
-                <p>Grab a PS5 controller, strap in for VR, or pull up a board — book your room now.</p>
+                <h3><?= e(site('gaming.cta_title')) ?></h3>
+                <p><?= e(site('gaming.cta_text')) ?></p>
             </div>
-            <a href="#rooms" class="btn btn-primary">Book Your Session →</a>
+            <a href="#rooms" class="btn btn-primary"><?= e(site('gaming.cta_btn')) ?></a>
         </div>
     </div>
 </section>
@@ -209,19 +200,19 @@ require __DIR__ . '/../partials/header.php';
     <div class="container trust-badges-grid">
         <div class="trust-badge">
             <span class="trust-badge-icon">🎮</span>
-            <div><strong>Premium Setups</strong><span>Latest PS5 consoles &amp; VR rigs</span></div>
+            <div><strong><?= e(site('gaming.badge1_title')) ?></strong><span><?= e(site('gaming.badge1_text')) ?></span></div>
         </div>
         <div class="trust-badge">
             <span class="trust-badge-icon">🥽</span>
-            <div><strong>Free Internet</strong><span>For every gamer, every visit</span></div>
+            <div><strong><?= e(site('gaming.badge2_title')) ?></strong><span><?= e(site('gaming.badge2_text')) ?></span></div>
         </div>
         <div class="trust-badge">
             <span class="trust-badge-icon">🛋️</span>
-            <div><strong>VIP &amp; Common Rooms</strong><span>Private or open shared space</span></div>
+            <div><strong><?= e(site('gaming.badge3_title')) ?></strong><span><?= e(site('gaming.badge3_text')) ?></span></div>
         </div>
         <div class="trust-badge">
             <span class="trust-badge-icon">📅</span>
-            <div><strong>Real Reservations</strong><span>Book a slot, we confirm it</span></div>
+            <div><strong><?= e(site('gaming.badge4_title')) ?></strong><span><?= e(site('gaming.badge4_text')) ?></span></div>
         </div>
     </div>
 </section>

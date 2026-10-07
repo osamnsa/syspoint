@@ -52,6 +52,7 @@ const ADMIN_AREA_PATHS = [
     'admin/businesses' => 'website',
     'admin/testimonials' => 'website',
     'admin/home-stats' => 'website',
+    'admin/website' => 'website',
     'admin/staff' => 'admin',
 ];
 

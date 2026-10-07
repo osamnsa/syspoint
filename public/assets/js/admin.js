@@ -303,3 +303,27 @@ document.addEventListener('click', function (e) {
     form.addEventListener('click', function () { setTimeout(update, 0); });
     update();
 })();
+
+/* Website editor: tiny rich-text box (bold, italic, list, link, heading) that writes back into a hidden textarea. */
+(function () {
+    'use strict';
+    document.querySelectorAll('[data-rte]').forEach(function (box) {
+        var area = box.querySelector('[data-rte-area]');
+        var input = box.querySelector('[data-rte-input]');
+        box.querySelectorAll('[data-cmd]').forEach(function (btn) {
+            btn.addEventListener('mousedown', function (e) { e.preventDefault(); });
+            btn.addEventListener('click', function () {
+                var cmd = btn.getAttribute('data-cmd');
+                var arg = btn.getAttribute('data-arg');
+                if (cmd === 'createLink') {
+                    arg = window.prompt('Link address (https://…)', 'https://');
+                    if (!arg) return;
+                }
+                document.execCommand(cmd, false, arg ? (cmd === 'formatBlock' ? '<' + arg + '>' : arg) : null);
+                area.focus();
+            });
+        });
+        var form = box.closest('form');
+        form.addEventListener('submit', function () { input.value = area.innerHTML; });
+    });
+})();

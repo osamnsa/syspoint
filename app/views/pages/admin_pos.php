@@ -67,7 +67,7 @@ require __DIR__ . '/../partials/admin_header.php';
 ?>
 
 <div class="admin-header-row">
-    <div><p class="admin-kicker">Gadget Store · Suite C20</p><h1>Point of Sale</h1></div>
+    <div><p class="admin-kicker"><?= e(site('site.store_name') . ' · ' . site('site.store_suite')) ?></p><h1>Point of Sale</h1></div>
     <a href="<?= path('admin/pos/sales') ?>" class="btn btn-outline btn-sm">Sales History</a>
 </div>
 

@@ -50,8 +50,8 @@ require __DIR__ . '/../partials/admin_header.php';
     <div class="receipt-head">
         <img src="<?= asset('assets/img/logo.png') ?>" alt="" width="44" height="44">
         <div>
-            <strong>Syspoint Solutions Consult Limited</strong>
-            <small>Gadget Store · Suite C20, Awesome Plaza, Apo Resettlement, Abuja</small>
+            <strong><?= e(company_details()['name']) ?></strong>
+            <small><?= e(site('site.store_name')) ?> · <?= e(site('site.store_suite')) ?>, <?= e(site('site.plaza')) ?><?= company_details()['phone'] ? ' · ' . e(company_details()['phone']) : '' ?></small>
         </div>
     </div>
     <?php if ($sale['status'] === 'voided'): ?><p class="receipt-void">VOIDED — <?= e((string) $sale['void_reason']) ?></p><?php endif; ?>
@@ -85,7 +85,7 @@ require __DIR__ . '/../partials/admin_header.php';
             <?php if ($sale['amount_paid'] !== null && (float) $sale['amount_paid'] > (float) $sale['total']): ?><tr><td colspan="3">Change</td><td><?= format_naira($sale['amount_paid'] - $sale['total']) ?></td></tr><?php endif; ?>
         </tfoot>
     </table>
-    <p class="receipt-foot">Thank you for shopping with Syspoint. Keep this receipt for warranty claims.</p>
+    <p class="receipt-foot"><?= nl2br(e(site('company.receipt_footer'))) ?></p>
 </div>
 
 <?php if ($sale['status'] === 'completed'): ?>

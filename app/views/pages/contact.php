@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 crm_link('contact_messages', (int) db()->lastInsertId(), $name, $email, null);
             }
 
-            flash('success', "Thanks {$name}, your message has been received. We'll get back to you soon.");
+            flash('success', str_replace('{name}', $name, site('contact.success')));
             header('Location: ' . path('contact'));
             exit;
         }
@@ -51,7 +51,7 @@ require __DIR__ . '/../partials/header.php';
 <section class="page-header">
     <div class="container">
         <div class="breadcrumb"><a href="<?= path() ?>">Home</a> / Contact</div>
-        <h1>Get in Touch</h1>
+        <h1><?= e(site('contact.title')) ?></h1>
     </div>
 </section>
 
@@ -94,27 +94,27 @@ require __DIR__ . '/../partials/header.php';
                     <label for="message">Message</label>
                     <textarea id="message" name="message" required><?= old('message') ?></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+                <button type="submit" class="btn btn-primary btn-block"><?= e(site('contact.button')) ?></button>
             </form>
         </div>
 
         <div class="card" style="margin-top:24px;">
             <span class="eyebrow">Find us</span>
-            <p style="margin:4px 0 14px;">Both are in Awesome Plaza, Opposite Chicken Republic, Apo Resettlement, Abuja.</p>
+            <p style="margin:4px 0 14px;">Both are in <?= e(site('site.plaza')) ?>.</p>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
                 <address style="font-style:normal;line-height:1.6;">
-                    <strong>Syspoint Hub</strong><br>
-                    Gaming &amp; IT Training<br>
-                    Suite C1
+                    <strong><?= e(site('site.hub_name')) ?></strong><br>
+                    <?= e(site('site.hub_short')) ?><br>
+                    <?= e(site('site.hub_suite')) ?>
                 </address>
                 <address style="font-style:normal;line-height:1.6;">
-                    <strong>Gadget Store</strong><br>
-                    Syspoint Solutions Consult Limited<br>
-                    Suite C20
+                    <strong><?= e(site('site.store_name')) ?></strong><br>
+                    <?= e(site('site.store_short')) ?><br>
+                    <?= e(site('site.store_suite')) ?>
                 </address>
             </div>
             <p style="margin:14px 0 0;color:var(--color-text-muted);font-size:0.9rem;">
-                <a href="mailto:syspointmail@gmail.com">syspointmail@gmail.com</a> · Open 9am – 10pm
+                <a href="mailto:<?= e(site('site.email')) ?>"><?= e(site('site.email')) ?></a><?php if (site('site.phone')): ?> · <a href="tel:<?= e(preg_replace('/[^\d+]/', '', site('site.phone'))) ?>"><?= e(site('site.phone')) ?></a><?php endif; ?><?php if ($wa = site_whatsapp_url()): ?> · <a href="<?= e($wa) ?>" target="_blank" rel="noopener">WhatsApp</a><?php endif; ?> · Open <?= e(site('site.hours')) ?>
             </p>
         </div>
     </div>

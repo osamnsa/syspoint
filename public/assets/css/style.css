@@ -1220,3 +1220,6 @@ a.home-trusted-item:hover img { opacity: 1; }
 .order-summary-total { border-bottom: none; border-top: 2px solid var(--color-ink); margin-top: 6px; padding-top: 14px; font-weight: 700; font-size: 1rem; }
 @media (max-width: 800px) { .checkout-grid { grid-template-columns: 1fr; } }
 main:has(.gaming-arcade) + .site-footer { margin-top: 0; }
+
+.footer-social { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 12px 0 0; padding: 0; }
+.footer-social a { color: var(--brand-gold); font-size: 0.85rem; font-weight: 600; }

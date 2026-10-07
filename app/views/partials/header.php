@@ -4,8 +4,9 @@ declare(strict_types=1);
 /** @var string|null $pageTitle */
 /** @var string|null $pageDescription */
 
-$titleTag = (isset($pageTitle) && $pageTitle !== '' ? $pageTitle . ' | ' : '') . 'Syspoint Hub';
-$metaDescription = $pageDescription ?? 'Syspoint — computers & accessories, software clinic, gaming lounge, IT consulting, and internship training.';
+$siteName = site('site.brand_first') . ' ' . site('site.brand_second');
+$titleTag = (isset($pageTitle) && $pageTitle !== '' ? $pageTitle . ' | ' : '') . $siteName;
+$metaDescription = $pageDescription ?? site('site.meta_description');
 ?>
 <!doctype html>
 <html lang="en">

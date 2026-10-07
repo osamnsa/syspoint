@@ -25,7 +25,7 @@ require __DIR__ . '/../partials/admin_header.php';
 ?>
 
 <div class="admin-header-row">
-    <div><p class="admin-kicker">Gaming Hub · Suite C1</p><h1>Hub Equipment</h1></div>
+    <div><p class="admin-kicker"><?= e(site('site.hub_name') . ' · ' . site('site.hub_suite')) ?></p><h1>Hub Equipment</h1></div>
     <a href="<?= path('admin/equipment/new') ?>" class="btn btn-primary btn-sm">Add Equipment</a>
 </div>
 

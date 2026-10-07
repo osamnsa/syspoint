@@ -49,6 +49,7 @@ $routes = [
     '#^admin/staff/new$#' => __DIR__ . '/../app/views/pages/admin_staff_form.php',
     '#^admin/staff/(\d+)/edit$#' => __DIR__ . '/../app/views/pages/admin_staff_form.php',
     '#^admin/account$#' => __DIR__ . '/../app/views/pages/admin_account.php',
+    '#^admin/website$#' => __DIR__ . '/../app/views/pages/admin_website.php',
     '#^admin/crm$#' => __DIR__ . '/../app/views/pages/admin_crm.php',
     '#^admin/customers$#' => __DIR__ . '/../app/views/pages/admin_customers.php',
     '#^admin/customers/new$#' => __DIR__ . '/../app/views/pages/admin_customer_form.php',
