@@ -584,6 +584,31 @@ a.crm-mini:hover { text-decoration: none; color: var(--brand-gold); }
 .rte-area { min-height: 220px; padding: 14px 16px; outline: none; }
 .rte-area:focus { box-shadow: inset 0 0 0 2px rgba(52,52,138,0.25); }
 
+/* ---- Gaming dashboard ------------------------------------------------------ */
+.hub-day { display: grid; gap: 10px; }
+.hub-day-row, .hub-day-scale { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px; align-items: center; }
+.hub-day-room { color: #fff; font-size: 0.84rem; font-weight: 600; }
+.hub-day-track { position: relative; height: 30px; border-radius: 8px; background: repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0 1px, transparent 1px calc(100% / 13)), rgba(255,255,255,0.04); }
+.hub-day-block { position: absolute; top: 3px; bottom: 3px; border-radius: 6px; background: #7A7AE6; border: 2px solid #1E1E4A; }
+.hub-day-block.is-pending { background: repeating-linear-gradient(45deg, rgba(247,203,30,0.85) 0 6px, rgba(247,203,30,0.55) 6px 12px); }
+.hub-day-block.is-completed { background: rgba(122,122,230,0.5); }
+.hub-day-block:hover { filter: brightness(1.15); }
+.hub-day-scale > span:last-child { position: relative; height: 16px; }
+.hub-day-scale i { position: absolute; transform: translateX(-50%); font-style: normal; font-family: var(--font-mono); font-size: 0.66rem; color: rgba(255,255,255,0.5); }
+.hub-key { display: inline-block; width: 12px; height: 10px; border-radius: 3px; vertical-align: middle; margin-left: 8px; }
+.hub-key.is-confirmed { background: #7A7AE6; }
+.hub-key.is-pending { background: rgba(247,203,30,0.85); }
+.heat { display: grid; gap: 4px; overflow-x: auto; }
+.heat-row { display: grid; grid-template-columns: 44px repeat(13, minmax(26px, 1fr)); gap: 4px; align-items: center; }
+.heat-row > span:first-child { color: rgba(255,255,255,0.65); font-size: 0.78rem; font-family: var(--font-mono); }
+.heat-head span { text-align: center; color: rgba(255,255,255,0.5); font-family: var(--font-mono); font-size: 0.68rem; }
+.heat-head small { font-size: 0.56rem; }
+.heat-cell { display: block; height: 26px; border-radius: 5px; background: rgba(255,255,255,0.05); position: relative; }
+.heat-cell::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--brand-gold); opacity: var(--a, 0); }
+.heat-legend { display: flex; align-items: center; justify-content: flex-end; gap: 4px; margin: 10px 0 0; color: rgba(255,255,255,0.55); font-size: 0.75rem; }
+.heat-legend .heat-cell { width: 22px; height: 14px; display: inline-block; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
 /* ---- Phones / tablets (kept last so it overrides the rules above) ---- */
 @media (max-width: 1080px) {
     .dash-grid-main, .dash-grid-2, .admin-split, .pos, .crm-layout, .doc-layout, .site-editor { grid-template-columns: minmax(0, 1fr); }

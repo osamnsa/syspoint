@@ -41,7 +41,7 @@ $wa = $customer['phone_digits'] ? 'https://wa.me/234' . ltrim(substr($customer['
 
 $kindLabel = [
     'order' => ['Online order', 'bag'], 'pos' => ['Walk-in purchase', 'till'], 'booking' => ['Room booking', 'calendar'],
-    'request' => ['Software request', 'inbox'], 'message' => ['Message', 'mail'], 'deal' => ['Deal opened', 'funnel'],
+    'request' => ['Software request', 'inbox'], 'enrolment' => ['Training enrolment', 'cap'], 'message' => ['Message', 'mail'], 'deal' => ['Deal opened', 'funnel'],
     'quote' => ['Quote', 'doc'], 'invoice' => ['Invoice', 'receipt'], 'payment' => ['Payment received', 'check'],
 ];
 $link = fn($row) => match ($row['kind']) {
@@ -50,6 +50,7 @@ $link = fn($row) => match ($row['kind']) {
     'booking' => path('admin/bookings/' . (int) $row['id']),
     'request' => path('admin/software-requests/' . (int) $row['id']),
     'message' => path('admin/messages/' . (int) $row['id']),
+    'enrolment' => path('admin/students/' . (int) $row['id']),
     'deal' => path('admin/deals/' . (int) $row['id']),
     'quote', 'invoice' => path('admin/documents/' . (int) $row['id']),
     'payment' => path('admin/documents/' . (int) $row['ref']),

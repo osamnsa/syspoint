@@ -10,7 +10,8 @@ $range = $period['range'];
 $canStore = admin_can('store');
 $canGaming = admin_can('gaming');
 $canSales = admin_can('sales');
-$canMoney = $canStore || $canGaming || $canSales;
+$canTraining = admin_can('training');
+$canMoney = $canStore || $canGaming || $canSales || $canTraining;
 
 $fmtNaira = fn($v) => naira_short((float) $v);
 
@@ -18,21 +19,21 @@ $fmtNaira = fn($v) => naira_short((float) $v);
 $revenue = [];
 if ($canMoney) {
     foreach (dashboard_revenue($period) as $key => $stream) {
-        if (($key === 'shop' && $canStore) || ($key === 'gaming' && $canGaming) || ($key === 'services' && $canSales)) {
+        if (($key === 'shop' && $canStore) || ($key === 'gaming' && $canGaming) || ($key === 'services' && $canSales) || ($key === 'training' && $canTraining)) {
             $revenue[$key] = $stream;
         }
     }
 }
 $revTotal = array_sum(array_column($revenue, 'total'));
 $revPrev = array_sum(array_column($revenue, 'prev'));
-$seriesColors = ['shop' => CHART_SERIES[0], 'gaming' => CHART_SERIES[1], 'services' => CHART_SERIES[2]];
+$seriesColors = ['shop' => CHART_SERIES[0], 'gaming' => CHART_SERIES[1], 'services' => CHART_SERIES[2], 'training' => CHART_SERIES[3]];
 
 $labels = array_column($period['buckets'], 'label');
 $s = $period['start']; $e = $period['end']; $ps = $period['prev_start']; $pe = $period['prev_end'];
 
 $kpis = [];
 if ($canMoney) {
-    $kpis[] = ['label' => 'Revenue', 'value' => naira_short($revTotal), 'change' => dashboard_change($revTotal, $revPrev), 'note' => 'Shop, gaming and invoice payments'];
+    $kpis[] = ['label' => 'Revenue', 'value' => naira_short($revTotal), 'change' => dashboard_change($revTotal, $revPrev), 'note' => 'Shop, gaming, services and training'];
 }
 if ($canStore) {
     $q = "SELECT COUNT(*) FROM orders WHERE payment_status = 'paid' AND created_at BETWEEN :from AND :to";
@@ -245,7 +246,7 @@ $changeHtml = function (?float $c): string {
     <header class="dash-card-head"><div><h2>Monthly summary</h2><p class="dash-card-sub">Last 6 months</p></div></header>
     <div class="dash-table-wrap">
         <table class="dash-table">
-            <thead><tr><th>Month</th><?php if ($canStore): ?><th>Shop revenue</th><th>Paid orders</th><?php endif; ?><?php if ($canGaming): ?><th>Gaming revenue</th><th>Bookings</th><?php endif; ?><?php if ($canSales): ?><th>Services (invoices)</th><?php endif; ?><th>Total</th></tr></thead>
+            <thead><tr><th>Month</th><?php if ($canStore): ?><th>Shop revenue</th><th>Paid orders</th><?php endif; ?><?php if ($canGaming): ?><th>Gaming revenue</th><th>Bookings</th><?php endif; ?><?php if ($canSales): ?><th>Services (invoices)</th><?php endif; ?><?php if ($canTraining): ?><th>Training fees</th><?php endif; ?><th>Total</th></tr></thead>
             <tbody>
             <?php foreach ($monthly as $m): ?>
                 <tr>
@@ -253,7 +254,8 @@ $changeHtml = function (?float $c): string {
                     <?php if ($canStore): ?><td><?= format_naira($m['shop']) ?></td><td><?= (int) $m['orders'] ?></td><?php endif; ?>
                     <?php if ($canGaming): ?><td><?= format_naira($m['gaming']) ?></td><td><?= (int) $m['bookings'] ?></td><?php endif; ?>
                     <?php if ($canSales): ?><td><?= format_naira($m['services']) ?></td><?php endif; ?>
-                    <td><strong><?= format_naira(($canStore ? $m['shop'] : 0) + ($canGaming ? $m['gaming'] : 0) + ($canSales ? $m['services'] : 0)) ?></strong></td>
+                    <?php if ($canTraining): ?><td><?= format_naira($m['training']) ?></td><?php endif; ?>
+                    <td><strong><?= format_naira(($canStore ? $m['shop'] : 0) + ($canGaming ? $m['gaming'] : 0) + ($canSales ? $m['services'] : 0) + ($canTraining ? $m['training'] : 0)) ?></strong></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
@@ -287,7 +289,7 @@ $changeHtml = function (?float $c): string {
 </section>
 <?php endif; ?>
 
-<?php if (!$canMoney && !$canSales && !admin_can('training') && !admin_can('website')): ?>
+<?php if (!$canMoney && !admin_can('website')): ?>
 <section class="dash-card glass-dark"><p class="dash-empty">Your account doesn’t have any areas yet. Ask an administrator to add them in Staff &amp; Roles.</p></section>
 <?php endif; ?>
 

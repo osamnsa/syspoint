@@ -547,3 +547,40 @@ CREATE TABLE IF NOT EXISTS crm_payments (
     CONSTRAINT fk_payments_doc FOREIGN KEY (document_id) REFERENCES crm_documents (id) ON DELETE CASCADE,
     INDEX idx_payments_paid_on (paid_on)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------------
+-- Training: students on courses and internships, with fee payments. Each
+-- enrolment belongs to a CRM customer (the student).
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS enrolments (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT UNSIGNED NOT NULL,
+    kind ENUM('course', 'internship') NOT NULL DEFAULT 'course',
+    course_id INT UNSIGNED NULL,
+    track VARCHAR(120) NULL,
+    status ENUM('enquiry', 'enrolled', 'completed', 'dropped') NOT NULL DEFAULT 'enquiry',
+    start_date DATE NULL,
+    end_date DATE NULL,
+    fee DECIMAL(12,2) NOT NULL DEFAULT 0,
+    amount_paid DECIMAL(12,2) NOT NULL DEFAULT 0,
+    notes TEXT NULL,
+    created_by INT UNSIGNED NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_enrolments_customer FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE,
+    CONSTRAINT fk_enrolments_course FOREIGN KEY (course_id) REFERENCES training_courses (id) ON DELETE SET NULL,
+    INDEX idx_enrolments_status (status, start_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS enrolment_payments (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    enrolment_id INT UNSIGNED NOT NULL,
+    amount DECIMAL(12,2) NOT NULL,
+    method ENUM('transfer', 'cash', 'card', 'other') NOT NULL DEFAULT 'transfer',
+    paid_on DATE NOT NULL,
+    reference VARCHAR(120) NULL,
+    user_id INT UNSIGNED NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_enrolment_payments FOREIGN KEY (enrolment_id) REFERENCES enrolments (id) ON DELETE CASCADE,
+    INDEX idx_enrolment_payments_paid_on (paid_on)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -177,6 +177,8 @@ function crm_timeline(array $customer, int $limit = 80): array
           FROM room_bookings b JOIN gaming_rooms r ON r.id = b.room_id WHERE b.customer_id IN ($in)
         UNION ALL SELECT 'request', id, created_at, status, LEFT(description, 200), NULL, NULL, NULL FROM software_requests WHERE customer_id IN ($in)
         UNION ALL SELECT 'message', id, created_at, IF(read_at IS NULL, 'unread', 'read'), CONCAT(COALESCE(subject, ''), ' — ', LEFT(message, 180)), NULL, NULL, NULL FROM contact_messages WHERE customer_id IN ($in)
+        UNION ALL SELECT 'enrolment', e.id, e.created_at, e.status, COALESCE(t.title, e.track, IF(e.kind = 'internship', 'Internship', 'Course')), e.fee, NULL, NULL
+          FROM enrolments e LEFT JOIN training_courses t ON t.id = e.course_id WHERE e.customer_id IN ($in)
         ORDER BY at DESC, id DESC LIMIT $limit";
     return db()->query($sql)->fetchAll();
 }

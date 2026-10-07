@@ -33,12 +33,15 @@ $adminNavGroups = [
         ['path' => 'admin/categories', 'label' => 'Categories', 'icon' => 'tag', 'area' => 'store'],
     ]],
     ['label' => 'Gaming', 'items' => [
+        ['path' => 'admin/gaming', 'label' => 'Gaming Dashboard', 'icon' => 'pulse', 'area' => 'gaming'],
         ['path' => 'admin/bookings', 'label' => 'Bookings', 'icon' => 'calendar', 'area' => 'gaming'],
         ['path' => 'admin/rooms', 'label' => 'Rooms', 'icon' => 'door', 'area' => 'gaming'],
         ['path' => 'admin/games', 'label' => 'Games', 'icon' => 'pad', 'area' => 'gaming'],
         ['path' => 'admin/equipment', 'label' => 'Hub Equipment', 'icon' => 'tool', 'area' => 'gaming'],
     ]],
     ['label' => 'Training', 'items' => [
+        ['path' => 'admin/training', 'label' => 'Training Dashboard', 'icon' => 'pulse', 'area' => 'training'],
+        ['path' => 'admin/students', 'label' => 'Students & Interns', 'icon' => 'users', 'area' => 'training'],
         ['path' => 'admin/courses', 'label' => 'Courses', 'icon' => 'cap', 'area' => 'training'],
     ]],
     ['label' => 'Website', 'items' => [

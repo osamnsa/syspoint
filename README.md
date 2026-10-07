@@ -558,6 +558,26 @@ Midnight/swoosh backdrop with glass panels.
   text as the default and replace the literal in the view with
   `site('…')` — it appears in the editor automatically.
 
+### Back office — Gaming and Training dashboards
+
+- **Gaming** (`/admin/gaming`, Gaming area): room revenue (vs previous
+  period), occupancy (booked room-hours ÷ rooms × days × opening hours,
+  9am–10pm — `HUB_OPEN_HOUR`/`HUB_CLOSE_HOUR` in `admin_gaming.php`),
+  sessions and average party size, bookings to confirm, revenue per room
+  over time, today's timeline per room, a busiest-times heatmap (weekday ×
+  hour), upcoming bookings, equipment status and regular customers.
+- **Training** (`/admin/training`, Training area) is backed by a new
+  student register: **Students & Interns** (`/admin/students`) —
+  enquiries, enrolments and interns on a course or internship track, with
+  intake dates, fee (filled from the course price), status (enquiry →
+  enrolled → completed / dropped) and fee payments. Each student is a CRM
+  customer (matched by phone/email). The dashboard shows active students,
+  open enquiries, fees received and outstanding, the student journey,
+  per-course numbers, enquiries to follow up, fees owed and upcoming
+  intakes. Training fees count as **Training** revenue on the Overview
+  (the fourth revenue colour), and enrolments appear on the customer
+  timeline.
+
 ## Security Notes
 
 - All DB queries use PDO prepared statements (`ATTR_EMULATE_PREPARES`

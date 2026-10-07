@@ -80,6 +80,9 @@ function dashboard_stream_rows(string $stream, DateTimeImmutable $from, DateTime
         // Services = payments received against CRM invoices.
         'services' => "SELECT paid_on AS day, SUM(amount) AS amount FROM crm_payments
                        WHERE paid_on BETWEEN DATE(:from) AND DATE(:to) GROUP BY paid_on",
+        // Training = course and internship fees received.
+        'training' => "SELECT paid_on AS day, SUM(amount) AS amount FROM enrolment_payments
+                       WHERE paid_on BETWEEN DATE(:from) AND DATE(:to) GROUP BY paid_on",
         default => null,
     };
     if ($sql === null) return [];
@@ -95,6 +98,7 @@ function dashboard_revenue_streams(): array
         'shop' => 'Shop',
         'gaming' => 'Gaming',
         'services' => 'Services',
+        'training' => 'Training',
     ];
 }
 
@@ -184,8 +188,9 @@ function dashboard_monthly_summary(int $months = 6): array
         $stmt = db()->prepare("SELECT COUNT(*) FROM room_bookings WHERE status <> 'cancelled' AND booking_date BETWEEN :from AND :to");
         $stmt->execute(['from' => $m->format('Y-m-d'), 'to' => $end->format('Y-m-d')]);
         $services = array_sum(array_map(fn($r) => (float) $r['amount'], dashboard_stream_rows('services', $m, $end)));
+        $training = array_sum(array_map(fn($r) => (float) $r['amount'], dashboard_stream_rows('training', $m, $end)));
         $rows[] = ['month' => $m->format('F Y'), 'shop' => $shop, 'orders' => $orders, 'gaming' => $gaming,
-            'bookings' => (int) $stmt->fetchColumn(), 'services' => $services, 'total' => $shop + $gaming + $services];
+            'bookings' => (int) $stmt->fetchColumn(), 'services' => $services, 'training' => $training, 'total' => $shop + $gaming + $services + $training];
     }
     return $rows;
 }

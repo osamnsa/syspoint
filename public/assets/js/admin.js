@@ -327,3 +327,13 @@ document.addEventListener('click', function (e) {
         form.addEventListener('submit', function () { input.value = area.innerHTML; });
     });
 })();
+
+/* Keep the current page's menu item in view in the (scrolling) sidebar. */
+(function () {
+    'use strict';
+    var active = document.querySelector('.admin-side-nav a.is-active');
+    var nav = document.querySelector('.admin-side-nav');
+    if (active && nav && nav.scrollHeight > nav.clientHeight) {
+        nav.scrollTop = Math.max(0, active.offsetTop - nav.clientHeight / 2);
+    }
+})();
