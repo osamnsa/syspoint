@@ -18,6 +18,32 @@ if (!$request) {
 
 $statuses = ['new', 'in_review', 'quoted', 'closed'];
 
+$existingDeal = db()->prepare('SELECT id, title, stage FROM deals WHERE request_id = :id LIMIT 1');
+$existingDeal->execute(['id' => $requestId]);
+$existingDeal = $existingDeal->fetch() ?: null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf() && ($_POST['action'] ?? '') === 'deal' && !$existingDeal) {
+    // Make sure the requester is a customer, then open the deal on their organisation.
+    if (!$request['customer_id']) {
+        crm_link('software_requests', $requestId, $request['contact_name'], $request['email'], $request['phone'], 'website', $request['business_name']);
+        $stmt->execute(['id' => $requestId]);
+        $request = $stmt->fetch();
+    }
+    $person = $request['customer_id'] ? crm_customer_by_id((int) $request['customer_id']) : null;
+    $customerId = $person ? (int) ($person['organisation_id'] ?: $person['id']) : crm_customer_for($request['business_name'], $request['email'], $request['phone']);
+    db()->prepare("INSERT INTO deals (title, customer_id, service, value, stage, expected_close, owner_id, request_id)
+                   VALUES (:t, :c, 'software', 0, 'contacted', :ec, :o, :r)")
+        ->execute(['t' => 'Software for ' . $request['business_name'], 'c' => $customerId, 'ec' => date('Y-m-d', strtotime('+30 days')), 'o' => $adminUser['id'], 'r' => $requestId]);
+    $dealId = (int) db()->lastInsertId();
+    crm_log($customerId, $dealId, 'stage', 'Deal opened from Software Clinic request');
+    if ($request['status'] === 'new') {
+        db()->prepare("UPDATE software_requests SET status = 'in_review' WHERE id = :id")->execute(['id' => $requestId]);
+    }
+    flash('success', 'Deal created — add its value and next steps.');
+    header('Location: ' . path('admin/deals/' . $dealId . '/edit'));
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf()) {
     $newStatus = (string) ($_POST['status'] ?? '');
     if (in_array($newStatus, $statuses, true)) {
@@ -37,7 +63,15 @@ require __DIR__ . '/../partials/admin_header.php';
 
 <div class="admin-header-row">
     <h1><?= e($request['business_name']) ?></h1>
-    <a href="<?= path('admin/software-requests') ?>" class="btn btn-outline btn-sm">Back to Requests</a>
+    <div class="admin-header-actions">
+        <?php if ($existingDeal): ?>
+            <a href="<?= path('admin/deals/' . (int) $existingDeal['id']) ?>" class="btn btn-primary btn-sm">Open Deal (<?= e(DEAL_STAGES[$existingDeal['stage']]['label']) ?>)</a>
+        <?php else: ?>
+            <form method="post" style="margin:0;"><?= csrf_field() ?><input type="hidden" name="action" value="deal"><button type="submit" class="btn btn-primary btn-sm">Turn into a Deal</button></form>
+        <?php endif; ?>
+        <?php if ($request['customer_id']): ?><a href="<?= path('admin/customers/' . (int) $request['customer_id']) ?>" class="btn btn-outline btn-sm">Customer</a><?php endif; ?>
+        <a href="<?= path('admin/software-requests') ?>" class="btn btn-outline btn-sm">Back to Requests</a>
+    </div>
 </div>
 
 <?php if ($successMessage): ?>

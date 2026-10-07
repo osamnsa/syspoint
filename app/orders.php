@@ -94,6 +94,7 @@ function order_create_from_cart(string $name, string $email, ?string $phone, ?st
 
         $pdo->commit();
         cart_clear();
+        crm_link('orders', $orderId, $name, $email, $phone);
 
         $fresh = $pdo->prepare('SELECT * FROM orders WHERE id = :id LIMIT 1');
         $fresh->execute(['id' => $orderId]);

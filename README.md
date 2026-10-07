@@ -486,6 +486,49 @@ Midnight/swoosh backdrop with glass panels.
   already on order), open purchase orders, warranties ending soon,
   equipment in repair, and the latest stock movements.
 
+### Back office — CRM (Sales & CRM area)
+
+`app/crm.php` + `admin_crm`, `admin_customer*`, `admin_deal*`, `admin_tasks`,
+`admin_documents`/`admin_document*`, `admin_messages`/`admin_message`.
+
+- **One customer record per person or organisation.** Checkout, room
+  bookings, Software Clinic requests, contact messages and walk-in sales
+  (when a name/phone/email is entered) link their row to a customer via
+  `crm_link()` → `crm_customer_for()`: matched by email, else by phone
+  (last 10 digits, so +234 803… = 0803…), else created. A Software Clinic
+  request also creates/links the business as an organisation. Linking
+  never blocks the public form (errors are logged). **Customers → Import
+  past records** links everything captured before the CRM existed
+  (safe to repeat).
+- **Customer profile:** call / WhatsApp / email buttons, lifetime value
+  (online + walk-in + invoice payments), outstanding invoices, open deals,
+  bookings, and one timeline of orders, purchases, bookings, requests,
+  messages, notes/calls and deal/quote/invoice/payment activity. An
+  organisation's page includes its people.
+- **Deals pipeline** (`/admin/deals`): Lead → Contacted → Proposal sent →
+  Negotiation → Won / Lost, with value, service, owner and expected close.
+  Drag cards between columns (or use the card's menu); losing a deal asks
+  for a reason. Totals: open pipeline, weighted forecast (value × stage
+  likelihood), won and win rate. A Software Clinic request can be turned
+  into a deal in one click.
+- **Tasks** — follow-ups with due date, priority and assignee, from any
+  customer or deal or the Tasks page; completing one logs it on the timeline.
+- **Quotes & invoices** (`Q-YYYY-NNNN`, `INV-YYYY-NNNN`): line items
+  (product names suggest prices), discount, optional 7.5% VAT, notes and
+  terms; printable / save-as-PDF letterhead; email to the customer;
+  quote statuses (sent/accepted/declined/expired — accepting a quote wins
+  its deal) and one-click convert to invoice; invoice payments (part or
+  full, method, reference), overdue tracking, void. Company name, address,
+  phone, email, **bank details** and default terms come from content
+  blocks `company.*` (edited in Website → Settings).
+- **Messages** inbox for contact-form messages (read/unread, reply,
+  add to customers).
+- **CRM dashboard** (`/admin/crm`): pipeline, won vs previous period, win
+  rate, unpaid/overdue invoices, new customers, sales funnel by stage,
+  invoice payments and new customers over time, customers by source, my
+  tasks, deals closing soon, top customers and recent activity. Invoice
+  payments also count as "Services" revenue on the Overview.
+
 ## Security Notes
 
 - All DB queries use PDO prepared statements (`ATTR_EMULATE_PREPARES`

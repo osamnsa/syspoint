@@ -225,3 +225,81 @@ document.addEventListener('click', function (e) {
     if (!row || e.target.closest('a, button, input, select, textarea, label, form')) return;
     window.location.href = row.getAttribute('data-href');
 });
+
+/* Deals board: drag a card to another stage column (the per-card menu is the no-drag fallback). */
+(function () {
+    'use strict';
+    var board = document.querySelector('[data-board]');
+    if (!board) return;
+    var dragged = null;
+    board.addEventListener('dragstart', function (e) {
+        var card = e.target.closest('[data-deal]');
+        if (!card) return;
+        dragged = card;
+        card.classList.add('is-dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', card.getAttribute('data-deal'));
+    });
+    board.addEventListener('dragend', function () {
+        if (dragged) dragged.classList.remove('is-dragging');
+        board.querySelectorAll('.is-over').forEach(function (z) { z.classList.remove('is-over'); });
+    });
+    board.querySelectorAll('[data-dropzone]').forEach(function (zone) {
+        zone.addEventListener('dragover', function (e) { e.preventDefault(); zone.classList.add('is-over'); });
+        zone.addEventListener('dragleave', function () { zone.classList.remove('is-over'); });
+        zone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            zone.classList.remove('is-over');
+            if (!dragged) return;
+            var stage = zone.closest('[data-stage]').getAttribute('data-stage');
+            var from = dragged.closest('[data-stage]').getAttribute('data-stage');
+            if (stage === from) return;
+            var reason = '';
+            if (stage === 'lost') {
+                reason = window.prompt('Why was this deal lost? (e.g. price, timing, chose another vendor)') || '';
+                if (!reason) return;
+            }
+            zone.prepend(dragged);
+            var body = new FormData();
+            body.append('csrf_token', board.getAttribute('data-csrf'));
+            body.append('action', 'move');
+            body.append('ajax', '1');
+            body.append('id', dragged.getAttribute('data-deal'));
+            body.append('stage', stage);
+            body.append('lost_reason', reason);
+            fetch(board.getAttribute('data-action'), { method: 'POST', body: body, credentials: 'same-origin' })
+                .then(function () { window.location.reload(); })
+                .catch(function () { window.location.reload(); });
+        });
+    });
+})();
+
+/* Quote/invoice form: discount + VAT totals, and price auto-fill from a picked product. */
+(function () {
+    'use strict';
+    var form = document.querySelector('[data-doc-form]');
+    if (!form) return;
+    var naira = function (n) { return '₦' + (Math.round(n * 100) / 100).toLocaleString('en-NG', { minimumFractionDigits: 0, maximumFractionDigits: 2 }); };
+    var prices = {};
+    form.querySelectorAll('#doc-products option').forEach(function (o) { prices[o.value] = o.getAttribute('data-price'); });
+    function update() {
+        var sub = 0;
+        form.querySelectorAll('[data-repeater-row]').forEach(function (row) {
+            sub += (parseFloat(row.querySelector('[data-po-qty]').value) || 0) * (parseFloat(row.querySelector('[data-po-cost]').value) || 0);
+        });
+        var disc = Math.min(sub, Math.max(0, parseFloat(form.querySelector('[data-doc-discount]').value) || 0));
+        var vat = form.querySelector('[data-doc-vat]').checked ? (sub - disc) * 0.075 : 0;
+        form.querySelector('[data-doc-tax]').textContent = vat ? naira(vat) : '—';
+        form.querySelector('[data-doc-total]').textContent = naira(sub - disc + vat);
+    }
+    form.addEventListener('input', function (e) {
+        if (e.target.matches('[data-doc-desc]') && prices[e.target.value]) {
+            var price = e.target.closest('tr').querySelector('[data-po-cost]');
+            if (!price.value) { price.value = prices[e.target.value]; price.dispatchEvent(new Event('input', { bubbles: true })); }
+        }
+        update();
+    });
+    form.addEventListener('change', update);
+    form.addEventListener('click', function () { setTimeout(update, 0); });
+    update();
+})();

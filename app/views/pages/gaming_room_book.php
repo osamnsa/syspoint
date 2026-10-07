@@ -64,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'party_size' => $partySize !== '' ? $partySize : null,
                 'notes' => $notes !== '' ? $notes : null,
             ]);
+            crm_link('room_bookings', (int) db()->lastInsertId(), $name, $email, $phone);
 
             flash('booking_success', "Thanks {$name} — your request to book the {$room['name']} on {$date} ({$startTime}–{$endTime}) has been received. We'll confirm shortly.");
             header('Location: ' . path('gaming'));

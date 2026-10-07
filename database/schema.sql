@@ -410,3 +410,140 @@ CREATE TABLE IF NOT EXISTS asset_logs (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_asset_logs_asset FOREIGN KEY (asset_id) REFERENCES assets (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------------
+-- CRM: one customer record per person/organisation, linked from every place
+-- the site captures someone (orders, bookings, software requests, contact
+-- messages, walk-in sales) by email, else phone. Deals pipeline, timeline
+-- (notes/calls), tasks, and quotes & invoices with payments.
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS customers (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    type ENUM('person', 'organisation') NOT NULL DEFAULT 'person',
+    name VARCHAR(190) NOT NULL,
+    organisation_id INT UNSIGNED NULL,
+    email VARCHAR(190) NULL,
+    phone VARCHAR(40) NULL,
+    phone_digits VARCHAR(20) NULL,
+    address TEXT NULL,
+    source ENUM('website', 'walk_in', 'referral', 'social', 'event', 'phone', 'other') NOT NULL DEFAULT 'website',
+    tags VARCHAR(255) NULL,
+    notes TEXT NULL,
+    owner_id INT UNSIGNED NULL,
+    last_activity_at TIMESTAMP NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_customers_org FOREIGN KEY (organisation_id) REFERENCES customers (id) ON DELETE SET NULL,
+    INDEX idx_customers_email (email),
+    INDEX idx_customers_phone (phone_digits),
+    INDEX idx_customers_name (name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS customer_id INT UNSIGNED NULL AFTER id;
+ALTER TABLE room_bookings ADD COLUMN IF NOT EXISTS customer_id INT UNSIGNED NULL AFTER id;
+ALTER TABLE software_requests ADD COLUMN IF NOT EXISTS customer_id INT UNSIGNED NULL AFTER id;
+ALTER TABLE contact_messages ADD COLUMN IF NOT EXISTS customer_id INT UNSIGNED NULL AFTER id;
+ALTER TABLE pos_sales ADD COLUMN IF NOT EXISTS customer_id INT UNSIGNED NULL AFTER id;
+CREATE INDEX IF NOT EXISTS idx_orders_customer ON orders (customer_id);
+CREATE INDEX IF NOT EXISTS idx_room_bookings_customer ON room_bookings (customer_id);
+CREATE INDEX IF NOT EXISTS idx_software_requests_customer ON software_requests (customer_id);
+CREATE INDEX IF NOT EXISTS idx_contact_messages_customer ON contact_messages (customer_id);
+CREATE INDEX IF NOT EXISTS idx_pos_sales_customer ON pos_sales (customer_id);
+
+CREATE TABLE IF NOT EXISTS deals (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(190) NOT NULL,
+    customer_id INT UNSIGNED NOT NULL,
+    service ENUM('software', 'consulting', 'hardware', 'training', 'gaming', 'other') NOT NULL DEFAULT 'software',
+    value DECIMAL(14,2) NOT NULL DEFAULT 0,
+    stage ENUM('lead', 'contacted', 'proposal', 'negotiation', 'won', 'lost') NOT NULL DEFAULT 'lead',
+    expected_close DATE NULL,
+    owner_id INT UNSIGNED NULL,
+    request_id INT UNSIGNED NULL,
+    lost_reason VARCHAR(255) NULL,
+    closed_at TIMESTAMP NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_deals_customer FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE,
+    INDEX idx_deals_stage (stage)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS crm_activities (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT UNSIGNED NULL,
+    deal_id INT UNSIGNED NULL,
+    type ENUM('note', 'call', 'email', 'meeting', 'whatsapp', 'stage') NOT NULL DEFAULT 'note',
+    body TEXT NOT NULL,
+    user_id INT UNSIGNED NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_activities_customer FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE,
+    CONSTRAINT fk_activities_deal FOREIGN KEY (deal_id) REFERENCES deals (id) ON DELETE CASCADE,
+    INDEX idx_activities_customer (customer_id, created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS crm_tasks (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    due_date DATE NULL,
+    priority ENUM('normal', 'high') NOT NULL DEFAULT 'normal',
+    status ENUM('open', 'done') NOT NULL DEFAULT 'open',
+    customer_id INT UNSIGNED NULL,
+    deal_id INT UNSIGNED NULL,
+    assigned_to INT UNSIGNED NULL,
+    created_by INT UNSIGNED NULL,
+    completed_at TIMESTAMP NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_tasks_customer FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE,
+    CONSTRAINT fk_tasks_deal FOREIGN KEY (deal_id) REFERENCES deals (id) ON DELETE CASCADE,
+    INDEX idx_tasks_open (status, due_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Quotes and invoices share one table (type) and numbering per type/year.
+CREATE TABLE IF NOT EXISTS crm_documents (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    type ENUM('quote', 'invoice') NOT NULL,
+    number VARCHAR(30) NOT NULL UNIQUE,
+    customer_id INT UNSIGNED NOT NULL,
+    deal_id INT UNSIGNED NULL,
+    status ENUM('draft', 'sent', 'accepted', 'declined', 'expired', 'part_paid', 'paid', 'void') NOT NULL DEFAULT 'draft',
+    issue_date DATE NOT NULL,
+    due_date DATE NULL,
+    subtotal DECIMAL(14,2) NOT NULL DEFAULT 0,
+    discount DECIMAL(14,2) NOT NULL DEFAULT 0,
+    tax_rate DECIMAL(5,2) NOT NULL DEFAULT 0,
+    tax DECIMAL(14,2) NOT NULL DEFAULT 0,
+    total DECIMAL(14,2) NOT NULL DEFAULT 0,
+    amount_paid DECIMAL(14,2) NOT NULL DEFAULT 0,
+    notes TEXT NULL,
+    terms TEXT NULL,
+    source_id INT UNSIGNED NULL,
+    created_by INT UNSIGNED NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_documents_customer FOREIGN KEY (customer_id) REFERENCES customers (id),
+    CONSTRAINT fk_documents_deal FOREIGN KEY (deal_id) REFERENCES deals (id) ON DELETE SET NULL,
+    INDEX idx_documents_type (type, status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS crm_document_items (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    document_id INT UNSIGNED NOT NULL,
+    description VARCHAR(500) NOT NULL,
+    quantity DECIMAL(10,2) NOT NULL DEFAULT 1,
+    unit_price DECIMAL(14,2) NOT NULL,
+    sort_order INT UNSIGNED NOT NULL DEFAULT 0,
+    CONSTRAINT fk_document_items_doc FOREIGN KEY (document_id) REFERENCES crm_documents (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS crm_payments (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    document_id INT UNSIGNED NOT NULL,
+    amount DECIMAL(14,2) NOT NULL,
+    method ENUM('transfer', 'cash', 'card', 'cheque', 'other') NOT NULL DEFAULT 'transfer',
+    paid_on DATE NOT NULL,
+    reference VARCHAR(120) NULL,
+    user_id INT UNSIGNED NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_payments_doc FOREIGN KEY (document_id) REFERENCES crm_documents (id) ON DELETE CASCADE,
+    INDEX idx_payments_paid_on (paid_on)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

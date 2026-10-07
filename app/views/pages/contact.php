@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'subject' => $subject !== '' ? $subject : null,
                     'message' => $message,
                 ]);
+                crm_link('contact_messages', (int) db()->lastInsertId(), $name, $email, null);
             }
 
             flash('success', "Thanks {$name}, your message has been received. We'll get back to you soon.");

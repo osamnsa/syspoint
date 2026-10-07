@@ -29,6 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $saleId = pos_create_sale($lines, $customer, (string) ($_POST['payment_method'] ?? ''),
                 (float) ($_POST['discount'] ?? 0), $paid === '' ? null : (float) $paid, trim((string) ($_POST['notes'] ?? '')));
+            if ($customer['name'] !== '' || $customer['phone'] !== '' || $customer['email'] !== '') {
+                crm_link('pos_sales', $saleId, $customer['name'], $customer['email'], $customer['phone'], 'walk_in');
+            }
             flash('success', 'Sale recorded.');
             header('Location: ' . path('admin/pos/sales/' . $saleId) . '?new=1');
             exit;

@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'phone' => $phone !== '' ? $phone : null,
                     'description' => $description,
                 ]);
+                crm_link('software_requests', (int) db()->lastInsertId(), $contactName, $email, $phone, 'website', $businessName);
             }
 
             flash('success', "Thanks {$contactName}, we've received your request and will be in touch soon.");

@@ -12,8 +12,9 @@ $flashSuccess = flash('success');
 
 // The menu item for this page: the longest matching path wins, so
 // admin/products/3/edit lights up Products and admin/ only Overview.
-$activeNavPath = null;
-foreach ($adminNavGroups as $group) {
+// A page can name its menu item ($activeNav) when its URL isn't under one.
+$activeNavPath = $activeNav ?? null;
+if ($activeNavPath === null) foreach ($adminNavGroups as $group) {
     foreach ($group['items'] as $item) {
         $p = $item['path'];
         if (($currentAdminPath === $p || str_starts_with($currentAdminPath, $p . '/'))

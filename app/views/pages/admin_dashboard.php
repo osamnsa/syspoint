@@ -10,7 +10,7 @@ $range = $period['range'];
 $canStore = admin_can('store');
 $canGaming = admin_can('gaming');
 $canSales = admin_can('sales');
-$canMoney = $canStore || $canGaming;
+$canMoney = $canStore || $canGaming || $canSales;
 
 $fmtNaira = fn($v) => naira_short((float) $v);
 
@@ -18,21 +18,21 @@ $fmtNaira = fn($v) => naira_short((float) $v);
 $revenue = [];
 if ($canMoney) {
     foreach (dashboard_revenue($period) as $key => $stream) {
-        if (($key === 'shop' && $canStore) || ($key === 'gaming' && $canGaming)) {
+        if (($key === 'shop' && $canStore) || ($key === 'gaming' && $canGaming) || ($key === 'services' && $canSales)) {
             $revenue[$key] = $stream;
         }
     }
 }
 $revTotal = array_sum(array_column($revenue, 'total'));
 $revPrev = array_sum(array_column($revenue, 'prev'));
-$seriesColors = ['shop' => CHART_SERIES[0], 'gaming' => CHART_SERIES[1]];
+$seriesColors = ['shop' => CHART_SERIES[0], 'gaming' => CHART_SERIES[1], 'services' => CHART_SERIES[2]];
 
 $labels = array_column($period['buckets'], 'label');
 $s = $period['start']; $e = $period['end']; $ps = $period['prev_start']; $pe = $period['prev_end'];
 
 $kpis = [];
 if ($canMoney) {
-    $kpis[] = ['label' => 'Revenue', 'value' => naira_short($revTotal), 'change' => dashboard_change($revTotal, $revPrev), 'note' => 'Shop (online + walk-in) + gaming'];
+    $kpis[] = ['label' => 'Revenue', 'value' => naira_short($revTotal), 'change' => dashboard_change($revTotal, $revPrev), 'note' => 'Shop, gaming and invoice payments'];
 }
 if ($canStore) {
     $q = "SELECT COUNT(*) FROM orders WHERE payment_status = 'paid' AND created_at BETWEEN :from AND :to";
@@ -55,8 +55,8 @@ $attention = [];
 if ($canStore) {
     $n = (int) db()->query("SELECT COUNT(*) FROM orders WHERE status IN ('pending', 'paid', 'processing')")->fetchColumn();
     $attention[] = ['label' => 'Orders to fulfil', 'value' => $n, 'href' => path('admin/orders')];
-    $n = (int) db()->query('SELECT COUNT(*) FROM products WHERE is_active = 1 AND is_demo = 0 AND stock_qty <= 3')->fetchColumn();
-    $attention[] = ['label' => 'Products low on stock (3 or fewer)', 'value' => $n, 'href' => path('admin/products')];
+    $n = (int) db()->query('SELECT COUNT(*) FROM products WHERE is_active = 1 AND is_demo = 0 AND stock_qty <= reorder_level')->fetchColumn();
+    $attention[] = ['label' => 'Products at or below reorder level', 'value' => $n, 'href' => path('admin/inventory/stock') . '?filter=low'];
 }
 if ($canGaming) {
     $n = (int) db()->query("SELECT COUNT(*) FROM room_bookings WHERE status = 'pending'")->fetchColumn();
@@ -66,7 +66,11 @@ if ($canSales) {
     $n = (int) db()->query("SELECT COUNT(*) FROM software_requests WHERE status = 'new'")->fetchColumn();
     $attention[] = ['label' => 'New software requests', 'value' => $n, 'href' => path('admin/software-requests')];
     $n = (int) db()->query('SELECT COUNT(*) FROM contact_messages WHERE read_at IS NULL')->fetchColumn();
-    $attention[] = ['label' => 'Unread messages', 'value' => $n, 'href' => path('admin') . '#recent-messages'];
+    $attention[] = ['label' => 'Unread messages', 'value' => $n, 'href' => path('admin/messages') . '?view=unread'];
+    $n = (int) db()->query("SELECT COUNT(*) FROM crm_tasks WHERE status = 'open' AND due_date <= CURDATE() AND assigned_to = " . (int) $adminUser['id'])->fetchColumn();
+    $attention[] = ['label' => 'My tasks due today or overdue', 'value' => $n, 'href' => path('admin/tasks')];
+    $n = (int) db()->query("SELECT COUNT(*) FROM crm_documents WHERE type = 'invoice' AND status IN ('sent', 'part_paid') AND due_date < CURDATE()")->fetchColumn();
+    $attention[] = ['label' => 'Overdue invoices', 'value' => $n, 'href' => path('admin/invoices') . '?status=overdue'];
 }
 
 $upcoming = [];
@@ -241,14 +245,15 @@ $changeHtml = function (?float $c): string {
     <header class="dash-card-head"><div><h2>Monthly summary</h2><p class="dash-card-sub">Last 6 months</p></div></header>
     <div class="dash-table-wrap">
         <table class="dash-table">
-            <thead><tr><th>Month</th><?php if ($canStore): ?><th>Shop revenue</th><th>Paid orders</th><?php endif; ?><?php if ($canGaming): ?><th>Gaming revenue</th><th>Bookings</th><?php endif; ?><th>Total</th></tr></thead>
+            <thead><tr><th>Month</th><?php if ($canStore): ?><th>Shop revenue</th><th>Paid orders</th><?php endif; ?><?php if ($canGaming): ?><th>Gaming revenue</th><th>Bookings</th><?php endif; ?><?php if ($canSales): ?><th>Services (invoices)</th><?php endif; ?><th>Total</th></tr></thead>
             <tbody>
             <?php foreach ($monthly as $m): ?>
                 <tr>
                     <td><?= e($m['month']) ?></td>
                     <?php if ($canStore): ?><td><?= format_naira($m['shop']) ?></td><td><?= (int) $m['orders'] ?></td><?php endif; ?>
                     <?php if ($canGaming): ?><td><?= format_naira($m['gaming']) ?></td><td><?= (int) $m['bookings'] ?></td><?php endif; ?>
-                    <td><strong><?= format_naira(($canStore ? $m['shop'] : 0) + ($canGaming ? $m['gaming'] : 0)) ?></strong></td>
+                    <?php if ($canSales): ?><td><?= format_naira($m['services']) ?></td><?php endif; ?>
+                    <td><strong><?= format_naira(($canStore ? $m['shop'] : 0) + ($canGaming ? $m['gaming'] : 0) + ($canSales ? $m['services'] : 0)) ?></strong></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
@@ -268,7 +273,7 @@ $changeHtml = function (?float $c): string {
                     <?php foreach ($recentMessages as $m): ?>
                         <tr>
                             <td><?php if (!$m['read_at']): ?><span class="badge badge-warning">New</span><?php endif; ?></td>
-                            <td><?= e($m['name']) ?></td>
+                            <td><a href="<?= path('admin/messages/' . (int) $m['id']) ?>"><?= e($m['name']) ?></a></td>
                             <td><?= e($m['subject'] ?: '(no subject)') ?></td>
                             <td><?= e((new DateTimeImmutable($m['created_at']))->format('M j, g:i A')) ?></td>
                         </tr>
