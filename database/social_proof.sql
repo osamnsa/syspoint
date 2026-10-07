@@ -75,6 +75,12 @@ INSERT INTO deployed_businesses (name, sort_order, is_active)
 INSERT INTO deployed_businesses (name, sort_order, is_active)
     SELECT 'Ladela Schools', 190, 1 FROM DUAL
     WHERE NOT EXISTS (SELECT 1 FROM deployed_businesses WHERE name = 'Ladela Schools');
+INSERT INTO deployed_businesses (name, sort_order, is_active)
+    SELECT 'National Universities Commission', 200, 1 FROM DUAL
+    WHERE NOT EXISTS (SELECT 1 FROM deployed_businesses WHERE name = 'National Universities Commission');
+INSERT INTO deployed_businesses (name, sort_order, is_active)
+    SELECT 'Committee of Vice-Chancellors of Nigerian Universities', 210, 1 FROM DUAL
+    WHERE NOT EXISTS (SELECT 1 FROM deployed_businesses WHERE name = 'Committee of Vice-Chancellors of Nigerian Universities');
 
 -- Headline stats (Admin -> Home Stats). Only filled in where still empty, so
 -- re-running never overwrites a figure changed in the admin.
@@ -108,3 +114,7 @@ UPDATE deployed_businesses SET logo_path = 'assets/img/clients/ladela-schools.pn
     WHERE name = 'Ladela Schools' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
 UPDATE deployed_businesses SET logo_path = 'assets/img/clients/unn.png'
     WHERE name = 'University of Nigeria, Nsukka' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
+UPDATE deployed_businesses SET logo_path = 'assets/img/clients/nuc.png'
+    WHERE name = 'National Universities Commission' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
+UPDATE deployed_businesses SET logo_path = 'assets/img/clients/cvcnu.png'
+    WHERE name = 'Committee of Vice-Chancellors of Nigerian Universities' AND (logo_path IS NULL OR logo_path = '' OR logo_path LIKE 'https://staging.syspoint.com.ng/%');
