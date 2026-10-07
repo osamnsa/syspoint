@@ -36,8 +36,14 @@ function chart_nice_max(float $max): float
 }
 
 /** Gridline count that keeps every tick a round number (5 for 2.5× / 5× tops, else 4). */
-function chart_divisions(float $top): int
+function chart_divisions(float $top, bool $integer = false): int
 {
+    if ($integer) {
+        foreach ([5, 4, 2] as $d) {
+            if (fmod($top, $d) == 0.0) return $d;
+        }
+        return 1;
+    }
     $lead = $top / (10 ** floor(log10($top)));
     return in_array(round($lead, 2), [2.5, 5.0], true) ? 5 : 4;
 }
@@ -76,14 +82,15 @@ function chart_line(array $labels, array $series, array $opt = []): string
     $n = max(1, count($labels));
     $max = 0;
     foreach ($series as $s) foreach ($s['values'] as $v) $max = max($max, (float) $v);
-    $top = chart_nice_max($max);
+    $integer = $opt['integer'] ?? false;
+    $top = chart_nice_max($integer ? max(4.0, $max) : $max);
     $x = fn($i) => $pl + ($n === 1 ? ($w - $pl - $pr) / 2 : $i * ($w - $pl - $pr) / ($n - 1));
     $y = fn($v) => $pt + ($h - $pt - $pb) * (1 - ((float) $v) / $top);
     $id = 'g' . substr(md5(json_encode([$labels, $series])), 0, 8);
 
     $svg = '<svg class="chart chart-line" viewBox="0 0 ' . $w . ' ' . $h . '" role="img" aria-label="' . e($opt['label'] ?? 'Chart') . '">';
     // Recessive grid + y labels (4 steps)
-    $div = chart_divisions($top);
+    $div = chart_divisions($top, $integer);
     for ($g = 0; $g <= $div; $g++) {
         $val = $top * $g / $div; $gy = $y($val);
         $svg .= sprintf('<line class="chart-grid" x1="%d" x2="%d" y1="%.1f" y2="%.1f"/>', $pl, $w - $pr, $gy, $gy);
@@ -142,7 +149,7 @@ function chart_bars(array $labels, array $values, array $opt = []): string
     $ih = $h - $pt - $pb;
 
     $svg = '<svg class="chart chart-bars" viewBox="0 0 ' . $w . ' ' . $h . '" role="img" aria-label="' . e($opt['label'] ?? 'Chart') . '">';
-    $div = chart_divisions($top);
+    $div = chart_divisions($top, $opt['integer'] ?? true);
     for ($g = 0; $g <= $div; $g++) {
         $val = $top * $g / $div; $gy = $pt + $ih * (1 - $g / $div);
         $svg .= sprintf('<line class="chart-grid" x1="%d" x2="%d" y1="%.1f" y2="%.1f"/>', $pl, $w - $pr, $gy, $gy);

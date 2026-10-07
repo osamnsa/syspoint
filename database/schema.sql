@@ -257,3 +257,156 @@ CREATE TABLE IF NOT EXISTS testimonials (
     is_active TINYINT(1) NOT NULL DEFAULT 1,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------------
+-- Inventory: stock ledger, suppliers & purchase orders, walk-in POS, serial
+-- numbers / warranty, and the Hub's own equipment. products.stock_qty stays
+-- the live on-hand figure; every change to it is also written to
+-- stock_movements (app/inventory.php inventory_move()), so the ledger always
+-- explains the number.
+-- ---------------------------------------------------------------------------
+ALTER TABLE products ADD COLUMN IF NOT EXISTS sku VARCHAR(60) NULL AFTER slug;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS cost_price DECIMAL(12,2) NULL AFTER price;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS reorder_level INT UNSIGNED NOT NULL DEFAULT 3 AFTER stock_qty;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS track_serials TINYINT(1) NOT NULL DEFAULT 0 AFTER reorder_level;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS warranty_months INT UNSIGNED NULL AFTER track_serials;
+CREATE INDEX IF NOT EXISTS idx_products_sku ON products (sku);
+
+CREATE TABLE IF NOT EXISTS stock_movements (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    product_id INT UNSIGNED NOT NULL,
+    change_qty INT NOT NULL,
+    balance_after INT NOT NULL,
+    reason ENUM('opening', 'purchase', 'online_sale', 'pos_sale', 'adjustment', 'return', 'damage', 'order_cancelled', 'sale_voided') NOT NULL,
+    ref_type VARCHAR(30) NULL,
+    ref_id INT UNSIGNED NULL,
+    note VARCHAR(255) NULL,
+    user_id INT UNSIGNED NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_stock_movements_product FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE,
+    INDEX idx_stock_movements_product (product_id, created_at),
+    INDEX idx_stock_movements_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Products that already had stock before the ledger existed get one
+-- 'opening' row so their history starts from the right number.
+INSERT INTO stock_movements (product_id, change_qty, balance_after, reason, note)
+    SELECT p.id, p.stock_qty, p.stock_qty, 'opening', 'Stock on hand when inventory tracking started'
+    FROM products p
+    WHERE p.stock_qty > 0 AND NOT EXISTS (SELECT 1 FROM stock_movements m WHERE m.product_id = p.id);
+
+CREATE TABLE IF NOT EXISTS suppliers (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(190) NOT NULL,
+    contact_name VARCHAR(150) NULL,
+    phone VARCHAR(40) NULL,
+    email VARCHAR(190) NULL,
+    address TEXT NULL,
+    notes TEXT NULL,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS purchase_orders (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    po_number VARCHAR(30) NOT NULL UNIQUE,
+    supplier_id INT UNSIGNED NOT NULL,
+    status ENUM('draft', 'ordered', 'partially_received', 'received', 'cancelled') NOT NULL DEFAULT 'draft',
+    order_date DATE NULL,
+    expected_date DATE NULL,
+    notes TEXT NULL,
+    created_by INT UNSIGNED NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_purchase_orders_supplier FOREIGN KEY (supplier_id) REFERENCES suppliers (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS purchase_order_items (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    po_id INT UNSIGNED NOT NULL,
+    product_id INT UNSIGNED NOT NULL,
+    qty_ordered INT UNSIGNED NOT NULL,
+    qty_received INT UNSIGNED NOT NULL DEFAULT 0,
+    unit_cost DECIMAL(12,2) NOT NULL,
+    CONSTRAINT fk_po_items_po FOREIGN KEY (po_id) REFERENCES purchase_orders (id) ON DELETE CASCADE,
+    CONSTRAINT fk_po_items_product FOREIGN KEY (product_id) REFERENCES products (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS pos_sales (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    receipt_no VARCHAR(30) NOT NULL UNIQUE,
+    customer_name VARCHAR(150) NULL,
+    customer_phone VARCHAR(40) NULL,
+    customer_email VARCHAR(190) NULL,
+    subtotal DECIMAL(12,2) NOT NULL,
+    discount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    total DECIMAL(12,2) NOT NULL,
+    payment_method ENUM('cash', 'transfer', 'card', 'split') NOT NULL DEFAULT 'cash',
+    amount_paid DECIMAL(12,2) NULL,
+    status ENUM('completed', 'voided') NOT NULL DEFAULT 'completed',
+    void_reason VARCHAR(255) NULL,
+    notes VARCHAR(255) NULL,
+    cashier_id INT UNSIGNED NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_pos_sales_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS pos_sale_items (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    sale_id INT UNSIGNED NOT NULL,
+    product_id INT UNSIGNED NULL,
+    product_name VARCHAR(190) NOT NULL,
+    unit_price DECIMAL(12,2) NOT NULL,
+    unit_cost DECIMAL(12,2) NULL,
+    quantity INT UNSIGNED NOT NULL,
+    CONSTRAINT fk_pos_items_sale FOREIGN KEY (sale_id) REFERENCES pos_sales (id) ON DELETE CASCADE,
+    CONSTRAINT fk_pos_items_product FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- One row per physical unit of a serial-tracked product (laptops, phones).
+CREATE TABLE IF NOT EXISTS product_units (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    product_id INT UNSIGNED NOT NULL,
+    serial VARCHAR(120) NOT NULL UNIQUE,
+    status ENUM('in_stock', 'sold', 'returned', 'faulty') NOT NULL DEFAULT 'in_stock',
+    po_id INT UNSIGNED NULL,
+    received_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    sold_at TIMESTAMP NULL,
+    sale_type ENUM('online', 'pos') NULL,
+    sale_id INT UNSIGNED NULL,
+    customer_name VARCHAR(150) NULL,
+    customer_phone VARCHAR(40) NULL,
+    warranty_until DATE NULL,
+    notes VARCHAR(255) NULL,
+    CONSTRAINT fk_product_units_product FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE,
+    INDEX idx_product_units_product (product_id, status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- The Hub's own equipment (not for sale): consoles, controllers, VR headsets…
+CREATE TABLE IF NOT EXISTS assets (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    asset_tag VARCHAR(40) NOT NULL UNIQUE,
+    name VARCHAR(190) NOT NULL,
+    category ENUM('console', 'controller', 'vr_headset', 'pc', 'display', 'audio', 'network', 'furniture', 'other') NOT NULL DEFAULT 'other',
+    room_id INT UNSIGNED NULL,
+    location VARCHAR(120) NULL,
+    serial VARCHAR(120) NULL,
+    purchase_date DATE NULL,
+    purchase_cost DECIMAL(12,2) NULL,
+    status ENUM('in_use', 'spare', 'in_repair', 'retired') NOT NULL DEFAULT 'in_use',
+    asset_condition ENUM('good', 'fair', 'poor') NOT NULL DEFAULT 'good',
+    notes TEXT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_assets_room FOREIGN KEY (room_id) REFERENCES gaming_rooms (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS asset_logs (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    asset_id INT UNSIGNED NOT NULL,
+    type ENUM('note', 'repair', 'moved', 'status') NOT NULL DEFAULT 'note',
+    description VARCHAR(500) NOT NULL,
+    cost DECIMAL(12,2) NULL,
+    user_id INT UNSIGNED NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_asset_logs_asset FOREIGN KEY (asset_id) REFERENCES assets (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

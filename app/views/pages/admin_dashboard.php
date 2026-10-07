@@ -32,7 +32,7 @@ $s = $period['start']; $e = $period['end']; $ps = $period['prev_start']; $pe = $
 
 $kpis = [];
 if ($canMoney) {
-    $kpis[] = ['label' => 'Revenue', 'value' => naira_short($revTotal), 'change' => dashboard_change($revTotal, $revPrev), 'note' => 'Paid orders + gaming bookings'];
+    $kpis[] = ['label' => 'Revenue', 'value' => naira_short($revTotal), 'change' => dashboard_change($revTotal, $revPrev), 'note' => 'Shop (online + walk-in) + gaming'];
 }
 if ($canStore) {
     $q = "SELECT COUNT(*) FROM orders WHERE payment_status = 'paid' AND created_at BETWEEN :from AND :to";

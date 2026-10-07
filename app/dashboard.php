@@ -1,7 +1,7 @@
 <?php
 /**
  * Numbers behind the admin dashboards. Every figure is computed from the live
- * tables: shop revenue = paid online orders; gaming revenue = confirmed or
+ * tables: shop revenue = paid online orders + completed walk-in POS sales; gaming revenue = confirmed or
  * completed room bookings (hours × room rate). New revenue streams (walk-in
  * POS, CRM invoices) add themselves to dashboard_revenue_streams().
  */
@@ -60,9 +60,18 @@ function dashboard_period(string $range): array
 function dashboard_stream_rows(string $stream, DateTimeImmutable $from, DateTimeImmutable $to): array
 {
     $params = ['from' => $from->format('Y-m-d 00:00:00'), 'to' => $to->format('Y-m-d 23:59:59')];
+    if ($stream === 'shop') {
+        $params += ['from2' => $params['from'], 'to2' => $params['to']];
+    }
     $sql = match ($stream) {
-        'shop' => "SELECT DATE(created_at) AS day, SUM(subtotal) AS amount FROM orders
-                   WHERE payment_status = 'paid' AND created_at BETWEEN :from AND :to GROUP BY DATE(created_at)",
+        // Shop = paid online orders + completed walk-in (POS) sales.
+        'shop' => "SELECT day, SUM(amount) AS amount FROM (
+                       SELECT DATE(created_at) AS day, subtotal AS amount FROM orders
+                       WHERE payment_status = 'paid' AND created_at BETWEEN :from AND :to
+                       UNION ALL
+                       SELECT DATE(created_at) AS day, total AS amount FROM pos_sales
+                       WHERE status = 'completed' AND created_at BETWEEN :from2 AND :to2
+                   ) t GROUP BY day",
         'gaming' => "SELECT b.booking_date AS day,
                        SUM(GREATEST(TIME_TO_SEC(TIMEDIFF(b.end_time, b.start_time)), 0) / 3600 * r.hourly_rate) AS amount
                      FROM room_bookings b JOIN gaming_rooms r ON r.id = b.room_id
@@ -174,4 +183,44 @@ function dashboard_monthly_summary(int $months = 6): array
             'bookings' => (int) $stmt->fetchColumn(), 'total' => $shop + $gaming];
     }
     return $rows;
+}
+
+/**
+ * Units sold per bucket by channel, from the stock ledger (net of
+ * cancellations/voids is not subtracted here — those show as their own rows).
+ */
+function dashboard_units_sold(array $period): array
+{
+    $stmt = db()->prepare("SELECT DATE(created_at) AS day, reason, -SUM(change_qty) AS units FROM stock_movements
+        WHERE reason IN ('online_sale', 'pos_sale') AND created_at BETWEEN :from AND :to GROUP BY DATE(created_at), reason");
+    $stmt->execute(['from' => $period['start']->format('Y-m-d 00:00:00'), 'to' => $period['end']->format('Y-m-d 23:59:59')]);
+    $rows = $stmt->fetchAll();
+    $out = ['online_sale' => [], 'pos_sale' => []];
+    foreach ($period['buckets'] as $b) {
+        foreach ($out as $k => $_) {
+            $sum = 0;
+            foreach ($rows as $r) {
+                if ($r['reason'] === $k && $r['day'] >= $b['from']->format('Y-m-d') && $r['day'] <= $b['to']->format('Y-m-d')) $sum += (int) $r['units'];
+            }
+            $out[$k][] = $sum;
+        }
+    }
+    return $out;
+}
+
+/** Best sellers in a window: units and revenue across online + walk-in. */
+function dashboard_top_products(DateTimeImmutable $from, DateTimeImmutable $to, int $limit = 6): array
+{
+    $stmt = db()->prepare(
+        "SELECT p.id, p.name, p.stock_qty, SUM(t.qty) AS units, SUM(t.revenue) AS revenue FROM (
+            SELECT oi.product_id, oi.quantity AS qty, oi.quantity * oi.unit_price AS revenue FROM order_items oi
+              JOIN orders o ON o.id = oi.order_id WHERE o.payment_status = 'paid' AND o.created_at BETWEEN :f1 AND :t1
+            UNION ALL
+            SELECT si.product_id, si.quantity, si.quantity * si.unit_price FROM pos_sale_items si
+              JOIN pos_sales s ON s.id = si.sale_id WHERE s.status = 'completed' AND s.created_at BETWEEN :f2 AND :t2
+         ) t JOIN products p ON p.id = t.product_id GROUP BY p.id, p.name, p.stock_qty ORDER BY revenue DESC LIMIT $limit"
+    );
+    $f = $from->format('Y-m-d 00:00:00'); $t = $to->format('Y-m-d 23:59:59');
+    $stmt->execute(['f1' => $f, 't1' => $t, 'f2' => $f, 't2' => $t]);
+    return $stmt->fetchAll();
 }

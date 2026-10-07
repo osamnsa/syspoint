@@ -81,8 +81,6 @@ function order_create_from_cart(string $name, string $email, ?string $phone, ?st
             'INSERT INTO order_items (order_id, product_id, product_name, unit_price, quantity)
              VALUES (:order_id, :product_id, :product_name, :unit_price, :quantity)'
         );
-        $stockStmt = $pdo->prepare('UPDATE products SET stock_qty = stock_qty - :qty WHERE id = :id');
-
         foreach ($lines as $line) {
             $itemStmt->execute([
                 'order_id' => $orderId,
@@ -91,7 +89,7 @@ function order_create_from_cart(string $name, string $email, ?string $phone, ?st
                 'unit_price' => $line['unit_price'],
                 'quantity' => $line['quantity'],
             ]);
-            $stockStmt->execute(['qty' => $line['quantity'], 'id' => $line['product_id']]);
+            inventory_move($line['product_id'], -$line['quantity'], 'online_sale', 'order', $orderId, $orderRef);
         }
 
         $pdo->commit();
@@ -137,8 +135,35 @@ function order_mark_paid(int $orderId, string $paymentReference): bool
     return $stmt->rowCount() > 0;
 }
 
+/**
+ * Change an order's status. Cancelling puts its items back in stock;
+ * un-cancelling takes them out again (and fails if the stock has since
+ * been sold) — both recorded in the stock ledger.
+ */
 function order_update_status(int $orderId, string $status): void
 {
-    db()->prepare('UPDATE orders SET status = :status WHERE id = :id')
-        ->execute(['status' => $status, 'id' => $orderId]);
+    inventory_tx(function (PDO $pdo) use ($orderId, $status) {
+        $stmt = $pdo->prepare('SELECT id, order_ref, status FROM orders WHERE id = :id FOR UPDATE');
+        $stmt->execute(['id' => $orderId]);
+        $order = $stmt->fetch();
+        if (!$order) return;
+
+        $wasCancelled = $order['status'] === 'cancelled';
+        $nowCancelled = $status === 'cancelled';
+        if ($wasCancelled !== $nowCancelled) {
+            foreach (order_items_for($orderId) as $item) {
+                if (!$item['product_id']) continue;
+                $qty = (int) $item['quantity'];
+                inventory_move((int) $item['product_id'], $nowCancelled ? $qty : -$qty,
+                    $nowCancelled ? 'order_cancelled' : 'online_sale', 'order', $orderId, $order['order_ref']);
+            }
+        }
+        if ($nowCancelled && !$wasCancelled) {
+            $pdo->prepare("UPDATE product_units SET status = 'in_stock', sold_at = NULL, sale_type = NULL, sale_id = NULL,
+                           customer_name = NULL, customer_phone = NULL, warranty_until = NULL
+                           WHERE sale_type = 'online' AND sale_id = :id")->execute(['id' => $orderId]);
+        }
+        $pdo->prepare('UPDATE orders SET status = :status WHERE id = :id')
+            ->execute(['status' => $status, 'id' => $orderId]);
+    });
 }

@@ -442,6 +442,50 @@ Midnight/swoosh backdrop with glass panels.
   Software/CRM `#1E9E86`, Training `#D86A50`; a single series uses brand
   gold.
 
+### Back office — Inventory (Store & Inventory area)
+
+`app/inventory.php` + `admin_inventory*`, `admin_pos*`, `admin_purchase_order*`,
+`admin_suppliers`/`admin_supplier_form`, `admin_serials`, `admin_equipment*`.
+
+- **Stock ledger.** `products.stock_qty` is the live on-hand number, and
+  every change to it goes through `inventory_move()` inside a transaction
+  (row-locked), which also writes a `stock_movements` row: opening stock,
+  received from supplier, online sale, walk-in sale, adjustment, return,
+  damage, order cancelled, sale voided. The ledger always explains the
+  number (Inventory → Stock Ledger, or per product). Existing stock got a
+  one-off "opening" row when the schema ran. On the product form, stock is
+  only entered for a *new* product; after that use **Adjust stock** (count
+  / return / write-off, with a note) or a purchase order.
+- **Online orders** take stock at checkout (as before) and now log it;
+  cancelling an order puts the stock back (and frees any serials), and
+  reopening it takes it again — or refuses if it has been sold since.
+- **Suppliers & purchase orders.** Draft → Ordered → Part received →
+  Received (or Cancelled). Receiving adds stock, sets the product's cost
+  price to that purchase's unit cost, and — for serial-tracked products —
+  requires exactly one serial/IMEI per unit received.
+- **Point of Sale** (`/admin/pos`) for walk-in sales at the Gadget Store:
+  search/tap products, basket, discount, cash/transfer/card/split, change
+  due, optional customer (needed for warranty), printable receipt
+  (`R-YYYY-NNNNN`). Serial-tracked items need the sold serials picked.
+  Voiding a sale (with a reason) restocks it. Walk-in takings count as Shop
+  revenue on the Overview.
+- **Serials & warranty.** Tick "Track serial / IMEI numbers" and set a
+  warranty (months) on a product. Units are received on purchase orders
+  (or registered for stock that predates tracking), sold at the POS or
+  assigned on an online order, and the warranty runs from the sale date.
+  `/admin/serials` looks up any unit by serial, customer or phone; units
+  can be marked returned or faulty (stock follows).
+- **Hub equipment** (`/admin/equipment`, Gaming area): the Hub's own PS5s,
+  controllers, VR headsets etc. with asset tags (`HUB-001`…), room,
+  condition, status (in use / spare / in repair / retired), purchase cost,
+  and a history log of repairs (with cost) and notes; moves and status
+  changes are logged automatically.
+- **Inventory dashboard** (`/admin/inventory`): stock value at cost and
+  retail, potential margin, low/out-of-stock, walk-in takings, units sold
+  online vs walk-in over time, top sellers, reorder list (with what's
+  already on order), open purchase orders, warranties ending soon,
+  equipment in repair, and the latest stock movements.
+
 ## Security Notes
 
 - All DB queries use PDO prepared statements (`ATTR_EMULATE_PREPARES`

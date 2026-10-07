@@ -16,14 +16,28 @@ if (!$order) {
     return;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf()) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf() && ($_POST['action'] ?? '') === 'assign_units') {
+    try {
+        order_assign_units($orderId, (int) ($_POST['product_id'] ?? 0), (array) ($_POST['unit_ids'] ?? []));
+        flash('success', 'Serial number(s) assigned — warranty starts today.');
+        header('Location: ' . path('admin/orders/' . $orderId));
+        exit;
+    } catch (InventoryException $ex) {
+        $statusError = $ex->getMessage();
+    }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf()) {
     $allowedStatuses = ['pending', 'paid', 'processing', 'shipped', 'completed', 'cancelled'];
     $newStatus = (string) ($_POST['status'] ?? '');
     if (in_array($newStatus, $allowedStatuses, true)) {
-        order_update_status($orderId, $newStatus);
-        flash('success', 'Order status updated.');
-        header('Location: ' . path('admin/orders/' . $orderId));
-        exit;
+        try {
+            order_update_status($orderId, $newStatus);
+            flash('success', $newStatus === 'cancelled' && $order['status'] !== 'cancelled'
+                ? 'Order cancelled — its items are back in stock.' : 'Order status updated.');
+            header('Location: ' . path('admin/orders/' . $orderId));
+            exit;
+        } catch (InventoryException $ex) {
+            $statusError = 'Can’t reopen this order: ' . $ex->getMessage();
+        }
     }
 }
 
@@ -42,6 +56,9 @@ require __DIR__ . '/../partials/admin_header.php';
 <?php if ($successMessage): ?>
     <div class="alert alert-success"><?= e($successMessage) ?></div>
 <?php endif; ?>
+<?php if (!empty($statusError)): ?>
+    <div class="alert alert-error"><?= e($statusError) ?></div>
+<?php endif; ?>
 
 <div class="card" style="margin-bottom:20px;">
     <h3 style="margin-top:0;">Customer</h3>
@@ -55,11 +72,31 @@ require __DIR__ . '/../partials/admin_header.php';
 
 <div class="card" style="margin-bottom:20px;">
     <h3 style="margin-top:0;">Items</h3>
-    <?php foreach ($items as $item): ?>
+    <?php
+    $assigned = order_units($orderId);
+    $available = inventory_available_units();
+    foreach ($items as $item):
+        $prod = $item['product_id'] ? product_by_id((int) $item['product_id']) : null;
+        $mine = array_filter($assigned, fn($u) => (int) $u['product_id'] === (int) $item['product_id']); ?>
         <div class="order-summary-line">
             <span><?= e($item['product_name']) ?> &times; <?= (int) $item['quantity'] ?></span>
             <span><?= format_naira((float) $item['unit_price'] * (int) $item['quantity']) ?></span>
         </div>
+        <?php if ($prod && $prod['track_serials']): ?>
+            <div class="order-serials">
+                <?php foreach ($mine as $u): ?><span class="badge badge-success">S/N <?= e($u['serial']) ?></span> <?php endforeach; ?>
+                <?php $need = (int) $item['quantity'] - count($mine);
+                if ($need > 0 && $order['status'] !== 'cancelled'): ?>
+                    <form method="post" class="admin-inline-form">
+                        <?= csrf_field() ?><input type="hidden" name="action" value="assign_units"><input type="hidden" name="product_id" value="<?= (int) $item['product_id'] ?>">
+                        <select name="unit_ids[]" <?= $need > 1 ? 'multiple size="3"' : '' ?> aria-label="Serial to ship">
+                            <?php foreach ($available[(int) $item['product_id']] ?? [] as $u): ?><option value="<?= (int) $u['id'] ?>"><?= e($u['serial']) ?></option><?php endforeach; ?>
+                        </select>
+                        <button type="submit" class="btn btn-outline btn-sm">Assign serial<?= $need > 1 ? 's' : '' ?> (<?= $need ?> needed)</button>
+                    </form>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     <?php endforeach; ?>
     <div class="order-summary-line order-summary-total">
         <span>Total</span>
