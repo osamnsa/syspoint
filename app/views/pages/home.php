@@ -30,6 +30,12 @@ $services = [
         <path d="M1320 40 C 1020 10, 820 160, 900 330 S 1040 640, 640 700 S 80 640, -120 900" fill="none" stroke="#34348A" stroke-width="170" stroke-linecap="round" opacity="0.5" class="home-swoosh-band"/>
         <path d="M1320 40 C 1020 10, 820 160, 900 330 S 1040 640, 640 700 S 80 640, -120 900" fill="none" stroke="#F7CB1E" stroke-width="2.5" stroke-linecap="round" opacity="0.6" class="home-swoosh-line"/>
     </svg>
+    <!-- Phones: the same swoosh redrawn for a tall screen — in behind the laptop, across
+         the service cards, out under the stats bar; never through the headline. -->
+    <svg class="home-swoosh-mobile" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M108 24 C 70 20, -4 30, 8 46 S 104 60, 92 74 S 30 84, -12 90" fill="none" stroke="#34348A" stroke-width="110" stroke-linecap="round" opacity="0.5" vector-effect="non-scaling-stroke"/>
+        <path d="M108 24 C 70 20, -4 30, 8 46 S 104 60, 92 74 S 30 84, -12 90" fill="none" stroke="#F7CB1E" stroke-width="2" stroke-linecap="round" opacity="0.6" vector-effect="non-scaling-stroke"/>
+    </svg>
 
     <div class="container home-hero-head">
         <span class="home-hero-kicker">...challenging conventions</span>
