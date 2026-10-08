@@ -41,6 +41,7 @@ $routes = [
     '#^gaming/book/([a-z0-9-]+)$#' => __DIR__ . '/../app/views/pages/gaming_room_book.php',
 
     '#^training$#' => __DIR__ . '/../app/views/pages/training.php',
+    '#^events$#' => __DIR__ . '/../app/views/pages/events.php',
 
     '#^admin/login$#' => __DIR__ . '/../app/views/pages/admin_login.php',
     '#^admin/logout$#' => __DIR__ . '/../app/views/pages/admin_logout.php',
@@ -50,6 +51,9 @@ $routes = [
     '#^admin/staff/(\d+)/edit$#' => __DIR__ . '/../app/views/pages/admin_staff_form.php',
     '#^admin/account$#' => __DIR__ . '/../app/views/pages/admin_account.php',
     '#^admin/website$#' => __DIR__ . '/../app/views/pages/admin_website.php',
+    '#^admin/events$#' => __DIR__ . '/../app/views/pages/admin_events.php',
+    '#^admin/events/new$#' => __DIR__ . '/../app/views/pages/admin_event_form.php',
+    '#^admin/events/(\d+)/edit$#' => __DIR__ . '/../app/views/pages/admin_event_form.php',
     '#^admin/telegram$#' => __DIR__ . '/../app/views/pages/admin_telegram.php',
     '#^admin/telegram/settings$#' => __DIR__ . '/../app/views/pages/admin_telegram_settings.php',
     '#^admin/gaming$#' => __DIR__ . '/../app/views/pages/admin_gaming.php',

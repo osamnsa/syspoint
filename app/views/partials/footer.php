@@ -25,6 +25,7 @@
                 <h4>Company</h4>
                 <ul>
                     <li><a href="<?= path('about') ?>">About</a></li>
+                    <li><a href="<?= path('events') ?>">Events</a></li>
                     <li><a href="<?= path('contact') ?>">Contact</a></li>
                 </ul>
             </div>

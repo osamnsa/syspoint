@@ -25,6 +25,7 @@ require_once __DIR__ . '/cart.php';
 require_once __DIR__ . '/orders.php';
 require_once __DIR__ . '/inventory.php';
 require_once __DIR__ . '/crm.php';
+require_once __DIR__ . '/events.php';
 require_once __DIR__ . '/telegram.php';
 require_once __DIR__ . '/paystack.php';
 require_once __DIR__ . '/mailer.php';
@@ -50,6 +51,9 @@ function db(): PDO
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false,
         ]);
+        // Same clock as PHP (Lagos), so NOW()/CURDATE() and TIMESTAMP columns
+        // read in local time whatever zone the MySQL server itself runs in.
+        $pdo->exec("SET time_zone = '" . date('P') . "'");
     }
 
     return $pdo;

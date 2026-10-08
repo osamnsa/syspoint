@@ -126,13 +126,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'track_serials' => $values['track_serials'],
                     'warranty_months' => $values['warranty_months'] === '' ? null : $values['warranty_months'],
                 ]);
-                $newId = (int) db()->lastInsertId();
+                $newId = $productId = (int) db()->lastInsertId();
                 if ((int) $values['stock_qty'] > 0) {
                     inventory_tx(fn() => inventory_move($newId, (int) $values['stock_qty'], 'opening', null, null, 'Opening stock when the product was added'));
                 }
             }
 
             flash('success', 'Product saved.');
+            telegram_announce_after_save('product', $productId);
             header('Location: ' . path('admin/products'));
             exit;
         }
@@ -230,6 +231,7 @@ require __DIR__ . '/../partials/admin_header.php';
     <div class="form-group">
         <label><input type="checkbox" name="is_active" value="1" <?= $values['is_active'] ? 'checked' : '' ?> style="width:auto;margin-right:8px;"> Visible on the site</label>
     </div>
+    <?php $tgType = 'product'; $tgId = $productId; $tgDefault = !$product; require __DIR__ . '/../partials/telegram_box.php'; ?>
     <button type="submit" class="btn btn-primary">Save Product</button>
 </form>
 

@@ -9,6 +9,7 @@ require_once __DIR__ . '/admin_nav.php';
 $titleTag = 'Admin' . (isset($pageTitle) && $pageTitle !== '' ? ' — ' . $pageTitle : '') . ' | Syspoint';
 $currentAdminPath = admin_request_path();
 $flashSuccess = flash('success');
+$flashWarning = flash('warning');
 
 // The menu item for this page: the longest matching path wins, so
 // admin/products/3/edit lights up Products and admin/ only Overview.
@@ -80,3 +81,4 @@ $adminRoleLabel = ($adminUser['role'] ?? '') === 'admin'
     </header>
     <main class="admin-main">
 <?php if ($flashSuccess): ?><div class="alert alert-success"><?= e($flashSuccess) ?></div><?php endif; ?>
+<?php if ($flashWarning): ?><div class="alert alert-warning"><?= e($flashWarning) ?></div><?php endif; ?>

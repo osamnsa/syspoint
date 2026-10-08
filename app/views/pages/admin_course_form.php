@@ -75,9 +75,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'is_active' => $values['is_active'],
                     'image_path' => $imagePath,
                 ]);
+                $courseId = (int) db()->lastInsertId();
             }
 
             flash('success', 'Course saved.');
+            telegram_announce_after_save('course', $courseId);
             header('Location: ' . path('admin/courses'));
             exit;
         }
@@ -132,6 +134,7 @@ require __DIR__ . '/../partials/admin_header.php';
     <div class="form-group">
         <label><input type="checkbox" name="is_active" value="1" <?= $values['is_active'] ? 'checked' : '' ?> style="width:auto;margin-right:8px;"> Visible on the site</label>
     </div>
+    <?php $tgType = 'course'; $tgId = $courseId; $tgDefault = !$course; require __DIR__ . '/../partials/telegram_box.php'; ?>
     <button type="submit" class="btn btn-primary">Save Course</button>
 </form>
 

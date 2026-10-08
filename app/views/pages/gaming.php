@@ -8,6 +8,7 @@ $ps5Games = games_by_type('ps5');
 $vrGames = games_by_type('vr');
 $boardGames = games_by_type('board');
 $rooms = gaming_rooms_active();
+$eventsList = events_upcoming(['gaming', 'general'], 6);
 
 $successMessage = flash('booking_success');
 
@@ -69,6 +70,16 @@ require __DIR__ . '/../partials/header.php';
 <section class="section" style="padding-bottom:0;">
     <div class="container">
         <div class="alert alert-success"><?= e($successMessage) ?></div>
+    </div>
+</section>
+<?php endif; ?>
+
+<?php if ($eventsList): ?>
+<section class="section" id="events">
+    <div class="container">
+        <span class="eyebrow">What’s on</span>
+        <h2>Upcoming events</h2>
+        <?php require __DIR__ . '/../partials/events_list.php'; ?>
     </div>
 </section>
 <?php endif; ?>

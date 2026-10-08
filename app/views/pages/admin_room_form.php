@@ -62,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             flash('success', 'Room saved.');
+            telegram_announce_after_save('room', (int) $room['id']);
             header('Location: ' . path('admin/rooms'));
             exit;
         }
@@ -116,6 +117,7 @@ require __DIR__ . '/../partials/admin_header.php';
         <label><input type="checkbox" name="is_demo" value="1" <?= $values['is_demo'] ? 'checked' : '' ?> style="width:auto;margin-right:8px;"> Rate is a placeholder (shows a "Demo" badge)</label>
         <div class="form-note">Untick this once the hourly rate is the real price.</div>
     </div>
+    <?php $tgType = 'room'; $tgId = (int) $room['id']; $tgDefault = false; require __DIR__ . '/../partials/telegram_box.php'; ?>
     <button type="submit" class="btn btn-primary">Save Room</button>
 </form>
 

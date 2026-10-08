@@ -607,3 +607,32 @@ CREATE TABLE IF NOT EXISTS telegram_posts (
     user_id INT UNSIGNED NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- What an announcement was about (product, course, game, room, event), so
+-- each edit page can show "last posted to Telegram …".
+ALTER TABLE telegram_posts ADD COLUMN IF NOT EXISTS ref_type VARCHAR(20) NULL AFTER product_id;
+ALTER TABLE telegram_posts ADD COLUMN IF NOT EXISTS ref_id INT UNSIGNED NULL AFTER ref_type;
+CREATE INDEX IF NOT EXISTS idx_telegram_posts_ref ON telegram_posts (ref_type, ref_id);
+UPDATE telegram_posts SET ref_type = 'product', ref_id = product_id WHERE product_id IS NOT NULL AND ref_type IS NULL;
+
+-- Events: tournaments, game nights, training intakes, open days. Shown on
+-- /events (and the gaming / training pages) until they end, and announced
+-- on the Telegram channel when scheduled.
+CREATE TABLE IF NOT EXISTS events (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(190) NOT NULL,
+    kind VARCHAR(20) NOT NULL DEFAULT 'general',
+    starts_at DATETIME NOT NULL,
+    ends_at DATETIME NULL,
+    venue VARCHAR(190) NULL,
+    description TEXT NULL,
+    price DECIMAL(12,2) NULL,
+    image_path VARCHAR(255) NULL,
+    button_text VARCHAR(60) NULL,
+    button_url VARCHAR(255) NULL,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    created_by INT UNSIGNED NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_events_starts (is_active, starts_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

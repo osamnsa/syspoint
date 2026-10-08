@@ -20,7 +20,7 @@ const ADMIN_AREAS = [
 ];
 
 /**
- * Admin URL prefix => area that may open it. Longest prefix wins. 'admin'
+ * Admin URL prefix => area that may open it ('a|b' = either). Longest prefix wins. 'admin'
  * (the Overview dashboard) is open to every signed-in user; anything not
  * listed is admin-only, so a new page is locked down until it's mapped.
  */
@@ -56,6 +56,7 @@ const ADMIN_AREA_PATHS = [
     'admin/testimonials' => 'website',
     'admin/home-stats' => 'website',
     'admin/website' => 'website',
+    'admin/events' => 'gaming|training|website',
     'admin/telegram' => 'website',
     'admin/telegram/settings' => 'admin',
     'admin/staff' => 'admin',
@@ -108,7 +109,8 @@ function admin_can(string $area): bool
     if ($user['role'] === 'admin' || $area === '*') {
         return true;
     }
-    return $area !== 'admin' && in_array($area, admin_user_areas($user), true);
+    // 'gaming|training' = any one of those areas.
+    return $area !== 'admin' && (bool) array_intersect(explode('|', $area), admin_user_areas($user));
 }
 
 /** Area that guards an admin path (without base path or slashes), per ADMIN_AREA_PATHS. */

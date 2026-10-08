@@ -46,6 +46,7 @@ $adminNavGroups = [
     ]],
     ['label' => 'Website', 'items' => [
         ['path' => 'admin/website', 'label' => 'Website Editor', 'icon' => 'pen', 'area' => 'website'],
+        ['path' => 'admin/events', 'label' => 'Events', 'icon' => 'ticket', 'area' => 'gaming|training|website'],
         ['path' => 'admin/telegram', 'label' => 'Telegram', 'icon' => 'send', 'area' => 'website'],
         ['path' => 'admin/businesses', 'label' => 'Clients', 'icon' => 'star', 'area' => 'website'],
         ['path' => 'admin/testimonials', 'label' => 'Testimonials', 'icon' => 'quote', 'area' => 'website'],
@@ -66,6 +67,7 @@ function admin_icon(string $name): string
         'bag' => '<path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
         'box' => '<path d="M3 7l9-4 9 4-9 4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/>',
         'tag' => '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/>',
+        'ticket' => '<path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4z"/><path d="M14 6v12" stroke-dasharray="2 2"/>',
         'calendar' => '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
         'door' => '<path d="M5 21V4h11v17"/><path d="M3 21h18"/><circle cx="13" cy="12.5" r="1"/>',
         'pad' => '<path d="M7 8h10a4 4 0 0 1 4 4l.5 4a2.5 2.5 0 0 1-4.5 1.5L15 15H9l-2 2.5A2.5 2.5 0 0 1 2.5 16L3 12a4 4 0 0 1 4-4z"/><path d="M8 11v3M6.5 12.5h3"/>',

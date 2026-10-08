@@ -70,6 +70,13 @@ require __DIR__ . '/../partials/header.php';
             <p class="training-empty" id="courses"><?= e(site('training.empty')) ?></p>
         <?php endif; ?>
 
+        <?php $eventsList = events_upcoming(['training', 'general'], 6); if ($eventsList): ?>
+            <div class="training-events" id="events">
+                <h2>Upcoming intakes &amp; events</h2>
+                <?php require __DIR__ . '/../partials/events_list.php'; ?>
+            </div>
+        <?php endif; ?>
+
         <!-- Mentor feature: Charles Onuoha, CEO -->
         <div class="mentor" id="mentor">
             <div class="mentor-photos">

@@ -6,20 +6,16 @@ $adminUser = require_admin();
 $cfg = telegram_config();
 $ready = $cfg['token'] !== '' && $cfg['channel'] !== '';
 $siteName = site('site.brand_first') . ' ' . site('site.brand_second');
-$values = ['title' => '', 'body' => '', 'photo_path' => '', 'button_text' => 'Visit ' . $siteName, 'button_url' => url(), 'product_id' => ''];
+$values = ['title' => '', 'body' => '', 'photo_path' => '', 'button_text' => 'Visit ' . $siteName, 'button_url' => url(), 'ref_type' => '', 'ref_id' => ''];
 
 // Starters
 $template = (string) ($_GET['template'] ?? '');
-if (!empty($_GET['product']) && ($p = product_by_id((int) $_GET['product']))) {
-    $cat = product_category_by_id((int) $p['category_id']);
-    $values = [
-        'title' => 'New in the shop: ' . $p['name'],
-        'body' => trim(format_naira((float) $p['price']) . "\n\n" . mb_strimwidth(trim((string) $p['description']), 0, 400, '…') . "\n\nIn store now at " . site('site.store_suite') . ', ' . site('site.plaza') . '.'),
-        'photo_path' => (string) $p['image_path'],
-        'button_text' => 'View in shop',
-        'button_url' => url('shop/' . ($cat['slug'] ?? '') . '/' . $p['slug']),
-        'product_id' => (string) $p['id'],
-    ];
+// ?product=3, ?event=5&reminder=1 … or ?item=event:5 from the picker below.
+$ref = null;
+if (preg_match('/^(\w+):(\d+)$/', (string) ($_GET['item'] ?? ''), $m)) $ref = [$m[1], (int) $m[2]];
+foreach (TELEGRAM_REF_TYPES as $t) if (!empty($_GET[$t])) $ref = [$t, (int) $_GET[$t]];
+if ($ref && in_array($ref[0], TELEGRAM_REF_TYPES, true) && ($d = telegram_draft($ref[0], $ref[1], !empty($_GET['reminder'])))) {
+    $values = $d;
 } elseif ($template === 'gaming') {
     $values = array_merge($values, ['title' => '🎮 Game night at ' . site('site.hub_name'), 'body' => "Bring your squad this weekend — PS5, VR arena and board games, with free internet for every gamer.\n\nBook the VIP room before it’s gone.", 'button_text' => 'Book a room', 'button_url' => url('gaming') . '#rooms']);
 } elseif ($template === 'training') {
@@ -33,7 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verify_csrf()) {
         $errors[] = 'Your session expired. Please try again.';
     } else {
-        foreach (['title', 'body', 'photo_path', 'button_text', 'button_url', 'product_id'] as $k) $values[$k] = trim(str_replace("\r\n", "\n", (string) ($_POST[$k] ?? '')));
+        foreach (['title', 'body', 'photo_path', 'button_text', 'button_url', 'ref_type', 'ref_id'] as $k) $values[$k] = trim(str_replace("\r\n", "\n", (string) ($_POST[$k] ?? '')));
+        if (!in_array($values['ref_type'], TELEGRAM_REF_TYPES, true)) $values['ref_type'] = $values['ref_id'] = '';
         if ($values['title'] === '' && $values['body'] === '') $errors[] = 'Write a title or a message.';
         if (($values['button_text'] === '') !== ($values['button_url'] === '')) $errors[] = 'A button needs both its text and its link (or leave both empty).';
         if ($values['button_url'] !== '' && !filter_var($values['button_url'], FILTER_VALIDATE_URL)) $errors[] = 'The button link must be a full address starting with https://';
@@ -45,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         elseif ($upload['path']) $values['photo_path'] = $upload['path'];
 
         if (!$errors) {
-            $r = telegram_announce($values['title'], $values['body'], $values['photo_path'] ?: null, $values['button_text'] ?: null, $values['button_url'] ?: null, (int) $values['product_id'] ?: null);
+            $r = telegram_announce($values['title'], $values['body'], $values['photo_path'] ?: null, $values['button_text'] ?: null, $values['button_url'] ?: null, $values['ref_type'] ?: null, (int) $values['ref_id'] ?: null);
             if ($r['ok']) {
                 flash('success', 'Posted to ' . $cfg['channel'] . '.');
                 header('Location: ' . path('admin/telegram'));
@@ -57,7 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $posts = db()->query('SELECT t.*, u.name AS user_name FROM telegram_posts t LEFT JOIN users u ON u.id = t.user_id ORDER BY t.id DESC LIMIT 30')->fetchAll();
-$products = array_values(array_filter(inventory_products(true), fn($p) => !(int) $p['is_demo']));
+$pick = [
+    'Upcoming events' => array_map(fn($r) => ['event:' . $r['id'], $r['title'] . ' — ' . (new DateTimeImmutable($r['starts_at']))->format('j M')], events_upcoming(null, 50)),
+    'Products' => array_map(fn($r) => ['product:' . $r['id'], $r['name']], array_values(array_filter(inventory_products(true), fn($p) => !(int) $p['is_demo']))),
+    'Courses' => array_map(fn($r) => ['course:' . $r['id'], $r['title']], training_courses_active()),
+    'Games' => array_map(fn($r) => ['game:' . $r['id'], $r['name']], db()->query('SELECT id, name FROM games WHERE is_active = 1 ORDER BY name')->fetchAll()),
+    'Rooms' => array_map(fn($r) => ['room:' . $r['id'], $r['name']], gaming_rooms_active()),
+];
 
 $pageTitle = 'Telegram';
 require __DIR__ . '/../partials/admin_header.php';
@@ -82,11 +85,12 @@ require __DIR__ . '/../partials/admin_header.php';
 <?php endif; ?>
 
 <nav class="admin-quick" aria-label="Starters">
-    <a class="admin-quick-link glass-dark is-plain" href="<?= path('admin/telegram') ?>?template=gaming">Gaming event</a>
+    <?php if (admin_can('gaming') || admin_can('training') || admin_can('website')): ?><a class="admin-quick-link glass-dark is-plain" href="<?= path('admin/events/new') ?>">Schedule an event</a><?php endif; ?>
+    <a class="admin-quick-link glass-dark is-plain" href="<?= path('admin/telegram') ?>?template=gaming">Game night</a>
     <a class="admin-quick-link glass-dark is-plain" href="<?= path('admin/telegram') ?>?template=training">Training intake</a>
     <a class="admin-quick-link glass-dark is-plain" href="<?= path('admin/telegram') ?>?template=hours">Opening hours</a>
     <form method="get" class="tg-product-pick">
-        <select name="product" aria-label="Announce a product"><option value="">Announce a product…</option><?php foreach ($products as $p): ?><option value="<?= (int) $p['id'] ?>"><?= e($p['name']) ?></option><?php endforeach; ?></select>
+        <select name="item" aria-label="Announce something from the site"><option value="">Announce an event, product, course…</option><?php foreach ($pick as $label => $opts): if (!$opts) continue; ?><optgroup label="<?= e($label) ?>"><?php foreach ($opts as [$v, $t]): ?><option value="<?= e($v) ?>"><?= e($t) ?></option><?php endforeach; ?></optgroup><?php endforeach; ?></select>
         <button type="submit" class="btn btn-outline btn-sm admin-btn-on-dark">Use</button>
     </form>
 </nav>
@@ -94,7 +98,8 @@ require __DIR__ . '/../partials/admin_header.php';
 <div class="tg-compose">
     <form method="post" enctype="multipart/form-data" class="admin-form" data-tg-form data-confirm="Post this to <?= e($cfg['channel'] ?: 'the channel') ?>?" data-confirm-button="Post">
         <?= csrf_field() ?>
-        <input type="hidden" name="product_id" value="<?= e($values['product_id']) ?>">
+        <input type="hidden" name="ref_type" value="<?= e((string) $values['ref_type']) ?>">
+        <input type="hidden" name="ref_id" value="<?= e((string) $values['ref_id']) ?>">
         <input type="hidden" name="photo_path" value="<?= e($values['photo_path']) ?>">
         <div class="form-group"><label for="tg-title">Title (bold)</label><input type="text" id="tg-title" name="title" maxlength="190" value="<?= e($values['title']) ?>" data-tg="title"></div>
         <div class="form-group"><label for="tg-body">Message</label><textarea id="tg-body" name="body" rows="7" data-tg="body"><?= e($values['body']) ?></textarea><div class="form-note"><span data-tg-count>0</span> characters · up to 1,024 with a photo, 4,096 without</div></div>
@@ -134,7 +139,7 @@ require __DIR__ . '/../partials/admin_header.php';
         <?php foreach ($posts as $p): ?>
             <tr>
                 <td style="white-space:nowrap;"><?= e((new DateTimeImmutable($p['created_at']))->format('j M, g:i A')) ?></td>
-                <td><strong><?= e($p['title'] ?: mb_strimwidth((string) $p['body'], 0, 60, '…')) ?></strong><?= $p['photo_path'] ? ' <span class="badge badge-muted">Photo</span>' : '' ?><?= $p['button_text'] ? '<br><small class="muted">Button: ' . e($p['button_text']) . '</small>' : '' ?></td>
+                <td><strong><?= e($p['title'] ?: mb_strimwidth((string) $p['body'], 0, 60, '…')) ?></strong><?= $p['photo_path'] ? ' <span class="badge badge-muted">Photo</span>' : '' ?><?= $p['ref_type'] ? ' <span class="badge badge-muted">' . e(ucfirst($p['ref_type'])) . '</span>' : '' ?><?= $p['button_text'] ? '<br><small class="muted">Button: ' . e($p['button_text']) . '</small>' : '' ?></td>
                 <td><?= $p['status'] === 'sent' ? '<span class="badge badge-success">Posted</span>' : '<span class="badge badge-danger">Failed</span><br><small class="muted">' . e((string) $p['error']) . '</small>' ?></td>
                 <td><?= e($p['user_name'] ?? '—') ?></td>
             </tr>

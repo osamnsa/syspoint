@@ -36,6 +36,8 @@ function telegram_config(): array
         'channel' => (string) ($env['channel'] ?? '') ?: content_block('telegram.channel', ''),
         'staff_chat' => (string) ($env['admin_chat_id'] ?? '') ?: content_block('telegram.staff_chat', ''),
         'events' => $events === SITE_EMPTY ? [] : array_filter(explode(',', $events)),
+        // Staff group with Topics: event => topic (message_thread_id); missing = General.
+        'topics' => array_filter(array_map('intval', json_decode(content_block('telegram.topics', '{}'), true) ?: [])),
     ];
 }
 
@@ -95,9 +97,10 @@ function telegram_format(?string $title, ?string $body): string
 /**
  * Post an announcement to the channel (photo + caption, or a text message),
  * with an optional link button. Records it in telegram_posts either way.
+ * $refType/$refId: what it's about (product, course, game, room, event).
  * Returns ['ok' => bool, 'error' => ?string].
  */
-function telegram_announce(?string $title, ?string $body, ?string $photoPath, ?string $buttonText, ?string $buttonUrl, ?int $productId = null): array
+function telegram_announce(?string $title, ?string $body, ?string $photoPath, ?string $buttonText, ?string $buttonUrl, ?string $refType = null, ?int $refId = null): array
 {
     $cfg = telegram_config();
     $text = telegram_format($title, $body);
@@ -117,10 +120,10 @@ function telegram_announce(?string $title, ?string $body, ?string $photoPath, ?s
         if (mb_strlen($text) > 4096) return ['ok' => false, 'error' => 'Messages must be under 4,096 characters (Telegram’s limit).'];
         $res = telegram_api('sendMessage', $params + ['text' => $text, 'link_preview_options' => ['is_disabled' => false]]);
     }
-    db()->prepare('INSERT INTO telegram_posts (title, body, photo_path, button_text, button_url, product_id, status, error, message_id, user_id)
-                   VALUES (:t, :b, :p, :bt, :bu, :pid, :s, :e, :m, :u)')
+    db()->prepare('INSERT INTO telegram_posts (title, body, photo_path, button_text, button_url, product_id, ref_type, ref_id, status, error, message_id, user_id)
+                   VALUES (:t, :b, :p, :bt, :bu, :pid, :rt, :rid, :s, :e, :m, :u)')
         ->execute(['t' => $title ?: null, 'b' => $body ?: null, 'p' => $photoPath ?: null, 'bt' => $buttonText ?: null, 'bu' => $buttonUrl ?: null,
-                   'pid' => $productId, 's' => $res['ok'] ? 'sent' : 'failed', 'e' => $res['ok'] ? null : mb_substr((string) $res['error'], 0, 255),
+                   'pid' => $refType === 'product' ? $refId : null, 'rt' => $refId ? $refType : null, 'rid' => $refId ?: null, 's' => $res['ok'] ? 'sent' : 'failed', 'e' => $res['ok'] ? null : mb_substr((string) $res['error'], 0, 255),
                    'm' => $res['result']['message_id'] ?? null, 'u' => admin_user()['id'] ?? null]);
     return ['ok' => $res['ok'], 'error' => $res['error']];
 }
@@ -138,6 +141,7 @@ function telegram_notify(string $event, string $title, array $lines = [], ?strin
     $text = '<b>' . htmlspecialchars($title, ENT_NOQUOTES, 'UTF-8') . '</b>';
     foreach ($lines as $l) if ($l !== null && $l !== '') $text .= "\n" . htmlspecialchars((string) $l, ENT_NOQUOTES, 'UTF-8');
     $msg = ['chat_id' => $cfg['staff_chat'], 'text' => $text, 'parse_mode' => 'HTML', 'link_preview_options' => ['is_disabled' => true]];
+    if (!empty($cfg['topics'][$event])) $msg['message_thread_id'] = $cfg['topics'][$event];
     if ($adminPath) $msg['reply_markup'] = ['inline_keyboard' => [[['text' => 'Open in admin', 'url' => url($adminPath)]]]];
     if ($queue === null) {
         $queue = [];
@@ -156,15 +160,128 @@ function telegram_notify(string $event, string $title, array $lines = [], ?strin
     $queue[] = $msg;
 }
 
-/** Chats the bot has seen recently (to find the staff group's ID). */
+/**
+ * Chats the bot has seen in the last day (to find the staff group's ID),
+ * with any group Topics it saw messages in: ['topics' => [thread_id => name]].
+ */
 function telegram_recent_chats(): array
 {
-    $r = telegram_api('getUpdates', ['limit' => 50, 'allowed_updates' => ['message', 'channel_post', 'my_chat_member']]);
+    $r = telegram_api('getUpdates', ['limit' => 100, 'allowed_updates' => ['message', 'channel_post', 'my_chat_member']]);
     if (!$r['ok']) return ['error' => $r['error'], 'chats' => []];
     $chats = [];
     foreach ((array) $r['result'] as $u) {
-        $c = $u['message']['chat'] ?? $u['channel_post']['chat'] ?? $u['my_chat_member']['chat'] ?? null;
-        if ($c) $chats[(string) $c['id']] = ['id' => (string) $c['id'], 'title' => $c['title'] ?? trim(($c['first_name'] ?? '') . ' ' . ($c['last_name'] ?? '')), 'type' => $c['type'] ?? ''];
+        $m = $u['message'] ?? null;
+        $c = $m['chat'] ?? $u['channel_post']['chat'] ?? $u['my_chat_member']['chat'] ?? null;
+        if (!$c) continue;
+        $id = (string) $c['id'];
+        $chats[$id] ??= ['id' => $id, 'title' => $c['title'] ?? trim(($c['first_name'] ?? '') . ' ' . ($c['last_name'] ?? '')), 'type' => $c['type'] ?? '', 'topics' => []];
+        if ($m && !empty($m['is_topic_message']) && !empty($m['message_thread_id'])) {
+            $name = $m['forum_topic_created']['name'] ?? $m['reply_to_message']['forum_topic_created']['name'] ?? null;
+            $tid = (int) $m['message_thread_id'];
+            if ($name !== null || !isset($chats[$id]['topics'][$tid])) $chats[$id]['topics'][$tid] = $name ?? 'Topic ' . $tid;
+        }
     }
     return ['error' => null, 'chats' => array_values($chats)];
+}
+
+/** Topics remembered for the staff group by the last "Find chat IDs": [thread_id => name]. */
+function telegram_known_topics(): array
+{
+    $known = json_decode(content_block('telegram.known_topics', '{}'), true) ?: [];
+    return (array) ($known[telegram_config()['staff_chat']] ?? []);
+}
+
+// --- Announcing straight from an edit page -----------------------------------
+
+const TELEGRAM_REF_TYPES = ['product', 'course', 'game', 'room', 'event'];
+
+/**
+ * Channel connected. Whoever can edit an item may announce it from its page
+ * (page access is already checked); the free-form composer is Website-only.
+ */
+function telegram_can_post(): bool
+{
+    $cfg = telegram_config();
+    return $cfg['token'] !== '' && $cfg['channel'] !== '';
+}
+
+/**
+ * A ready-to-post announcement for a product, course, game, room or event:
+ * ['title', 'body', 'photo_path', 'button_text', 'button_url', 'ref_type', 'ref_id'],
+ * or null if it doesn't exist. $reminder words an event as a reminder.
+ */
+function telegram_draft(string $type, int $id, bool $reminder = false): ?array
+{
+    $clip = fn(?string $s, int $n = 400) => mb_strimwidth(trim((string) $s), 0, $n, '…');
+    $join = fn(array $parts) => trim(implode("\n\n", array_filter(array_map('trim', $parts), fn($p) => $p !== '')));
+    $hub = site('site.hub_name');
+    $d = null;
+
+    if ($type === 'product' && ($p = product_by_id($id))) {
+        $cat = product_category_by_id((int) $p['category_id']);
+        $d = ['New in the shop: ' . $p['name'],
+            $join([format_naira((float) $p['price']), $clip($p['description']), 'In store now at ' . site('site.store_suite') . ', ' . site('site.plaza') . '.']),
+            $p['image_path'], 'View in shop', url('shop/' . ($cat['slug'] ?? '') . '/' . $p['slug'])];
+    } elseif ($type === 'course' && ($c = training_course_by_id($id))) {
+        $meta = implode(' · ', array_filter([(string) $c['duration_label'], $c['price'] !== null ? format_naira((float) $c['price']) : '']));
+        $d = ['🎓 ' . $c['title'], $join([$meta, $clip($c['description']), 'Seats are limited — reserve yours at ' . $hub . '.']),
+            $c['image_path'], 'See courses', url('training') . '#courses'];
+    } elseif ($type === 'game' && ($g = game_by_id($id))) {
+        $lead = ['ps5' => '🎮 New on PS5', 'vr' => '🥽 New in the VR arena', 'board' => '🎲 New board game'][$g['type']] ?? '🎮 New game';
+        $d = [$lead . ': ' . $g['name'], $join([$clip($g['description']), 'Come play it at ' . $hub . ' — free internet for every gamer.']),
+            $g['image_path'], 'Book a room', url('gaming') . '#rooms'];
+    } elseif ($type === 'room' && ($r = gaming_room_by_id($id))) {
+        $meta = format_naira((float) $r['hourly_rate']) . ' per hour' . ($r['capacity'] ? ' · up to ' . (int) $r['capacity'] . ' people' : '');
+        $d = ['🛋️ ' . $r['name'] . ' at ' . $hub, $join([$meta, $clip($r['description'])]),
+            $r['image_path'], 'Book this room', url('gaming/book/' . $r['slug'])];
+    } elseif ($type === 'event' && ($ev = event_by_id($id))) {
+        $icon = ['gaming' => '🎮', 'training' => '🎓'][$ev['kind']] ?? '📅';
+        $title = $icon . ' ' . $ev['title'];
+        if ($reminder) {
+            $date = substr((string) $ev['starts_at'], 0, 10);
+            $soon = $date === date('Y-m-d') ? 'Today' : ($date === date('Y-m-d', strtotime('+1 day')) ? 'Tomorrow' : 'Reminder');
+            $title = '⏰ ' . $soon . ': ' . $ev['title'];
+        }
+        $facts = '🗓 ' . event_when($ev)
+            . ($ev['venue'] ? "\n📍 " . $ev['venue'] : '')
+            . (event_price_label($ev) !== '' ? "\n🎟 " . event_price_label($ev) : '');
+        $d = [$title, $join([$facts, $clip($ev['description'], 600)]),
+            $ev['image_path'], $ev['button_text'] ?: 'Details', event_link($ev)];
+    }
+    if ($d === null) return null;
+    return ['title' => $d[0], 'body' => $d[1], 'photo_path' => (string) $d[2], 'button_text' => $d[3], 'button_url' => $d[4],
+            'ref_type' => $type, 'ref_id' => $id];
+}
+
+/** Most recent successful post about this item, or null. */
+function telegram_last_post(string $type, int $id): ?array
+{
+    $stmt = db()->prepare("SELECT * FROM telegram_posts WHERE ref_type = :t AND ref_id = :i AND status = 'sent' ORDER BY id DESC LIMIT 1");
+    $stmt->execute(['t' => $type, 'i' => $id]);
+    return $stmt->fetch() ?: null;
+}
+
+/**
+ * Call after an edit page has saved and set its success flash: if the
+ * "Post to Telegram" box was ticked, announce the item and add the outcome
+ * to the message. A failed post never undoes the save; it shows a warning.
+ */
+function telegram_announce_after_save(string $type, int $id): void
+{
+    if (empty($_POST['tg_announce']) || !telegram_can_post()) return;
+    $d = telegram_draft($type, $id);
+    if (!$d) return;
+    $table = ['product' => 'products', 'course' => 'training_courses', 'game' => 'games', 'room' => 'gaming_rooms', 'event' => 'events'][$type];
+    $visible = db()->prepare("SELECT is_active FROM $table WHERE id = :id");
+    $visible->execute(['id' => $id]);
+    if (!(int) $visible->fetchColumn()) {
+        flash('warning', 'Saved, but not posted to Telegram: it’s hidden on the website, so the link wouldn’t work. Make it visible, then save again with the box ticked.');
+        return;
+    }
+    $r = telegram_announce($d['title'], $d['body'], $d['photo_path'] ?: null, $d['button_text'], $d['button_url'], $type, $id);
+    if ($r['ok']) {
+        flash('success', trim((flash('success') ?? 'Saved.') . ' Posted to ' . telegram_config()['channel'] . '.'));
+    } else {
+        flash('warning', 'Saved, but the Telegram post didn’t go out: ' . $r['error'] . ' You can post it from Website → Telegram.');
+    }
 }

@@ -670,3 +670,14 @@ a.crm-mini:hover { text-decoration: none; color: var(--brand-gold); }
     .doc-title, .doc-dates { text-align: left; }
     .crm-task-new { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* "Post to Telegram after saving" on edit forms */
+.tg-box { display: flex; gap: 12px; align-items: flex-start; margin: 4px 0 20px; padding: 14px 16px; border-radius: 12px; background: rgba(42, 171, 238, 0.08); border: 1px solid rgba(42, 171, 238, 0.35); }
+.tg-box-icon { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #2AABEE; color: #fff; }
+.tg-box-icon svg { width: 16px; height: 16px; }
+.tg-box .admin-choice { margin: 4px 0 2px !important; font-weight: 600 !important; }
+.tg-box .form-note { margin: 0; }
+.tg-event-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 4px 0; }
+.tg-event-row .admin-choice { margin: 0 !important; flex: 1; }
+.tg-event-row select, .tg-event-row input[type="text"] { width: 150px !important; flex: none; padding: 6px 10px !important; font-size: 0.85rem; }
+@media (max-width: 560px) { .tg-event-row { flex-wrap: wrap; } .tg-event-row select, .tg-event-row input[type="text"] { margin-left: 28px; } }

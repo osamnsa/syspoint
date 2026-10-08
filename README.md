@@ -612,7 +612,27 @@ Two uses of one bot (`app/telegram.php`):
   a link to the admin page. Sent after the response is flushed, so a slow
   or unreachable Telegram never slows the visitor down or breaks a form.
 
-Setup is in *Telegram → Settings* (admins only), with a five-step guide:
+**Announcing from where you work.** Product, course, game, room and event
+edit pages have a *Post to Telegram after saving* box (ticked by default on
+new items) that posts the item's photo, details and a link — whoever can
+edit the item can announce it, and the page shows when it was last posted.
+Hidden items are never posted (their link wouldn't work). *Website →
+Telegram* stays the place to write a post from scratch or edit one first.
+
+**Events** (*Website → Events*, open to Gaming, Training and Website staff):
+tournaments, game nights, intakes and open days with a date and time,
+venue, entry fee, poster and an optional Register link. They appear on
+`/events` (linked in the footer), gaming ones on the Gaming page and
+training ones on the Training page, and drop off once over. Scheduling one
+posts it to the channel; the list then offers **Send reminder**, worded
+"Today:" / "Tomorrow:" when it's close.
+
+**One staff group, with Topics.** Rather than a group per team, turn on
+Topics in the staff group (e.g. Orders, Gaming, Requests, Stock) and pick a
+topic for each alert in Settings, so each team follows its topic and mutes
+the rest. Topics are found by name with **Find chat IDs**.
+
+Setup is in *Telegram → Settings* (admins only), with a step-by-step guide:
 create the bot with @BotFather, make it an admin of the channel with
 "Post messages", add it to the staff group and use **Find chat IDs**. The
 page checks the token (`getMe`) and that the bot can post in the channel.
