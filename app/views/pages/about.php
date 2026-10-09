@@ -52,6 +52,7 @@ require __DIR__ . '/../partials/header.php';
                     <?php endforeach; ?>
                     <linearGradient id="arc-shade" x1="0" y1="0" x2="0" y2="1"><stop offset=".45" stop-color="#0E0E24" stop-opacity="0"/><stop offset="1" stop-color="#0E0E24" stop-opacity=".75"/></linearGradient>
                 </defs>
+                <g class="arcs-spin">
                 <?php foreach ($arcs as $i => [$page, $key, $label, $alt, $a0, $a1]):
                     $mid = ($a0 + $a1) / 2;
                     // bounding box of the segment, for the photo
@@ -62,17 +63,21 @@ require __DIR__ . '/../partials/header.php';
                     $dx = round(cos(deg2rad($mid)) * 8, 1); $dy = round(sin(deg2rad($mid)) * 8, 1); ?>
                     <a href="<?= path($page) ?>" class="arc" role="listitem" aria-label="<?= e($label) ?>" style="--dx:<?= $dx ?>px;--dy:<?= $dy ?>px;--i:<?= $i ?>">
                         <g clip-path="url(#arc-clip-<?= $i ?>)">
-                            <rect x="<?= round($bx) ?>" y="<?= round($by) ?>" width="<?= round($bw) ?>" height="<?= round($bh) ?>" fill="#1C1C48"/>
-                            <image class="arc-photo" href="<?= e(media_url(site($key))) ?>" x="<?= round($bx) ?>" y="<?= round($by) ?>" width="<?= round($bw) ?>" height="<?= round($bh) ?>" preserveAspectRatio="xMidYMid slice"><title><?= e($alt) ?></title></image>
-                            <rect x="<?= round($bx) ?>" y="<?= round($by) ?>" width="<?= round($bw) ?>" height="<?= round($bh) ?>" fill="url(#arc-shade)"/>
+                            <rect width="600" height="600" fill="#1C1C48"/>
+                            <!-- the photo travels round with its arc but stays upright (counter-turns about its own centre; 460px covers the arc at any angle) -->
+                            <g class="arc-upright">
+                                <image class="arc-photo" href="<?= e(media_url(site($key))) ?>" x="<?= round($cx + cos(deg2rad($mid)) * 190 - 230) ?>" y="<?= round($cy + sin(deg2rad($mid)) * 190 - 230) ?>" width="460" height="460" preserveAspectRatio="xMidYMid slice"><title><?= e($alt) ?></title></image>
+                            </g>
+                            <rect width="600" height="600" fill="url(#arc-shade)" opacity=".7"/>
                         </g>
                         <use href="#arc-<?= $i ?>" class="arc-edge"/>
-                        <g class="arc-label" transform="translate(<?= round($lx, 1) ?> <?= round($ly, 1) ?>)">
+                        <g transform="translate(<?= round($lx, 1) ?> <?= round($ly, 1) ?>)"><g class="arc-label">
                             <rect x="-<?= 8 + strlen($label) * 4.3 ?>" y="-15" width="<?= 16 + strlen($label) * 8.6 ?>" height="30" rx="15"/>
                             <text text-anchor="middle" y="5"><?= e($label) ?></text>
-                        </g>
+                        </g></g>
                     </a>
                 <?php endforeach; ?>
+                </g>
             </svg>
         </div>
     </div>

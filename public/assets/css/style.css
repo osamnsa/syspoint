@@ -1362,7 +1362,12 @@ main:has(.page-hero) .page-hero + .section { padding-top: 64px; }
 .arc:hover .arc-label rect, .arc:focus-visible .arc-label rect { fill: var(--brand-gold); stroke: none; }
 .arc:hover .arc-label text, .arc:focus-visible .arc-label text { fill: var(--brand-midnight); }
 @keyframes arc-open { from { opacity: 0; transform: scale(0.82) rotate(-14deg); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { .arc { animation: none; } }
+/* the whole aperture turns slowly about its centre; labels counter-turn to stay upright */
+.arcs-spin { transform-box: view-box; transform-origin: 300px 300px; animation: arcs-spin 40s linear infinite; }
+.arc-label, .arc-upright { transform-box: fill-box; transform-origin: center; animation: arcs-spin 40s linear infinite reverse; }
+.about-arcs:hover :is(.arcs-spin, .arc-label, .arc-upright), .about-arcs:focus-within :is(.arcs-spin, .arc-label, .arc-upright) { animation-play-state: paused; }
+@keyframes arcs-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .arc, .arcs-spin, .arc-label, .arc-upright { animation: none; } }
 
 /* Software Clinic: a drawn dashboard, a deploy log and a phone */
 .clinic-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; padding: 0; }
