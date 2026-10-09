@@ -12,48 +12,104 @@ require __DIR__ . '/../partials/header.php';
 
 <div class="shop-theme">
 
+<?php
+// Line icons for the trust row (stroke = currentColor).
+$shopIcon = fn(string $d) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' . $d . '</svg>';
+$trust = [
+    [$shopIcon('<path d="M12 3l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.3 6.8 19l1-5.8L3.6 9.1l5.8-.8z"/>'), 'shop.badge1'],
+    [$shopIcon('<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>'), 'shop.badge2'],
+    [$shopIcon('<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>'), 'shop.badge3'],
+    [$shopIcon('<path d="M4 13a8 8 0 0 1 16 0"/><path d="M4 13v3a2 2 0 0 0 2 2h1v-6H6a2 2 0 0 0-2 2zM20 13v3a2 2 0 0 1-2 2h-1v-6h1a2 2 0 0 1 2 2z"/>'), 'shop.badge4'],
+];
+$catImages = ['computers' => 'assets/img/shop/cat-computers.png'];
+$catIcons = [
+    'accessories' => '<path d="M4 14a8 8 0 0 1 16 0"/><path d="M4 14v3a2 2 0 0 0 2 2h1.5v-6H6a2 2 0 0 0-2 2zM20 14v3a2 2 0 0 1-2 2h-1.5v-6H18a2 2 0 0 1 2 2z"/>',
+];
+$promoUrl = site('shop.promo_url');
+$promoHref = preg_match('#^https?://#i', $promoUrl) ? $promoUrl : path(ltrim($promoUrl, '/'));
+?>
+<div class="shop-dark">
+<?php require __DIR__ . '/../partials/page_hero_swoosh.php'; ?>
+
 <section class="shop-hero">
     <div class="container shop-hero-inner">
         <div class="shop-hero-copy">
-            <span class="eyebrow"><?= e(site('shop.eyebrow')) ?></span>
-            <h1><?= e(site('shop.hero_title_prefix')) ?> <span class="shop-hero-highlight"><?= e(site('shop.hero_title_highlight')) ?></span></h1>
-            <p><?= e(site('shop.hero_subtitle')) ?></p>
-            <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:24px;">
-                <a href="#categories" class="btn btn-primary"><?= e(site('shop.btn_primary')) ?></a>
-                <?php if ($trending): ?>
-                    <a href="#trending" class="btn btn-outline btn-outline-light"><?= e(site('shop.btn_secondary')) ?></a>
+            <span class="shop-kicker"><?= e(site('shop.eyebrow')) ?></span>
+            <h1>
+                <span class="shop-hero-line"><?= e(site('shop.hero_title_prefix')) ?></span>
+                <?php if (site('shop.hero_title_highlight') !== ''): ?>
+                    <span class="shop-hero-script"><?= e(site('shop.hero_title_highlight')) ?><svg viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 16 C 70 6, 150 4, 296 10 C 210 12, 120 16, 40 21" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg></span>
                 <?php endif; ?>
+            </h1>
+            <p class="shop-hero-sub"><?= e(site('shop.hero_subtitle')) ?></p>
+            <div class="shop-hero-actions">
+                <a href="#categories" class="btn btn-primary shop-pill"><?= e(site('shop.btn_primary')) ?> <span aria-hidden="true">→</span></a>
+                <a href="<?= e(site('site.maps_url')) ?>" class="shop-hero-visit" target="_blank" rel="noopener">
+                    <span class="shop-hero-visit-icon"><?= $shopIcon('<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>') ?></span>
+                    <span><strong><?= e(site('shop.btn_secondary')) ?></strong><small><?= e(site('site.store_suite')) ?>, <?= e(explode(', ', site('site.plaza'))[0]) ?></small></span>
+                </a>
             </div>
-        </div>
-        <div class="shop-hero-art">
-            <?= site_picture('shop.hero_image', 'Two slim laptops, one open showing a colourful screen', ['width' => 728, 'height' => 520, 'fetchpriority' => 'high']) ?>
-        </div>
-    </div>
-</section>
-
-<section class="section" id="categories">
-    <div class="container">
-        <span class="eyebrow"><?= e(site('shop.categories_eyebrow')) ?></span>
-        <h2><?= e(site('shop.categories_title')) ?></h2>
-
-        <?php if (!$categories): ?>
-            <p style="color:var(--color-text-muted);">No categories yet — check back soon.</p>
-        <?php else: ?>
-            <div class="shop-category-strip">
-                <?php foreach ($categories as $category): ?>
-                    <a class="shop-category-strip-item" href="<?= path('shop/' . e($category['slug'])) ?>">
-                        <span class="shop-category-strip-icon"><?= $category['slug'] === 'accessories' ? '🎧' : '🖥️' ?></span>
-                        <span>
-                            <strong><?= e($category['name']) ?></strong>
-                            <span><?= (int) $category['product_count'] ?> item<?= (int) $category['product_count'] === 1 ? '' : 's' ?></span>
-                        </span>
-                        <span class="shop-category-strip-arrow">→</span>
-                    </a>
+            <ul class="shop-trust">
+                <?php foreach ($trust as [$icon, $key]): ?>
+                    <li><span class="shop-trust-icon"><?= $icon ?></span><span><strong><?= e(site($key . '_title')) ?></strong><small><?= e(site($key . '_text')) ?></small></span></li>
                 <?php endforeach; ?>
+            </ul>
+        </div>
+        <div class="shop-hero-stage">
+            <span class="shop-hero-ring" aria-hidden="true"></span>
+            <span class="shop-hero-podium" aria-hidden="true"></span>
+            <div class="shop-hero-product">
+                <?= site_picture('shop.hero_image', 'Two slim laptops, one open showing a colourful screen', ['width' => 724, 'height' => 438, 'fetchpriority' => 'high']) ?>
             </div>
-        <?php endif; ?>
+        </div>
     </div>
 </section>
+
+<section class="shop-cats" id="categories">
+    <div class="container">
+        <div class="shop-section-head">
+            <h2><?= e(site('shop.categories_title')) ?></h2>
+            <span class="shop-section-rule" aria-hidden="true"></span>
+        </div>
+        <div class="shop-cat-grid">
+            <?php foreach ($categories as $category):
+                $img = $category['image_path'] ?: ($catImages[$category['slug']] ?? null); ?>
+                <a class="shop-cat-card" href="<?= path('shop/' . e($category['slug'])) ?>">
+                    <span class="shop-cat-media">
+                        <?php if ($img): ?>
+                            <?php $webp = str_ends_with($img, '.png') && is_file(__DIR__ . '/../../../public/' . substr($img, 0, -4) . '.webp') ? substr($img, 0, -4) . '.webp' : null; ?>
+                            <picture><?php if ($webp): ?><source srcset="<?= e(media_url($webp)) ?>" type="image/webp"><?php endif; ?><img src="<?= e(media_url($img)) ?>" alt="" loading="lazy"></picture>
+                        <?php else: ?>
+                            <?= $shopIcon($catIcons[$category['slug']] ?? '<rect x="3" y="5" width="18" height="12" rx="2"/><path d="M2 19h20"/>') ?>
+                        <?php endif; ?>
+                    </span>
+                    <strong><?= e($category['name']) ?></strong>
+                    <small><?= (int) $category['product_count'] ? (int) $category['product_count'] . ' item' . ((int) $category['product_count'] === 1 ? '' : 's') . ' · ' : '' ?>Shop Now <span aria-hidden="true">→</span></small>
+                </a>
+            <?php endforeach; ?>
+            <a class="shop-cat-card" href="<?= path('contact') ?>">
+                <span class="shop-cat-media"><?= $shopIcon('<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-.6-.6-2.5z"/>') ?></span>
+                <strong><?= e(site('shop.repair_title')) ?></strong>
+                <small><?= e(site('shop.repair_text')) ?> <span aria-hidden="true">→</span></small>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="shop-promo-wrap">
+    <div class="container">
+        <div class="shop-promo">
+            <div class="shop-promo-art"><?= site_picture('shop.promo_image', 'A PlayStation 5 console and controller', ['loading' => 'lazy']) ?></div>
+            <div class="shop-promo-copy">
+                <span class="shop-kicker"><?= e(site('shop.promo_kicker')) ?></span>
+                <h2><?= e(site('shop.promo_title')) ?><?php if (site('shop.promo_highlight') !== ''): ?> <span class="shop-script"><?= e(site('shop.promo_highlight')) ?></span><?php endif; ?></h2>
+                <p><?= e(site('shop.promo_text')) ?></p>
+                <a href="<?= e($promoHref) ?>" class="btn btn-primary shop-pill"><?= e(site('shop.promo_btn')) ?> <span aria-hidden="true">→</span></a>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
 
 <?php if ($trending): ?>
 <section class="section section-soft" id="trending">
@@ -105,26 +161,6 @@ require __DIR__ . '/../partials/header.php';
     </div>
 </section>
 
-<section class="trust-badges">
-    <div class="container trust-badges-grid">
-        <div class="trust-badge">
-            <span class="trust-badge-icon">✅</span>
-            <div><strong><?= e(site('shop.badge1_title')) ?></strong><span><?= e(site('shop.badge1_text')) ?></span></div>
-        </div>
-        <div class="trust-badge">
-            <span class="trust-badge-icon">🔒</span>
-            <div><strong><?= e(site('shop.badge2_title')) ?></strong><span><?= e(site('shop.badge2_text')) ?></span></div>
-        </div>
-        <div class="trust-badge">
-            <span class="trust-badge-icon">🚚</span>
-            <div><strong><?= e(site('shop.badge3_title')) ?></strong><span><?= e(site('shop.badge3_text')) ?></span></div>
-        </div>
-        <div class="trust-badge">
-            <span class="trust-badge-icon">🎧</span>
-            <div><strong><?= e(site('shop.badge4_title')) ?></strong><span><?= e(site('shop.badge4_text')) ?></span></div>
-        </div>
-    </div>
-</section>
 
 </div>
 
