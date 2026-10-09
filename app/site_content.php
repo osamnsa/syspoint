@@ -154,6 +154,7 @@ function site_content(): array
             'clinic.title_highlight' => $f('Hero — heading, gold part', 'your business'),
             'clinic.chips' => $f('Hero — what we build (comma-separated)', 'Websites, Mobile apps, Business systems, Deployment & support'),
             'clinic.btn_primary' => $f('Hero — main button', 'Request Software'),
+            'clinic.hero_image' => $f('Hero picture', 'assets/img/clinic/hero-developer.png', 'image', 'Shown in a circle-friendly frame — a square or round picture works best.'),
             'clinic.btn_secondary' => $f('Hero — second button', 'Who We’ve Built For'),
             'clinic.intro' => $f('Intro', 'Tell us what your business needs — a website, an app, a system to run your operations — and we\'ll follow up with a plan and a quote.', 'textarea'),
             'clinic.form_title' => $f('Form heading', 'Request Software'),
@@ -315,7 +316,7 @@ function site_picture(string $key, string $alt, array $attrs = [], string $class
     $attr = '';
     foreach ($attrs as $k => $v) $attr .= ' ' . $k . '="' . e((string) $v) . '"';
     $img = '<img src="' . e(media_url($src)) . '" alt="' . e($alt) . '"' . $attr . '>';
-    if (site_image_is_default($key) && str_ends_with($src, '.jpg') && is_file(__DIR__ . '/../public/' . substr($src, 0, -4) . '.webp')) {
+    if (site_image_is_default($key) && preg_match('/\.(jpg|png)$/', $src) && is_file(__DIR__ . '/../public/' . substr($src, 0, -4) . '.webp')) {
         return '<picture' . ($class ? ' class="' . e($class) . '"' : '') . '><source srcset="' . asset(substr($src, 0, -4) . '.webp') . '" type="image/webp">' . $img . '</picture>';
     }
     return '<picture' . ($class ? ' class="' . e($class) . '"' : '') . '>' . $img . '</picture>';

@@ -74,30 +74,8 @@ require __DIR__ . '/../partials/header.php';
                 <?php if ($businesses): ?><a href="#portfolio" class="btn btn-outline btn-outline-light"><?= e(site('clinic.btn_secondary')) ?></a><?php endif; ?>
             </div>
         </div>
-        <div class="clinic-art" aria-hidden="true">
-            <div class="clinic-window">
-                <div class="clinic-window-bar"><i></i><i></i><i></i><span>dashboard.syspoint.app</span></div>
-                <div class="clinic-window-body">
-                    <div class="clinic-side"><b></b><span></span><span class="is-on"></span><span></span><span></span><span></span></div>
-                    <div class="clinic-main">
-                        <div class="clinic-stats">
-                            <div><small>Sales today</small><strong>₦1.2m</strong><em>+18%</em></div>
-                            <div><small>Orders</small><strong>64</strong><em>+9%</em></div>
-                            <div><small>Customers</small><strong>2,310</strong><em>+4%</em></div>
-                        </div>
-                        <div class="clinic-chart">
-                            <?php foreach ([38, 52, 44, 66, 58, 80, 72, 92, 84, 100] as $h): ?><span style="height:<?= $h ?>%"></span><?php endforeach; ?>
-                        </div>
-                        <div class="clinic-rows"><span></span><span></span><span></span></div>
-                    </div>
-                </div>
-            </div>
-            <div class="clinic-code">
-                <div><b>$</b> deploy <em>--prod</em></div>
-                <div class="ok">✓ Tests passed</div>
-                <div class="ok">✓ Live on your domain</div>
-            </div>
-            <div class="clinic-phone"><div class="clinic-phone-notch"></div><span class="clinic-phone-tile"></span><span></span><span></span><span class="clinic-phone-btn"></span></div>
+        <div class="clinic-art">
+            <?= site_picture('clinic.hero_image', 'A developer coding at a laptop, surrounded by code windows and tech icons', ['width' => 471, 'height' => 475, 'fetchpriority' => 'high']) ?>
         </div>
     </div>
 </section>
