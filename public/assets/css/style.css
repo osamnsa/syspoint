@@ -154,7 +154,8 @@ img { max-width: 100%; display: block; }
 
 .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; margin: 0; padding: 0; }
 .nav-links a { color: rgba(255, 255, 255, 0.82); font-weight: 500; font-size: 0.92rem; }
-.nav-links a:hover, .nav-links a.is-active { color: #fff; text-decoration: none; }
+.nav-links a { transition: color 0.15s ease; }
+.nav-links a:hover, .nav-links a.is-active { color: var(--brand-gold); text-decoration: none; }
 .nav-links a.btn-primary, .nav-links a.btn-primary:hover { color: var(--color-ink); }
 /* Cart: icon only (public/assets/img/icons/cart.png used as a mask, so it
    takes the link colour — white on the nav, gold when active/hovered). */
@@ -1320,3 +1321,91 @@ main:has(.gaming-arcade) + .site-footer { margin-top: 0; }
 .footer-legal { display: flex; flex-wrap: wrap; gap: 6px 18px; }
 .footer-legal a { color: inherit; }
 .footer-legal a:hover { color: var(--brand-gold); }
+
+/* ============================================================
+   PAGE HERO — dark Midnight hero with the brand swoosh, for interior
+   pages (About, Software Clinic): copy left, art right.
+   ============================================================ */
+.page-hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    color: #fff;
+    padding: 56px 0 72px;
+    background:
+        radial-gradient(ellipse 55% 70% at 10% 20%, rgba(52, 52, 138, 0.75), transparent 70%),
+        linear-gradient(180deg, #14143A 0%, #0E0E24 100%);
+}
+.page-hero-swoosh { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+.page-hero-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 48px; align-items: center; }
+.page-hero .breadcrumb { color: rgba(255, 255, 255, 0.6); margin-bottom: 22px; }
+.page-hero .breadcrumb a { color: var(--brand-gold); }
+.page-hero-kicker { display: block; font-family: var(--font-mono); font-weight: 600; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-gold); margin-bottom: 10px; }
+.page-hero h1 { color: #fff; font-size: clamp(2.3rem, 4.6vw, 3.7rem); line-height: 1.04; margin: 0 0 18px; }
+.page-hero-highlight { display: block; color: var(--brand-gold); }
+.page-hero-intro { color: rgba(255, 255, 255, 0.8); max-width: 46ch; font-size: 1.05rem; margin: 0; }
+.page-hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+main:has(.page-hero) .page-hero + .section { padding-top: 64px; }
+
+/* About: three photos of the three sides of the business */
+.about-collage { position: relative; display: grid; grid-template-columns: 1.15fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; height: 440px; }
+.about-tile { position: relative; display: block; overflow: hidden; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.14); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35); background: #1C1C48; }
+.about-tile-1 { grid-row: 1 / 3; }
+.about-tile picture, .about-tile img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.about-tile:hover img { transform: scale(1.04); }
+.about-tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(14, 14, 36, 0.85)); }
+.about-tile-label { position: absolute; left: 16px; bottom: 14px; z-index: 1; font: 900 1.05rem var(--font-display); color: #fff; }
+.about-tile:hover .about-tile-label { color: var(--brand-gold); }
+.about-tile:hover { text-decoration: none; }
+
+/* Software Clinic: a drawn dashboard, a deploy log and a phone */
+.clinic-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; padding: 0; }
+.clinic-chips li { padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(247, 203, 30, 0.45); color: #fff; font-size: 0.82rem; background: rgba(247, 203, 30, 0.08); }
+.clinic-art { position: relative; height: 420px; }
+.clinic-window { position: absolute; top: 10px; right: 0; width: 92%; border-radius: 14px; overflow: hidden; background: #F4F5FB; box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45); transform: perspective(1400px) rotateY(-8deg) rotateX(3deg); transform-origin: right center; }
+.clinic-window-bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: #E3E5F2; }
+.clinic-window-bar i { width: 10px; height: 10px; border-radius: 50%; background: #C9CBDD; }
+.clinic-window-bar i:first-child { background: #F26B5B; } .clinic-window-bar i:nth-child(2) { background: #F7CB1E; } .clinic-window-bar i:nth-child(3) { background: #3CC47C; }
+.clinic-window-bar span { margin-left: 12px; padding: 3px 12px; border-radius: 6px; background: #fff; color: #55576E; font: 500 0.7rem var(--font-mono); }
+.clinic-window-body { display: grid; grid-template-columns: 64px 1fr; min-height: 300px; }
+.clinic-side { background: #14143A; padding: 16px 12px; display: grid; align-content: start; gap: 10px; }
+.clinic-side b { width: 28px; height: 28px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #F7CB1E 40%, #34348A 41%); margin-bottom: 8px; }
+.clinic-side span { height: 8px; border-radius: 4px; background: rgba(255, 255, 255, 0.18); }
+.clinic-side span.is-on { background: #F7CB1E; }
+.clinic-main { padding: 18px; display: grid; gap: 14px; align-content: start; }
+.clinic-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.clinic-stats div { background: #fff; border-radius: 10px; padding: 10px 12px; box-shadow: 0 1px 2px rgba(20, 20, 58, 0.08); }
+.clinic-stats small { display: block; color: #55576E; font-size: 0.62rem; }
+.clinic-stats strong { display: block; color: #14143A; font: 900 1.05rem var(--font-display); }
+.clinic-stats em { font-style: normal; font-size: 0.62rem; color: #1E9E86; font-weight: 600; }
+.clinic-chart { display: flex; align-items: flex-end; gap: 6px; height: 110px; padding: 12px; background: #fff; border-radius: 10px; }
+.clinic-chart span { flex: 1; border-radius: 4px 4px 0 0; background: #34348A; }
+.clinic-chart span:nth-child(n+8) { background: #F7CB1E; }
+.clinic-rows { display: grid; gap: 7px; }
+.clinic-rows span { height: 10px; border-radius: 5px; background: #E3E5F2; }
+.clinic-rows span:nth-child(2) { width: 82%; } .clinic-rows span:nth-child(3) { width: 64%; }
+.clinic-code { position: absolute; left: 0; bottom: 18px; width: 54%; padding: 14px 16px; border-radius: 12px; background: rgba(14, 14, 36, 0.92); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45); font: 500 0.8rem/1.8 var(--font-mono); color: #C9CAE8; backdrop-filter: blur(6px); }
+.clinic-code b { color: #F7CB1E; } .clinic-code em { font-style: normal; color: #9A9BE0; } .clinic-code .ok { color: #3CC47C; }
+.clinic-phone { position: absolute; right: 4%; bottom: -6px; width: 112px; height: 210px; padding: 22px 10px 10px; border-radius: 22px; background: #F4F5FB; border: 5px solid #0E0E24; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); display: grid; gap: 7px; align-content: start; }
+.clinic-phone-notch { position: absolute; top: 6px; left: 50%; width: 34px; height: 6px; border-radius: 3px; background: #0E0E24; transform: translateX(-50%); }
+.clinic-phone span { height: 9px; border-radius: 4px; background: #E3E5F2; }
+.clinic-phone .clinic-phone-tile { height: 70px; border-radius: 10px; background: linear-gradient(135deg, #34348A, #14143A); }
+.clinic-phone .clinic-phone-btn { height: 22px; margin-top: 8px; border-radius: 11px; background: #F7CB1E; }
+
+@media (max-width: 900px) {
+    .page-hero { padding: 40px 0 48px; }
+    .page-hero-inner { grid-template-columns: 1fr; gap: 36px; }
+    .about-collage { height: 320px; }
+    .clinic-art { height: 340px; max-width: 520px; width: 100%; justify-self: center; }
+}
+@media (max-width: 520px) {
+    .about-collage { height: 260px; gap: 10px; }
+    .clinic-art { height: 300px; }
+    .clinic-window { width: 100%; transform: none; }
+    .clinic-window-body { grid-template-columns: 44px 1fr; min-height: 230px; }
+    .clinic-stats strong { font-size: 0.85rem; }
+    .clinic-code { width: 72%; font-size: 0.72rem; }
+    .clinic-phone { width: 86px; height: 160px; }
+    .clinic-phone .clinic-phone-tile { height: 48px; }
+}
+.clinic-hero h1 { font-size: clamp(2.2rem, 4vw, 3.25rem); }

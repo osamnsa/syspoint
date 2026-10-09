@@ -22,10 +22,10 @@ if ($base !== '' && str_starts_with($currentPath, $base)) {
         <ul class="nav-links" id="nav-links">
             <li><a href="<?= path() ?>" class="<?= $currentPath === '' ? 'is-active' : '' ?>">Home</a></li>
             <li><a href="<?= path('about') ?>" class="<?= $currentPath === 'about' ? 'is-active' : '' ?>">About</a></li>
-            <li><a href="<?= path('shop') ?>" class="<?= str_starts_with($currentPath, 'shop') ? 'is-active' : '' ?>">Shop</a></li>
             <li><a href="<?= path('software-clinic') ?>" class="<?= $currentPath === 'software-clinic' ? 'is-active' : '' ?>">Software Clinic</a></li>
             <li><a href="<?= path('gaming') ?>" class="<?= str_starts_with($currentPath, 'gaming') ? 'is-active' : '' ?>">Gaming</a></li>
             <li><a href="<?= path('training') ?>" class="<?= $currentPath === 'training' ? 'is-active' : '' ?>">Training</a></li>
+            <li><a href="<?= path('shop') ?>" class="<?= str_starts_with($currentPath, 'shop') ? 'is-active' : '' ?>">Shop</a></li>
             <?php if (site('site.consulting_url')): ?>
                 <li><a href="<?= e(site('site.consulting_url')) ?>" target="_blank" rel="noopener">Consulting</a></li>
             <?php endif; ?>

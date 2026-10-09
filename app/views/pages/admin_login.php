@@ -35,7 +35,7 @@ $pageTitle = 'Admin Login';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($pageTitle) ?> | Syspoint Admin</title>
     <meta name="robots" content="noindex, nofollow">
-    <link rel="icon" type="image/png" href="<?= asset('assets/img/logo.png') ?>">
+    <?php require __DIR__ . '/../partials/favicons.php'; ?>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
     <link rel="stylesheet" href="<?= versioned_asset('assets/vendor/sweetalert2/sweetalert2.min.css') ?>">
     <link rel="stylesheet" href="<?= versioned_asset('assets/css/style.css') ?>">

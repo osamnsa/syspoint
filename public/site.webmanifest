@@ -1,0 +1,8 @@
+{
+    "name": "Syspoint Hub",
+    "short_name": "Syspoint",
+    "icons": [{ "src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png" }],
+    "theme_color": "#14143A",
+    "background_color": "#14143A",
+    "display": "browser"
+}

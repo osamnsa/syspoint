@@ -58,18 +58,54 @@ $businesses = deployed_businesses_active();
 require __DIR__ . '/../partials/header.php';
 ?>
 
-<section class="page-header">
-    <div class="container">
-        <div class="breadcrumb"><a href="<?= path() ?>">Home</a> / <?= e(site('clinic.title')) ?></div>
-        <h1><?= e(site('clinic.title')) ?></h1>
-        <p style="color:var(--color-text-muted);max-width:60ch;"><?= e(site('clinic.intro')) ?></p>
+<section class="page-hero clinic-hero">
+    <?php require __DIR__ . '/../partials/page_hero_swoosh.php'; ?>
+    <div class="container page-hero-inner">
+        <div class="page-hero-copy">
+            <div class="breadcrumb"><a href="<?= path() ?>">Home</a> / Software Clinic</div>
+            <span class="page-hero-kicker"><?= e(site('clinic.kicker')) ?></span>
+            <h1><?= e(site('clinic.title')) ?><?php if (site('clinic.title_highlight') !== ''): ?> <span class="page-hero-highlight"><?= e(site('clinic.title_highlight')) ?></span><?php endif; ?></h1>
+            <p class="page-hero-intro"><?= e(site('clinic.intro')) ?></p>
+            <?php if ($chips = site_list('clinic.chips')): ?>
+                <ul class="clinic-chips"><?php foreach ($chips as $chip): ?><li><?= e($chip) ?></li><?php endforeach; ?></ul>
+            <?php endif; ?>
+            <div class="page-hero-actions">
+                <a href="#request" class="btn btn-primary"><?= e(site('clinic.btn_primary')) ?></a>
+                <?php if ($businesses): ?><a href="#portfolio" class="btn btn-outline btn-outline-light"><?= e(site('clinic.btn_secondary')) ?></a><?php endif; ?>
+            </div>
+        </div>
+        <div class="clinic-art" aria-hidden="true">
+            <div class="clinic-window">
+                <div class="clinic-window-bar"><i></i><i></i><i></i><span>dashboard.syspoint.app</span></div>
+                <div class="clinic-window-body">
+                    <div class="clinic-side"><b></b><span></span><span class="is-on"></span><span></span><span></span><span></span></div>
+                    <div class="clinic-main">
+                        <div class="clinic-stats">
+                            <div><small>Sales today</small><strong>₦1.2m</strong><em>+18%</em></div>
+                            <div><small>Orders</small><strong>64</strong><em>+9%</em></div>
+                            <div><small>Customers</small><strong>2,310</strong><em>+4%</em></div>
+                        </div>
+                        <div class="clinic-chart">
+                            <?php foreach ([38, 52, 44, 66, 58, 80, 72, 92, 84, 100] as $h): ?><span style="height:<?= $h ?>%"></span><?php endforeach; ?>
+                        </div>
+                        <div class="clinic-rows"><span></span><span></span><span></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="clinic-code">
+                <div><b>$</b> deploy <em>--prod</em></div>
+                <div class="ok">✓ Tests passed</div>
+                <div class="ok">✓ Live on your domain</div>
+            </div>
+            <div class="clinic-phone"><div class="clinic-phone-notch"></div><span class="clinic-phone-tile"></span><span></span><span></span><span class="clinic-phone-btn"></span></div>
+        </div>
     </div>
 </section>
 
 <section class="section">
     <div class="container">
         <div class="checkout-grid">
-            <div class="card form-card" style="margin:0;">
+            <div class="card form-card" style="margin:0;" id="request">
                 <h3><?= e(site('clinic.form_title')) ?></h3>
 
                 <?php if ($successMessage): ?>
@@ -112,7 +148,7 @@ require __DIR__ . '/../partials/header.php';
                 </form>
             </div>
 
-            <div>
+            <div id="portfolio">
                 <h3 style="margin-top:0;"><?= e(site('clinic.portfolio_title')) ?></h3>
                 <?php if (!$businesses): ?>
                     <p style="color:var(--color-text-muted);">Our portfolio is being updated — check back soon.</p>
