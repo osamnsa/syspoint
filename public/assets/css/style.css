@@ -1427,7 +1427,7 @@ main:has(.page-hero) .page-hero + .section { padding-top: 64px; }
 
 .shop-hero { padding: 64px 0 24px; }
 .shop-hero-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 40px; align-items: center; }
-.shop-hero h1 { color: #fff; margin: 18px 0 18px; font-size: clamp(2.8rem, 5.8vw, 4.6rem); line-height: 1.02; letter-spacing: -0.01em; }
+.shop-hero h1 { color: #fff; margin: 18px 0 30px; font-size: clamp(2.8rem, 5.8vw, 4.6rem); line-height: 1.02; letter-spacing: -0.01em; }
 .shop-hero-line { display: block; }
 .shop-hero-script { position: relative; display: inline-block; font-family: "Kaushan Script", var(--font-display); font-weight: 400; color: var(--brand-gold); font-size: 1.05em; line-height: 1.1; padding-right: 0.1em; }
 .shop-hero-script svg { position: absolute; left: 2%; right: 0; bottom: -0.12em; width: 96%; height: 0.28em; color: var(--brand-gold); }
