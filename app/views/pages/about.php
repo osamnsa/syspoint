@@ -20,18 +20,60 @@ require __DIR__ . '/../partials/header.php';
                 <a href="#story" class="btn btn-outline btn-outline-light"><?= e(site('about.btn_secondary')) ?></a>
             </div>
         </div>
-        <div class="about-collage">
-            <?php foreach ([
-                ['shop', 'about.photo_shop', 'Computers & gadgets', 'Gadget Store', 'Laptops on display in the Syspoint Gadget Store'],
-                ['software-clinic', 'about.photo_clinic', 'Software & systems', 'Software Clinic', 'Hands typing code on a laptop'],
-                ['gaming', 'about.photo_gaming', 'PS5 · VR · board games', 'Gaming Lounge', 'A gamer wearing a VR headset'],
-                ['training', 'about.photo_training', 'Courses & internships', 'IT Training', 'A student learning on a laptop'],
-            ] as $i => [$page, $key, $kicker, $label, $alt]): ?>
-                <a class="about-tile about-tile-<?= $i + 1 ?>" href="<?= path($page) ?>">
-                    <?= site_picture($key, $alt, ['loading' => $i < 2 ? 'eager' : 'lazy']) ?>
-                    <span class="about-tile-text"><small><?= e($kicker) ?></small><strong><?= e($label) ?> <span aria-hidden="true">→</span></strong></span>
-                </a>
-            <?php endforeach; ?>
+        <?php
+        // Four arc segments around an empty centre (an opened aperture).
+        $cx = 300; $cy = 300; $r1 = 92; $r2 = 286;
+        $pt = fn(float $r, float $deg) => [$cx + $r * cos(deg2rad($deg)), $cy + $r * sin(deg2rad($deg))];
+        $arcs = [
+            ['shop', 'about.photo_shop', 'Gadget Store', 'Laptops on display in the Syspoint Gadget Store', 196, 274],
+            ['software-clinic', 'about.photo_clinic', 'Software Clinic', 'Hands typing code on a laptop', 286, 364],
+            ['training', 'about.photo_training', 'IT Training', 'A student learning on a laptop', 16, 94],
+            ['gaming', 'about.photo_gaming', 'Gaming Lounge', 'A gamer wearing a VR headset', 106, 184],
+        ];
+        ?>
+        <div class="about-arcs">
+            <svg viewBox="0 0 600 600" role="list" aria-label="What’s at Syspoint">
+                <defs>
+                    <?php foreach ($arcs as $i => [, , , , $a0, $a1]):
+                        // annular sector with rounded corners (rc = corner radius, outer / inner)
+                        $ro = 24; $ri = 16; $do = rad2deg($ro / $r2); $di = rad2deg($ri / $r1);
+                        $f = fn(array $p) => sprintf('%.1f %.1f', $p[0], $p[1]);
+                        $d = 'M' . $f($pt($r2, $a0 + $do))
+                           . ' A' . $r2 . ' ' . $r2 . ' 0 0 1 ' . $f($pt($r2, $a1 - $do))
+                           . ' Q' . $f($pt($r2, $a1)) . ' ' . $f($pt($r2 - $ro, $a1))
+                           . ' L' . $f($pt($r1 + $ri, $a1))
+                           . ' Q' . $f($pt($r1, $a1)) . ' ' . $f($pt($r1, $a1 - $di))
+                           . ' A' . $r1 . ' ' . $r1 . ' 0 0 0 ' . $f($pt($r1, $a0 + $di))
+                           . ' Q' . $f($pt($r1, $a0)) . ' ' . $f($pt($r1 + $ri, $a0))
+                           . ' L' . $f($pt($r2 - $ro, $a0))
+                           . ' Q' . $f($pt($r2, $a0)) . ' ' . $f($pt($r2, $a0 + $do)) . ' Z'; ?>
+                        <path id="arc-<?= $i ?>" d="<?= $d ?>"/>
+                        <clipPath id="arc-clip-<?= $i ?>"><use href="#arc-<?= $i ?>"/></clipPath>
+                    <?php endforeach; ?>
+                    <linearGradient id="arc-shade" x1="0" y1="0" x2="0" y2="1"><stop offset=".45" stop-color="#0E0E24" stop-opacity="0"/><stop offset="1" stop-color="#0E0E24" stop-opacity=".75"/></linearGradient>
+                </defs>
+                <?php foreach ($arcs as $i => [$page, $key, $label, $alt, $a0, $a1]):
+                    $mid = ($a0 + $a1) / 2;
+                    // bounding box of the segment, for the photo
+                    $xs = []; $ys = [];
+                    foreach ([$a0, $a1, $mid, $a0 + 20, $a1 - 20] as $deg) foreach ([$r1, $r2] as $r) { [$x, $y] = $pt($r, $deg); $xs[] = $x; $ys[] = $y; }
+                    [$bx, $by, $bw, $bh] = [min($xs), min($ys), max($xs) - min($xs), max($ys) - min($ys)];
+                    [$lx, $ly] = $pt(($r1 + $r2) / 2 + 22, $mid);
+                    $dx = round(cos(deg2rad($mid)) * 8, 1); $dy = round(sin(deg2rad($mid)) * 8, 1); ?>
+                    <a href="<?= path($page) ?>" class="arc" role="listitem" aria-label="<?= e($label) ?>" style="--dx:<?= $dx ?>px;--dy:<?= $dy ?>px;--i:<?= $i ?>">
+                        <g clip-path="url(#arc-clip-<?= $i ?>)">
+                            <rect x="<?= round($bx) ?>" y="<?= round($by) ?>" width="<?= round($bw) ?>" height="<?= round($bh) ?>" fill="#1C1C48"/>
+                            <image class="arc-photo" href="<?= e(media_url(site($key))) ?>" x="<?= round($bx) ?>" y="<?= round($by) ?>" width="<?= round($bw) ?>" height="<?= round($bh) ?>" preserveAspectRatio="xMidYMid slice"><title><?= e($alt) ?></title></image>
+                            <rect x="<?= round($bx) ?>" y="<?= round($by) ?>" width="<?= round($bw) ?>" height="<?= round($bh) ?>" fill="url(#arc-shade)"/>
+                        </g>
+                        <use href="#arc-<?= $i ?>" class="arc-edge"/>
+                        <g class="arc-label" transform="translate(<?= round($lx, 1) ?> <?= round($ly, 1) ?>)">
+                            <rect x="-<?= 8 + strlen($label) * 4.3 ?>" y="-15" width="<?= 16 + strlen($label) * 8.6 ?>" height="30" rx="15"/>
+                            <text text-anchor="middle" y="5"><?= e($label) ?></text>
+                        </g>
+                    </a>
+                <?php endforeach; ?>
+            </svg>
         </div>
     </div>
 </section>
