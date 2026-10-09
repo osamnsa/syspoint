@@ -66,7 +66,8 @@ function media_url(?string $path): string
     if (preg_match('#^https?://#i', $path)) {
         return e($path);
     }
-    return e(asset($path));
+    // Local files get ?v=<modified time> so a replaced picture is never served from an old cache.
+    return e(is_file(__DIR__ . '/../public/' . ltrim($path, '/')) ? versioned_asset($path) : asset($path));
 }
 
 /** Initials for a testimonial with no photo, e.g. "Precious E.C" => "PE". */

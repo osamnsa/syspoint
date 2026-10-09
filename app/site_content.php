@@ -336,7 +336,7 @@ function site_picture(string $key, string $alt, array $attrs = [], string $class
     foreach ($attrs as $k => $v) $attr .= ' ' . $k . '="' . e((string) $v) . '"';
     $img = '<img src="' . e(media_url($src)) . '" alt="' . e($alt) . '"' . $attr . '>';
     if (site_image_is_default($key) && preg_match('/\.(jpg|png)$/', $src) && is_file(__DIR__ . '/../public/' . substr($src, 0, -4) . '.webp')) {
-        return '<picture' . ($class ? ' class="' . e($class) . '"' : '') . '><source srcset="' . asset(substr($src, 0, -4) . '.webp') . '" type="image/webp">' . $img . '</picture>';
+        return '<picture' . ($class ? ' class="' . e($class) . '"' : '') . '><source srcset="' . e(versioned_asset(substr($src, 0, -4) . '.webp')) . '" type="image/webp">' . $img . '</picture>';
     }
     return '<picture' . ($class ? ' class="' . e($class) . '"' : '') . '>' . $img . '</picture>';
 }
