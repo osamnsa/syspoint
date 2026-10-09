@@ -51,6 +51,7 @@
 
         <div class="footer-bottom">
             <span>&copy; <?= date('Y') ?> <?= e(site('site.copyright_name')) ?>. All rights reserved.</span>
+            <nav class="footer-legal" aria-label="Legal"><a href="<?= path('privacy-policy') ?>"><?= e(site('privacy.title')) ?></a><a href="<?= path('returns-policy') ?>"><?= e(site('returns.title')) ?></a><a href="<?= path('terms') ?>"><?= e(site('terms.title')) ?></a></nav>
             <span><?= e(site('site.footer_company')) ?></span>
         </div>
     </div>

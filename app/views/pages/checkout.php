@@ -90,6 +90,7 @@ require __DIR__ . '/../partials/header.php';
                         <label for="address">Delivery Address</label>
                         <textarea id="address" name="address" required><?= old('address') ?></textarea>
                     </div>
+                    <p class="form-legal">By continuing you agree to our <a href="<?= path('terms') ?>" target="_blank">Terms of Use</a> and <a href="<?= path('returns-policy') ?>" target="_blank">Returns &amp; Refunds</a> policy. Your details are used to process and deliver your order — see our <a href="<?= path('privacy-policy') ?>" target="_blank">Privacy Policy</a>.</p>
                     <button type="submit" class="btn btn-primary btn-block">Continue to Payment</button>
                 </form>
             </div>

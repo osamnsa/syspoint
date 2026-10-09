@@ -142,6 +142,7 @@ require __DIR__ . '/../partials/header.php';
                     <textarea id="notes" name="notes"><?= old('notes') ?></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Request Booking</button>
+                <p class="form-legal">Bookings follow our <a href="<?= path('terms') ?>">Terms of Use</a> and <a href="<?= path('returns-policy') ?>">cancellation policy</a>. We use your details only for this booking — see our <a href="<?= path('privacy-policy') ?>">Privacy Policy</a>.</p>
                 <div class="form-note" style="margin-top:12px;">This reserves a time slot request — we'll confirm by email or phone.</div>
             </form>
         </div>

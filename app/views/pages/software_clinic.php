@@ -108,6 +108,7 @@ require __DIR__ . '/../partials/header.php';
                         <textarea id="description" name="description" required><?= old('description') ?></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block"><?= e(site('clinic.form_button')) ?></button>
+                    <p class="form-legal">We use these details only to reply to you. See our <a href="<?= path('privacy-policy') ?>">Privacy Policy</a>.</p>
                 </form>
             </div>
 

@@ -1289,3 +1289,34 @@ main:has(.gaming-arcade) + .site-footer { margin-top: 0; }
 .gaming-theme .event-card, .gaming-theme .event-date { background: var(--color-bg-soft); }
 .training-events { margin: 40px 0 8px; }
 .training-events h2 { margin-bottom: 0; }
+
+/* Legal pages (privacy, returns, terms) */
+.legal-updated { margin: 6px 0 0; color: var(--color-text-muted); font-size: 0.9rem; }
+.legal-section { padding-top: 32px; }
+.legal-layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 56px; align-items: start; }
+.legal-aside { position: sticky; top: 96px; display: grid; gap: 28px; font-size: 0.9rem; }
+.legal-aside-label { margin: 0 0 8px; font: 600 0.72rem "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); }
+.legal-aside ol, .legal-aside ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.legal-aside a { display: block; padding: 5px 0 5px 12px; border-left: 2px solid var(--color-border); color: var(--color-text); text-decoration: none; line-height: 1.35; }
+.legal-aside a:hover { border-left-color: var(--color-accent); text-decoration: none; }
+.legal-aside a[aria-current="page"] { border-left-color: var(--color-accent); font-weight: 700; }
+.legal-body { max-width: 72ch; line-height: 1.7; }
+.legal-body > :first-child { margin-top: 0; font-size: 1.08rem; }
+.legal-body h2 { font-size: 1.35rem; margin: 2.2em 0 0.6em; scroll-margin-top: 96px; }
+.legal-body h3 { font-size: 1.1rem; margin: 1.6em 0 0.4em; }
+.legal-body ul, .legal-body ol { padding-left: 1.3em; }
+.legal-body li { margin: 0.35em 0; }
+.legal-contact { margin-top: 3em; padding-top: 1.2em; border-top: 1px solid var(--color-border); color: var(--color-text-muted); }
+@media (max-width: 860px) {
+    .legal-layout { grid-template-columns: 1fr; gap: 24px; }
+    .legal-aside { position: static; }
+    .legal-toc { display: none; }
+    .legal-others ul { display: flex; flex-wrap: wrap; gap: 8px; }
+    .legal-others a { border: 1px solid var(--color-border); border-radius: 999px; padding: 6px 14px; }
+    .legal-others a[aria-current="page"] { border-color: var(--color-accent); background: var(--color-bg-soft); }
+}
+@media print { .legal-aside, .site-header, .site-footer { display: none !important; } .legal-layout { display: block; } }
+.form-legal { margin: 12px 0 0; font-size: 0.8rem; line-height: 1.5; color: var(--color-text-muted); }
+.footer-legal { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.footer-legal a { color: inherit; }
+.footer-legal a:hover { color: var(--brand-gold); }

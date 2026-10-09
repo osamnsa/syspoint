@@ -593,6 +593,21 @@ if SweetAlert fails to load it falls back to the browser's `confirm()`, so
 destructive actions are never left unconfirmed. Scripts can call
 `SP.toast()`, `SP.alert()`, `SP.confirm()` and `SP.prompt()`.
 
+### Legal pages
+
+`/privacy-policy`, `/returns-policy` and `/terms` (one template,
+`app/views/pages/legal.php`) are edited in *Website → Privacy Policy /
+Returns & Refunds / Terms of Use* like any other page. The starting text
+(`app/legal_defaults.php`) is written for a Nigerian business: the NDPA
+2023 for privacy and the FCCPA 2018 for consumer rights. **Have a lawyer
+review it before relying on it.** Placeholders such as `{company}`,
+`{email}`, `{address}`, `{return_days}` and `{refund_days}` fill in from
+Business details, Documents and the Returns settings, so changing a phone
+number or the return window updates every policy. Each H2 becomes the page's
+contents list. The pages are linked in the footer, at checkout (as the terms
+the buyer agrees to), and under the contact, Software Clinic and booking
+forms.
+
 ### Telegram (announcements + staff alerts)
 
 Two uses of one bot (`app/telegram.php`):

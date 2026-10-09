@@ -100,6 +100,7 @@ require __DIR__ . '/../partials/header.php';
                     <textarea id="message" name="message" required><?= old('message') ?></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block"><?= e(site('contact.button')) ?></button>
+                <p class="form-legal">We use these details only to reply to you. See our <a href="<?= path('privacy-policy') ?>">Privacy Policy</a>.</p>
             </form>
         </div>
 

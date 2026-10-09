@@ -42,6 +42,7 @@ $routes = [
 
     '#^training$#' => __DIR__ . '/../app/views/pages/training.php',
     '#^events$#' => __DIR__ . '/../app/views/pages/events.php',
+    '#^(privacy-policy|returns-policy|terms)$#' => __DIR__ . '/../app/views/pages/legal.php',
 
     '#^admin/login$#' => __DIR__ . '/../app/views/pages/admin_login.php',
     '#^admin/logout$#' => __DIR__ . '/../app/views/pages/admin_logout.php',

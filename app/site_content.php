@@ -17,6 +17,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/legal_defaults.php';
+
 const SITE_PLAZA = 'Awesome Plaza, Opposite Chicken Republic, Apo Resettlement, Abuja';
 
 function site_content(): array
@@ -218,6 +220,23 @@ function site_content(): array
             'contact.button' => $f('Form button', 'Send Message'),
             'contact.success' => $f('Thank-you message', 'Thanks {name}, your message has been received. We\'ll get back to you soon.', 'text', '{name} becomes the sender’s name.'),
         ]],
+        'privacy' => ['label' => 'Privacy Policy', 'page' => 'privacy-policy', 'intro' => LEGAL_HELP, 'fields' => [
+            'privacy.title' => $f('Page heading', 'Privacy Policy'),
+            'privacy.updated' => $f('Last updated', LEGAL_UPDATED, 'text', 'Change this whenever you change the policy.'),
+            'privacy.body' => $f('Policy', LEGAL_DEFAULT_PRIVACY, 'html', LEGAL_BODY_HELP),
+        ]],
+        'returns' => ['label' => 'Returns & Refunds', 'page' => 'returns-policy', 'intro' => LEGAL_HELP, 'fields' => [
+            'returns.title' => $f('Page heading', 'Returns & Refunds'),
+            'returns.updated' => $f('Last updated', LEGAL_UPDATED, 'text', 'Change this whenever you change the policy.'),
+            'returns.days' => $f('Return window (days)', '7', 'text', 'Fills in {return_days} in the policy.'),
+            'returns.refund_days' => $f('Refund time (working days)', '10', 'text', 'Fills in {refund_days} in the policy.'),
+            'returns.body' => $f('Policy', LEGAL_DEFAULT_RETURNS, 'html', LEGAL_BODY_HELP),
+        ]],
+        'terms' => ['label' => 'Terms of Use', 'page' => 'terms', 'intro' => LEGAL_HELP, 'fields' => [
+            'terms.title' => $f('Page heading', 'Terms of Use'),
+            'terms.updated' => $f('Last updated', LEGAL_UPDATED, 'text', 'Change this whenever you change the terms.'),
+            'terms.body' => $f('Terms', LEGAL_DEFAULT_TERMS, 'html', LEGAL_BODY_HELP),
+        ]],
     ];
 }
 
@@ -318,4 +337,52 @@ function site_whatsapp_url(): ?string
 {
     $digits = crm_phone_digits(site('site.whatsapp'));
     return $digits ? 'https://wa.me/234' . ltrim($digits, '0') : null;
+}
+
+// --- Legal pages ---------------------------------------------------------------
+
+const LEGAL_UPDATED = '9 October 2026';
+const LEGAL_HELP = 'A starting draft written for a Nigerian business — have a lawyer review it before relying on it. Headings become the page’s contents list.';
+const LEGAL_BODY_HELP = 'Headings (H2) become the contents list. {company}, {address}, {email}, {phone_sentence}, {website}, {store_suite}, {return_days} and {refund_days} fill in automatically from Business details, Documents and Returns.';
+
+/** The legal pages: slug => content group. */
+const LEGAL_PAGES = ['privacy-policy' => 'privacy', 'returns-policy' => 'returns', 'terms' => 'terms'];
+
+/** Values for the {placeholders} in legal text (all plain text, escaped here). */
+function legal_tokens(): array
+{
+    $phone = site('company.phone') ?: site('site.phone');
+    $t = [
+        'company' => site('company.name'),
+        'address' => site('site.plaza'),
+        'email' => site('company.email') ?: site('site.email'),
+        'website' => preg_replace('#^https?://#', '', rtrim(url(), '/')),
+        'store_suite' => site('site.store_suite'),
+        'return_days' => site('returns.days'),
+        'refund_days' => site('returns.refund_days'),
+    ];
+    $t = array_map(fn($v) => e((string) $v), $t);
+    $t['phone_sentence'] = $phone !== '' ? ' or call <a href="tel:' . e(preg_replace('/[^\d+]/', '', $phone)) . '">' . e($phone) . '</a>' : '';
+    return $t;
+}
+
+/**
+ * A legal page's body ready to print: placeholders filled, site-relative
+ * links pointed at this install, and an id on every H2 for the contents list.
+ * Returns ['html' => string, 'toc' => [id => heading]].
+ */
+function legal_render(string $group): array
+{
+    $html = site($group . '.body');
+    $tokens = legal_tokens();
+    $html = preg_replace_callback('/\{(\w+)\}/', fn($m) => $tokens[$m[1]] ?? $m[0], $html);
+    $html = preg_replace('/href="\/(?!\/)/', 'href="' . path(), $html);
+    $toc = [];
+    $html = preg_replace_callback('/<h2>(.*?)<\/h2>/s', function ($m) use (&$toc) {
+        $id = trim((string) preg_replace('/[^a-z0-9]+/', '-', strtolower(html_entity_decode(strip_tags($m[1])))), '-') ?: 'section';
+        while (isset($toc[$id])) $id .= '-2';
+        $toc[$id] = trim(html_entity_decode(strip_tags($m[1])));
+        return '<h2 id="' . e($id) . '">' . $m[1] . '</h2>';
+    }, $html);
+    return ['html' => $html, 'toc' => $toc];
 }
