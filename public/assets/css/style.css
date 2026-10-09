@@ -1365,9 +1365,6 @@ main:has(.page-hero) .page-hero + .section { padding-top: 64px; }
 .about-tile:hover { text-decoration: none; box-shadow: 0 28px 60px rgba(0, 0, 0, 0.5); }
 .about-tile:hover img { transform: scale(1.06); }
 .about-tile:hover .about-tile-text strong span { transform: translateX(4px); color: var(--brand-gold); }
-.about-badge { position: absolute; right: -16px; top: -14px; z-index: 4; display: grid; place-items: center; width: 104px; height: 104px; border-radius: 50%; background: var(--brand-gold); color: var(--brand-midnight); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 0 6px rgba(247, 203, 30, 0.18); text-align: center; line-height: 1; }
-.about-badge small { display: block; font: 600 0.66rem var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-.about-badge strong { display: block; font: 900 1.7rem var(--font-display); }
 
 /* Software Clinic: a drawn dashboard, a deploy log and a phone */
 .clinic-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; padding: 0; }
@@ -1417,8 +1414,6 @@ main:has(.page-hero) .page-hero + .section { padding-top: 64px; }
     .about-tile-text { left: 12px; bottom: 10px; }
     .about-tile-text small { font-size: 0.58rem; }
     .about-tile-text strong { font-size: 0.95rem; }
-    .about-badge { width: 72px; height: 72px; right: -4px; top: -10px; }
-    .about-badge strong { font-size: 1.25rem; }
     .clinic-art { padding: 18px 0 30px 14px; }
     .clinic-code { width: 76%; }
     .clinic-code-body { font-size: 0.7rem; }

@@ -32,7 +32,6 @@ require __DIR__ . '/../partials/header.php';
                     <span class="about-tile-text"><small><?= e($kicker) ?></small><strong><?= e($label) ?> <span aria-hidden="true">→</span></strong></span>
                 </a>
             <?php endforeach; ?>
-            <div class="about-badge" aria-hidden="true"><small>Since</small><strong>2010</strong></div>
         </div>
     </div>
 </section>
