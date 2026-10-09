@@ -1362,14 +1362,14 @@ main:has(.page-hero) .page-hero + .section { padding-top: 64px; }
 .clinic-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; padding: 0; }
 .clinic-chips li { padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(247, 203, 30, 0.45); color: #fff; font-size: 0.82rem; background: rgba(247, 203, 30, 0.08); }
 .clinic-art { position: relative; display: flex; justify-content: center; }
-.clinic-art picture { display: block; width: min(100%, 460px); }
-.clinic-art img { display: block; width: 100%; height: auto; filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.5)); }
+.clinic-art picture { display: block; width: min(100%, 620px); }
+.clinic-art img { display: block; width: 100%; height: auto; }
 
 @media (max-width: 900px) {
     .page-hero { padding: 40px 0 48px; }
     .page-hero-inner { grid-template-columns: 1fr; gap: 36px; }
     .about-collage { height: 320px; }
-    .clinic-art picture { width: min(100%, 380px); }
+    .clinic-art picture { width: min(100%, 520px); }
 }
 @media (max-width: 520px) {
     .about-collage { height: 260px; gap: 10px; }

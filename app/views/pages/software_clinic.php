@@ -75,7 +75,7 @@ require __DIR__ . '/../partials/header.php';
             </div>
         </div>
         <div class="clinic-art">
-            <?= site_picture('clinic.hero_image', 'A developer coding at a laptop, surrounded by code windows and tech icons', ['width' => 471, 'height' => 475, 'fetchpriority' => 'high']) ?>
+            <?= site_picture('clinic.hero_image', 'A developer coding at a laptop, with code and tech icons floating around', ['width' => 640, 'height' => 452, 'fetchpriority' => 'high']) ?>
         </div>
     </div>
 </section>

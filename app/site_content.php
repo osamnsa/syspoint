@@ -161,7 +161,7 @@ function site_content(): array
             'clinic.title_highlight' => $f('Hero — heading, gold part', 'your business'),
             'clinic.chips' => $f('Hero — what we build (comma-separated)', 'Websites, Mobile apps, Business systems, Deployment & support'),
             'clinic.btn_primary' => $f('Hero — main button', 'Request Software'),
-            'clinic.hero_image' => $f('Hero picture', 'assets/img/clinic/hero-developer.png', 'image', 'Shown in a circle-friendly frame — a square or round picture works best.'),
+            'clinic.hero_image' => $f('Hero picture', 'assets/img/clinic/hero-coder.svg', 'image', 'The default is an animated illustration. A replacement works best as a wide picture with a transparent or dark background.'),
             'clinic.btn_secondary' => $f('Hero — second button', 'Who We’ve Built For'),
             'clinic.intro' => $f('Intro', 'Tell us what your business needs — a website, an app, a system to run your operations — and we\'ll follow up with a plan and a quote.', 'textarea'),
             'clinic.form_title' => $f('Form heading', 'Request Software'),
