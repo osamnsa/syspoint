@@ -135,9 +135,9 @@ function site_content(): array
         ]],
         'shop' => ['label' => 'Shop', 'page' => 'shop', 'intro' => 'Products and categories are managed in Store & Inventory.', 'fields' => [
             'shop.eyebrow' => $f('Hero — small heading', 'Next-gen gadgets'),
-            'shop.hero_title_prefix' => $f('Hero headline (white)', 'Power Up Your'),
-            'shop.hero_title_highlight' => $f('Hero headline (gold script word)', 'Hustle.'),
-            'shop.hero_subtitle' => $f('Hero text', 'Genuine laptops and accessories — tested in our store, delivered fast across Abuja.', 'textarea'),
+            'shop.hero_title_prefix' => $f('Hero headline (white)', "Power Up\nYour", 'textarea', 'Each line is a line of the headline; the gold script word follows the last line.'),
+            'shop.hero_title_highlight' => $f('Hero headline (gold script word)', 'World.'),
+            'shop.hero_subtitle' => $f('Hero text', "Smart. Sleek. Reliable.\nGadgets that keep you ahead.", 'textarea'),
             'shop.hero_image' => $f('Hero picture', 'assets/img/shop/hero-laptops-cutout.png', 'image', 'Best as a product photo with a transparent background (PNG), about 720 × 440.'),
             'shop.btn_primary' => $f('Hero main button', 'Shop Now'),
             'shop.btn_secondary' => $f('Hero second button', 'Visit the Store'),

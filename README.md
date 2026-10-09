@@ -338,6 +338,12 @@ The images were cut from a reference mockup, so they're low resolution
 (~100px source, upscaled) — replace with real product photos before
 launch. The shop hero photo (`public/assets/img/shop/hero-laptops.*`)
 came from the same mockup with its "25% OFF" badge painted out.
+The same file also adds gadget samples cut from the shop design reference
+and recoloured to the brand indigo: Audio, Smartwatches, Phones and Gaming
+categories (with their card pictures; Accessories gets the power bank if it
+has none) and seven demo products — headphones, two pairs of earbuds, a
+smartwatch, a smartphone, a power bank and a game controller. Also low
+resolution (~120px source); swap in real photos before launch.
 
 **Home hero** — modelled on the client's "Business Website Design"
 reference: headline, a desk scene (`public/assets/img/home/hero-desk-*.*`,

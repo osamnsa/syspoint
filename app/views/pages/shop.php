@@ -35,13 +35,16 @@ $promoHref = preg_match('#^https?://#i', $promoUrl) ? $promoUrl : path(ltrim($pr
     <div class="container shop-hero-inner">
         <div class="shop-hero-copy">
             <span class="shop-kicker"><?= e(site('shop.eyebrow')) ?></span>
+            <?php $heroLines = site_list('shop.hero_title_prefix', "\n") ?: ['']; $heroLast = array_pop($heroLines); ?>
             <h1>
-                <span class="shop-hero-line"><?= e(site('shop.hero_title_prefix')) ?></span>
+                <?php foreach ($heroLines as $line): ?><span class="shop-hero-line"><?= e($line) ?></span><?php endforeach; ?>
+                <span class="shop-hero-line"><?= e($heroLast) ?>
                 <?php if (site('shop.hero_title_highlight') !== ''): ?>
                     <span class="shop-hero-script"><?= e(site('shop.hero_title_highlight')) ?><svg viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 16 C 70 6, 150 4, 296 10 C 210 12, 120 16, 40 21" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg></span>
                 <?php endif; ?>
+                </span>
             </h1>
-            <p class="shop-hero-sub"><?= e(site('shop.hero_subtitle')) ?></p>
+            <p class="shop-hero-sub"><?= nl2br(e(site('shop.hero_subtitle'))) ?></p>
             <div class="shop-hero-actions">
                 <a href="#categories" class="btn btn-primary shop-pill"><?= e(site('shop.btn_primary')) ?> <span aria-hidden="true">→</span></a>
                 <a href="<?= e(site('site.maps_url')) ?>" class="shop-hero-visit" target="_blank" rel="noopener">
@@ -78,7 +81,7 @@ $promoHref = preg_match('#^https?://#i', $promoUrl) ? $promoUrl : path(ltrim($pr
                     <span class="shop-cat-media">
                         <?php if ($img): ?>
                             <?php $webp = str_ends_with($img, '.png') && is_file(__DIR__ . '/../../../public/' . substr($img, 0, -4) . '.webp') ? substr($img, 0, -4) . '.webp' : null; ?>
-                            <picture><?php if ($webp): ?><source srcset="<?= e(media_url($webp)) ?>" type="image/webp"><?php endif; ?><img src="<?= e(media_url($img)) ?>" alt="" loading="lazy"></picture>
+                            <picture<?= str_ends_with($img, '.png') ? '' : ' class="is-photo"' ?>><?php if ($webp): ?><source srcset="<?= e(media_url($webp)) ?>" type="image/webp"><?php endif; ?><img src="<?= e(media_url($img)) ?>" alt="" loading="lazy"></picture>
                         <?php else: ?>
                             <?= $shopIcon($catIcons[$category['slug']] ?? '<rect x="3" y="5" width="18" height="12" rx="2"/><path d="M2 19h20"/>') ?>
                         <?php endif; ?>

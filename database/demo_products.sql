@@ -21,3 +21,28 @@ INSERT IGNORE INTO products (category_id, name, slug, description, specs, price,
     (1, '2-in-1 Convertible Laptop 13', 'convertible-laptop-13', 'Versatile and flexible — use it as a laptop, tent or tablet.', '13.3" touch display\n8GB RAM\n256GB SSD', 690000.00, 5, 'assets/img/shop/products/2-in-1-laptop.jpg', 1, 1),
     (1, 'Student Laptop 15.6', 'student-laptop-15', 'Study smart with a reliable, affordable everyday laptop.', '15.6" display\n8GB RAM\n256GB SSD', 420000.00, 10, 'assets/img/shop/products/student-laptop.jpg', 1, 1),
     (1, 'Desktop Workstation + 24" Monitor', 'desktop-workstation-24', 'Built for professionals — a tower PC with a 24" monitor, ready to set up.', 'Tower PC + 24" monitor\n16GB RAM\n1TB SSD\nKeyboard & mouse included', 1250000.00, 3, 'assets/img/shop/products/workstation.jpg', 1, 1);
+
+-- Gadget samples (cut from the shop design reference and recoloured to the
+-- brand): extra preview categories, one picture each for the category
+-- cards, and seven demo products. Re-runnable like the laptops above.
+INSERT IGNORE INTO product_categories (name, slug, sort_order, image_path) VALUES
+    ('Audio', 'audio', 11, 'assets/img/shop/products/headphones.jpg'),
+    ('Smartwatches', 'smartwatches', 12, 'assets/img/shop/products/smartwatch.jpg'),
+    ('Phones', 'phones', 13, 'assets/img/shop/products/smartphone.jpg'),
+    ('Gaming', 'gaming', 30, 'assets/img/shop/products/game-controller.jpg');
+UPDATE product_categories SET image_path = 'assets/img/shop/products/power-bank.jpg' WHERE slug = 'accessories' AND image_path IS NULL;
+
+INSERT IGNORE INTO products (category_id, name, slug, description, specs, price, stock_qty, image_path, is_active, is_demo)
+    SELECT id, 'Wireless Over-Ear Headphones', 'wireless-over-ear-headphones', 'Deep, detailed sound with active noise cancelling and soft memory-foam cushions for all-day comfort.', 'Active noise cancelling\nUp to 40h battery\nBluetooth 5.3\nUSB-C fast charging', 185000.00, 6, 'assets/img/shop/products/headphones.jpg', 1, 1 FROM product_categories WHERE slug = 'audio';
+INSERT IGNORE INTO products (category_id, name, slug, description, specs, price, stock_qty, image_path, is_active, is_demo)
+    SELECT id, 'True Wireless Earbuds', 'true-wireless-earbuds', 'Compact earbuds with punchy bass, touch controls and a pocket-size charging case.', 'Charging case included\nUp to 24h with case\nTouch controls\nBluetooth 5.3', 45000.00, 12, 'assets/img/shop/products/earbuds-black.jpg', 1, 1 FROM product_categories WHERE slug = 'audio';
+INSERT IGNORE INTO products (category_id, name, slug, description, specs, price, stock_qty, image_path, is_active, is_demo)
+    SELECT id, 'Wireless Earbuds Pro (White)', 'wireless-earbuds-pro-white', 'Small size, big performance — noise cancelling earbuds with a transparency mode and wireless charging case.', 'Active noise cancelling\nTransparency mode\nWireless charging case\nSweat resistant', 95000.00, 8, 'assets/img/shop/products/earbuds-white.jpg', 1, 1 FROM product_categories WHERE slug = 'audio';
+INSERT IGNORE INTO products (category_id, name, slug, description, specs, price, stock_qty, image_path, is_active, is_demo)
+    SELECT id, 'Smartwatch S Series', 'smartwatch-s-series', 'Track workouts, heart rate and sleep, and see calls and messages at a glance.', '1.8" AMOLED display\nHeart-rate & SpO2\nUp to 7-day battery\nWater resistant', 120000.00, 7, 'assets/img/shop/products/smartwatch.jpg', 1, 1 FROM product_categories WHERE slug = 'smartwatches';
+INSERT IGNORE INTO products (category_id, name, slug, description, specs, price, stock_qty, image_path, is_active, is_demo)
+    SELECT id, 'Smartphone Pro 6.7"', 'smartphone-pro-6-7', 'A big, bright display, a triple camera and all-day battery — fast 5G in a slim body.', '6.7" OLED display\n256GB storage\nTriple camera\n5G', 650000.00, 4, 'assets/img/shop/products/smartphone.jpg', 1, 1 FROM product_categories WHERE slug = 'phones';
+INSERT IGNORE INTO products (category_id, name, slug, description, specs, price, stock_qty, image_path, is_active, is_demo)
+    SELECT id, 'Power Bank 20,000mAh', 'power-bank-20000mah', 'Keep your laptop and phone going — fast USB-C charging in a slim, pocketable case.', '20,000mAh capacity\nUSB-C PD fast charging\n2 × USB-A ports\nLED charge indicator', 38000.00, 15, 'assets/img/shop/products/power-bank.jpg', 1, 1 FROM product_categories WHERE slug = 'accessories';
+INSERT IGNORE INTO products (category_id, name, slug, description, specs, price, stock_qty, image_path, is_active, is_demo)
+    SELECT id, 'Wireless Game Controller', 'wireless-game-controller', 'Responsive sticks, rumble feedback and a comfortable grip for PC and Android gaming.', 'Bluetooth & USB-C\nWorks with PC and Android\nRumble feedback\nUp to 30h battery', 55000.00, 10, 'assets/img/shop/products/game-controller.jpg', 1, 1 FROM product_categories WHERE slug = 'gaming';
