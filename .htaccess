@@ -9,6 +9,9 @@ DirectoryIndex index.php
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # The homepage always goes to the app (not an old index.html here).
+    RewriteRule ^(index\.html?)?$ public/index.php [L]
+
     # Secrets, code, database files, git and docs: never served.
     RewriteRule ^(app|database|\.git)(/|$) - [F,L]
     RewriteRule (^|/)\. - [F,L]

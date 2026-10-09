@@ -1,5 +1,12 @@
+# The app is index.php — never a leftover index.html from an older site.
+DirectoryIndex index.php
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
+    # The homepage always goes to the app, even if an old index.html or
+    # index.htm is still sitting in this folder from a previous upload.
+    RewriteRule ^(index\.html?)?$ index.php [L]
 
     # Serve real files/directories (assets, uploads) directly.
     RewriteCond %{REQUEST_FILENAME} -f [OR]
