@@ -68,12 +68,17 @@ Same discipline as every other build of this shape:
 
 ## Production Deployment
 
-Document root must point at `public/`, never the repo root — `app/`,
-`database/`, and `.env` all sit outside `public/` on purpose so they're
-never reachable by URL. See The Icon's site README for the fuller
-cPanel-specific walkthrough (document root field, the repo-root fallback
-`index.php`/`.htaccess`, credential rotation if this was ever deployed
-wrong) — identical situation, identical fix, not repeated here.
+Point the domain's document root at `public/` — `app/`, `database/` and
+`.env` sit outside it on purpose so they're never reachable by URL. In
+cPanel: *Domains → (your domain) → Document Root* → `…/syspoint/public`.
+
+**If the host won't let you change it** (document root = the repo root),
+the repo-root `.htaccess` + `index.php` take over: every request is served
+from `public/` with clean URLs unchanged, and `app/`, `database/`, `.git`,
+dotfiles (`.env`) and `*.md`/`*.sql` return 403. Without them, a repo-root
+document root gives a **403 on the homepage and serves `.env` as plain
+text** — if a site ever ran like that, change the database password and
+the Paystack and Telegram keys.
 
 ## Project Structure
 

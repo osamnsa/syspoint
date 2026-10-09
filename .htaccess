@@ -1,0 +1,31 @@
+# Fallback for hosts whose document root is this folder (the repo root)
+# instead of public/ — e.g. a cPanel domain pointed at the cloned repo.
+# Everything is served from public/; nothing else here is reachable.
+# Best fix is still to set the document root to public/ (see README).
+
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Secrets, code, database files, git and docs: never served.
+    RewriteRule ^(app|database|\.git)(/|$) - [F,L]
+    RewriteRule (^|/)\. - [F,L]
+    RewriteRule ^[^/]+\.(md|sql|env|example|lock|json|ya?ml|sh)$ - [F,L]
+
+    # Everything else is looked up inside public/ (which has its own
+    # .htaccess routing pages to public/index.php). The visitor's URL is
+    # unchanged, so links stay /shop, /admin… — not /public/shop.
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Without mod_rewrite, refuse everything rather than expose files.
+<IfModule !mod_rewrite.c>
+    Require all denied
+</IfModule>
+
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
