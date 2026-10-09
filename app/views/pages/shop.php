@@ -29,9 +29,9 @@ $promoUrl = site('shop.promo_url');
 $promoHref = preg_match('#^https?://#i', $promoUrl) ? $promoUrl : path(ltrim($promoUrl, '/'));
 ?>
 <div class="shop-dark">
-<?php require __DIR__ . '/../partials/page_hero_swoosh.php'; ?>
 
 <section class="shop-hero">
+    <?php require __DIR__ . '/../partials/page_hero_swoosh.php'; ?>
     <div class="container shop-hero-inner">
         <div class="shop-hero-copy">
             <span class="shop-kicker"><?= e(site('shop.eyebrow')) ?></span>
@@ -60,7 +60,6 @@ $promoHref = preg_match('#^https?://#i', $promoUrl) ? $promoUrl : path(ltrim($pr
         </div>
         <div class="shop-hero-stage">
             <span class="shop-hero-ring" aria-hidden="true"></span>
-            <span class="shop-hero-podium" aria-hidden="true"></span>
             <div class="shop-hero-product">
                 <?= site_picture('shop.hero_image', 'Three laptops on display: a slim silver laptop in front, a gaming laptop showing the Syspoint gaming page and a dark gaming laptop behind', ['width' => 1100, 'height' => 761, 'fetchpriority' => 'high']) ?>
             </div>

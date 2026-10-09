@@ -1411,11 +1411,11 @@ main:has(.page-hero) .page-hero + .section { padding-top: 64px; }
 }
 
 /* ============================================================
-   SHOP LANDING — dark top: hero with podium, category cards, promo
+   SHOP LANDING — dark top: hero with a floating laptop display, category cards, promo
    ============================================================ */
 .shop-dark { position: relative; overflow: hidden; isolation: isolate; color: #fff; padding-bottom: 64px;
     background: radial-gradient(ellipse 60% 55% at 78% 22%, rgba(52, 52, 138, 0.85), transparent 70%), linear-gradient(180deg, #14143A 0%, #0E0E24 100%); }
-.shop-dark .page-hero-swoosh { opacity: 0.7; }
+.shop-hero .page-hero-swoosh { z-index: -1; -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent 100%); mask-image: linear-gradient(180deg, #000 70%, transparent 100%); }
 .shop-kicker { display: inline-flex; align-items: center; gap: 14px; font: 600 0.8rem var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--brand-gold); }
 .shop-kicker::after { content: ""; width: 64px; height: 1px; background: currentColor; opacity: 0.6; }
 .shop-script { font-family: "Kaushan Script", var(--font-display); font-weight: 400; color: var(--brand-gold); }
@@ -1423,7 +1423,7 @@ main:has(.page-hero) .page-hero + .section { padding-top: 64px; }
 .shop-pill span { margin-left: 6px; display: inline-block; transition: transform 0.2s ease; }
 .shop-pill:hover span { transform: translateX(3px); }
 
-.shop-hero { padding: 64px 0 24px; }
+.shop-hero { position: relative; isolation: isolate; padding: 64px 0 24px; }
 .shop-hero-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 40px; align-items: center; }
 .shop-hero h1 { color: #fff; margin: 18px 0 30px; font-size: clamp(2.8rem, 5.8vw, 4.6rem); line-height: 1.02; letter-spacing: -0.01em; }
 .shop-hero-line { display: block; }
@@ -1447,8 +1447,6 @@ main:has(.page-hero) .page-hero + .section { padding-top: 64px; }
 
 .shop-hero-stage { position: relative; height: 480px; }
 .shop-hero-ring { position: absolute; left: 50%; top: 46%; width: min(400px, 82%); aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; border: 2px solid rgba(247, 203, 30, 0.55); box-shadow: 0 0 40px rgba(247, 203, 30, 0.25), inset 0 0 60px rgba(247, 203, 30, 0.12); background: radial-gradient(circle, rgba(52, 52, 138, 0.55), transparent 70%); }
-.shop-hero-podium { position: absolute; left: 50%; bottom: 34px; width: 78%; height: 74px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(ellipse at 50% 30%, #3A3A92 0%, #1C1C55 55%, #0E0E2A 100%); box-shadow: 0 30px 50px rgba(0, 0, 0, 0.55), inset 0 2px 0 rgba(255, 255, 255, 0.12); }
-.shop-hero-podium::before { content: ""; position: absolute; left: 6%; right: 6%; top: -14px; height: 40px; border-radius: 50%; background: radial-gradient(ellipse at 50% 40%, #4A4AA6, #26266E 70%); box-shadow: 0 0 0 1px rgba(247, 203, 30, 0.25); }
 .shop-hero-product { position: absolute; left: 50%; bottom: 40px; width: 112%; transform: translateX(-50%); animation: shop-float 6s ease-in-out infinite; }
 .shop-hero-product picture, .shop-hero-product img { display: block; width: 100%; height: auto; }
 @keyframes shop-float { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, -10px); } }
@@ -1487,7 +1485,6 @@ main:has(.page-hero) .page-hero + .section { padding-top: 64px; }
 @media (max-width: 640px) {
     .shop-hero { padding-top: 40px; }
     .shop-hero-stage { height: 280px; }
-    .shop-hero-podium { height: 54px; bottom: 20px; }
     .shop-hero-product { bottom: 30px; width: 104%; }
     .shop-promo { grid-template-columns: 1fr; }
     .shop-promo-art { min-height: 200px; }
