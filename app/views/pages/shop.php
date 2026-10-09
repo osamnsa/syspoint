@@ -62,7 +62,7 @@ $promoHref = preg_match('#^https?://#i', $promoUrl) ? $promoUrl : path(ltrim($pr
             <span class="shop-hero-ring" aria-hidden="true"></span>
             <span class="shop-hero-podium" aria-hidden="true"></span>
             <div class="shop-hero-product">
-                <?= site_picture('shop.hero_image', 'A slim laptop with a colourful wave wallpaper on its screen', ['width' => 900, 'height' => 541, 'fetchpriority' => 'high']) ?>
+                <?= site_picture('shop.hero_image', 'Three laptops on display: a slim silver laptop in front, a gaming laptop showing the Syspoint gaming page and a dark gaming laptop behind', ['width' => 1100, 'height' => 761, 'fetchpriority' => 'high']) ?>
             </div>
         </div>
     </div>

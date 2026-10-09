@@ -140,7 +140,7 @@ function site_content(): array
             'shop.hero_title_prefix' => $f('Hero headline (white)', 'Latest Tech', 'textarea', 'Each line is a line of the headline; the gold script word follows the last line.'),
             'shop.hero_title_highlight' => $f('Hero headline (gold script word)', 'Gadgets'),
             'shop.hero_subtitle' => $f('Hero text', 'Genuine gadgets and accessories, in stock now, with secure checkout and fast local delivery.', 'textarea'),
-            'shop.hero_image' => $f('Hero picture', 'assets/img/shop/hero-laptop.png', 'image', 'Best as a product photo with a transparent background (PNG), about 720 × 440.'),
+            'shop.hero_image' => $f('Hero picture', 'assets/img/shop/hero-lineup.png', 'image', 'Best as a product photo with a transparent background (PNG), about 1100 × 760.'),
             'shop.btn_primary' => $f('Hero main button', 'Shop Now'),
             'shop.btn_secondary' => $f('Hero second button', 'Visit the Store'),
             'shop.repair_title' => $f('Category cards — repairs card title', 'Repairs & Upgrades'),

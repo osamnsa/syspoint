@@ -1449,8 +1449,8 @@ main:has(.page-hero) .page-hero + .section { padding-top: 64px; }
 .shop-hero-ring { position: absolute; left: 50%; top: 46%; width: min(400px, 82%); aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; border: 2px solid rgba(247, 203, 30, 0.55); box-shadow: 0 0 40px rgba(247, 203, 30, 0.25), inset 0 0 60px rgba(247, 203, 30, 0.12); background: radial-gradient(circle, rgba(52, 52, 138, 0.55), transparent 70%); }
 .shop-hero-podium { position: absolute; left: 50%; bottom: 34px; width: 78%; height: 74px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(ellipse at 50% 30%, #3A3A92 0%, #1C1C55 55%, #0E0E2A 100%); box-shadow: 0 30px 50px rgba(0, 0, 0, 0.55), inset 0 2px 0 rgba(255, 255, 255, 0.12); }
 .shop-hero-podium::before { content: ""; position: absolute; left: 6%; right: 6%; top: -14px; height: 40px; border-radius: 50%; background: radial-gradient(ellipse at 50% 40%, #4A4AA6, #26266E 70%); box-shadow: 0 0 0 1px rgba(247, 203, 30, 0.25); }
-.shop-hero-product { position: absolute; left: 50%; bottom: 84px; width: 84%; transform: translateX(-50%); animation: shop-float 6s ease-in-out infinite; }
-.shop-hero-product picture, .shop-hero-product img { display: block; width: 100%; height: auto; filter: drop-shadow(0 26px 30px rgba(0, 0, 0, 0.55)); }
+.shop-hero-product { position: absolute; left: 50%; bottom: 40px; width: 112%; transform: translateX(-50%); animation: shop-float 6s ease-in-out infinite; }
+.shop-hero-product picture, .shop-hero-product img { display: block; width: 100%; height: auto; }
 @keyframes shop-float { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, -10px); } }
 
 .shop-section-head { display: flex; align-items: center; gap: 24px; margin-bottom: 24px; }
@@ -1488,7 +1488,7 @@ main:has(.page-hero) .page-hero + .section { padding-top: 64px; }
     .shop-hero { padding-top: 40px; }
     .shop-hero-stage { height: 280px; }
     .shop-hero-podium { height: 54px; bottom: 20px; }
-    .shop-hero-product { bottom: 58px; }
+    .shop-hero-product { bottom: 30px; width: 104%; }
     .shop-promo { grid-template-columns: 1fr; }
     .shop-promo-art { min-height: 200px; }
     .shop-promo-art img { -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%); mask-image: linear-gradient(180deg, #000 55%, transparent 100%); }
