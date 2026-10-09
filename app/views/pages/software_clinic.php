@@ -75,7 +75,19 @@ require __DIR__ . '/../partials/header.php';
             </div>
         </div>
         <div class="clinic-art">
-            <?= site_picture('clinic.hero_image', 'A developer coding at a laptop, with code and tech icons floating around', ['width' => 640, 'height' => 452, 'fetchpriority' => 'high']) ?>
+            <div class="clinic-photo">
+                <?= site_picture('clinic.hero_image', 'Hands typing code on a laptop', ['width' => 736, 'height' => 760, 'fetchpriority' => 'high']) ?>
+            </div>
+            <div class="clinic-code" aria-hidden="true">
+                <div class="clinic-code-bar"><i></i><i></i><i></i><span>deploy.js</span></div>
+                <div class="clinic-code-body">
+                    <p class="cl cl1"><b>const</b> app = <em>build</em>(yourIdea);</p>
+                    <p class="cl cl2"><b>await</b> app.<em>test</em>();</p>
+                    <p class="cl cl3"><b>await</b> app.<em>deploy</em>(<s>'your-domain'</s>);</p>
+                    <p class="cl cl4"><u>// ✓ live — and we look after it</u><span class="clinic-caret"></span></p>
+                </div>
+            </div>
+            <div class="clinic-toast" aria-hidden="true"><span class="clinic-toast-icon">✓</span><span><strong>Deployed</strong><small>Live on your domain</small></span></div>
         </div>
     </div>
 </section>

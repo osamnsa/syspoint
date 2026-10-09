@@ -1361,18 +1361,47 @@ main:has(.page-hero) .page-hero + .section { padding-top: 64px; }
 /* Software Clinic: a drawn dashboard, a deploy log and a phone */
 .clinic-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; padding: 0; }
 .clinic-chips li { padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(247, 203, 30, 0.45); color: #fff; font-size: 0.82rem; background: rgba(247, 203, 30, 0.08); }
-.clinic-art { position: relative; display: flex; justify-content: center; }
-.clinic-art picture { display: block; width: min(100%, 620px); }
-.clinic-art img { display: block; width: 100%; height: auto; }
+.clinic-art { position: relative; width: min(100%, 500px); justify-self: center; padding: 24px 0 36px 32px; }
+.clinic-photo { position: relative; border-radius: 26px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45); aspect-ratio: 736 / 760; }
+.clinic-photo picture, .clinic-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.clinic-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(200deg, transparent 55%, rgba(14, 14, 36, 0.55)); pointer-events: none; }
+/* glass code panel that types itself */
+.clinic-code { position: absolute; left: 0; top: 0; width: 64%; border-radius: 16px; overflow: hidden; background: rgba(20, 20, 58, 0.78); border: 1px solid rgba(255, 255, 255, 0.14); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); animation: clinic-float 7s ease-in-out infinite; }
+.clinic-code-bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.clinic-code-bar i { width: 9px; height: 9px; border-radius: 50%; background: #5A5AB0; }
+.clinic-code-bar i:first-child { background: var(--brand-gold); }
+.clinic-code-bar span { margin-left: 8px; font: 500 0.72rem var(--font-mono); color: #C9CAE8; }
+.clinic-code-body { padding: 12px 14px 14px; font: 500 0.78rem/1.75 var(--font-mono); color: #E8EAFB; }
+.clinic-code-body p { margin: 0; white-space: nowrap; overflow: hidden; width: 0; animation: clinic-type 9s steps(28, end) infinite; }
+.clinic-code-body b { color: var(--brand-gold); font-weight: 600; }
+.clinic-code-body em { font-style: normal; color: #9A9BE0; }
+.clinic-code-body s { text-decoration: none; color: #3CC47C; }
+.clinic-code-body u { text-decoration: none; color: #8E90C8; }
+.clinic-code-body .cl2 { animation-delay: 1.4s; } .clinic-code-body .cl3 { animation-delay: 2.8s; } .clinic-code-body .cl4 { animation-delay: 4.2s; }
+@keyframes clinic-type { 0% { width: 0; } 14% { width: 100%; } 90% { width: 100%; opacity: 1; } 96%, 100% { width: 100%; opacity: 0; } }
+.clinic-caret { display: inline-block; width: 7px; height: 1em; margin-left: 3px; vertical-align: -2px; background: var(--brand-gold); animation: clinic-blink 1s steps(1) infinite; }
+@keyframes clinic-blink { 50% { opacity: 0; } }
+@keyframes clinic-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+/* "Deployed" notice that pops up once the code has run */
+.clinic-toast { position: absolute; right: -8px; bottom: 6px; display: flex; align-items: center; gap: 12px; padding: 12px 18px 12px 12px; border-radius: 14px; background: #fff; color: var(--brand-midnight); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4); animation: clinic-toast 9s ease-in-out infinite; }
+.clinic-toast-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: #1E9E86; color: #fff; font-weight: 700; }
+.clinic-toast strong { display: block; font: 900 0.95rem var(--font-display); }
+.clinic-toast small { display: block; font-size: 0.75rem; color: var(--color-text-muted); }
+@keyframes clinic-toast { 0%, 58% { opacity: 0; transform: translateY(12px) scale(.96); } 64%, 90% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: translateY(12px) scale(.96); } }
+@media (prefers-reduced-motion: reduce) { .clinic-code, .clinic-toast, .clinic-caret { animation: none; } .clinic-code-body p { animation: none; width: auto; } }
 
 @media (max-width: 900px) {
     .page-hero { padding: 40px 0 48px; }
     .page-hero-inner { grid-template-columns: 1fr; gap: 36px; }
     .about-collage { height: 320px; }
-    .clinic-art picture { width: min(100%, 520px); }
+    .clinic-art { width: min(100%, 440px); padding-left: 24px; }
 }
 @media (max-width: 520px) {
     .about-collage { height: 260px; gap: 10px; }
+    .clinic-art { padding: 18px 0 30px 14px; }
+    .clinic-code { width: 76%; }
+    .clinic-code-body { font-size: 0.7rem; }
+    .clinic-toast { right: 0; }
 }
 .clinic-hero h1 { font-size: clamp(2.2rem, 4vw, 3.25rem); }
 
