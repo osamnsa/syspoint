@@ -20,13 +20,19 @@ require __DIR__ . '/../partials/header.php';
                 <a href="#story" class="btn btn-outline btn-outline-light"><?= e(site('about.btn_secondary')) ?></a>
             </div>
         </div>
-        <div class="about-collage" aria-label="What’s at Syspoint">
-            <?php foreach ([['shop', 'Shop', 'about.photo_shop', 'Laptops in the Syspoint shop'], ['gaming', 'Gaming', 'about.photo_gaming', 'A PS5 in the gaming lounge'], ['training', 'Training', 'about.photo_training', 'A student training on a laptop']] as $i => [$page, $label, $key, $alt]): ?>
+        <div class="about-collage">
+            <?php foreach ([
+                ['shop', 'about.photo_shop', 'Computers & gadgets', 'Gadget Store', 'Laptops on display in the Syspoint Gadget Store'],
+                ['software-clinic', 'about.photo_clinic', 'Software & systems', 'Software Clinic', 'Hands typing code on a laptop'],
+                ['gaming', 'about.photo_gaming', 'PS5 · VR · board games', 'Gaming Lounge', 'A gamer wearing a VR headset'],
+                ['training', 'about.photo_training', 'Courses & internships', 'IT Training', 'A student learning on a laptop'],
+            ] as $i => [$page, $key, $kicker, $label, $alt]): ?>
                 <a class="about-tile about-tile-<?= $i + 1 ?>" href="<?= path($page) ?>">
-                    <?= site_picture($key, $alt, ['loading' => $i ? 'lazy' : 'eager']) ?>
-                    <span class="about-tile-label"><?= e($label) ?> <span aria-hidden="true">→</span></span>
+                    <?= site_picture($key, $alt, ['loading' => $i < 2 ? 'eager' : 'lazy']) ?>
+                    <span class="about-tile-text"><small><?= e($kicker) ?></small><strong><?= e($label) ?> <span aria-hidden="true">→</span></strong></span>
                 </a>
             <?php endforeach; ?>
+            <div class="about-badge" aria-hidden="true"><small>Since</small><strong>2010</strong></div>
         </div>
     </div>
 </section>
