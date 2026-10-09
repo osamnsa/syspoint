@@ -31,11 +31,69 @@ require __DIR__ . '/../partials/header.php';
     </div>
 </section>
 
-<section class="section" id="story">
-    <div class="container" style="max-width:760px;">
-        <?php if (site('about.story_title') !== ''): ?><span class="eyebrow"><?= e(site('about.story_title')) ?></span><?php endif; ?>
-        <div class="prose">
+<?php
+$split = fn(string $line) => array_map('trim', explode('|', $line));
+$timeline = array_map($split, site_list('about.timeline', "\n"));
+$values = array_map($split, site_list('about.values', "\n"));
+?>
+<section class="section about-story" id="story">
+    <div class="container about-story-grid">
+        <div class="about-story-head">
+            <?php if (site('about.story_title') !== ''): ?><span class="eyebrow"><?= e(site('about.story_title')) ?></span><?php endif; ?>
+            <h2><?= e(site('about.story_heading')) ?></h2>
+            <div class="about-since" aria-hidden="true"><span>Since</span><strong>2010</strong></div>
+        </div>
+        <div class="about-story-body">
             <?= site_sanitize_html(site('about.body')) ?>
+        </div>
+    </div>
+</section>
+
+<?php if ($timeline): ?>
+<section class="section section-soft about-timeline-section">
+    <div class="container">
+        <h2><?= e(site('about.timeline_title')) ?></h2>
+        <ol class="about-timeline">
+            <?php foreach ($timeline as $step): ?>
+                <li>
+                    <span class="about-timeline-label"><?= e($step[0] ?? '') ?></span>
+                    <strong><?= e($step[1] ?? '') ?></strong>
+                    <?php if (!empty($step[2])): ?><p><?= e($step[2]) ?></p><?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+        </ol>
+    </div>
+</section>
+<?php endif; ?>
+
+<?php if ($values): ?>
+<section class="section">
+    <div class="container">
+        <h2><?= e(site('about.values_title')) ?></h2>
+        <div class="about-values">
+            <?php foreach ($values as $i => $val): ?>
+                <div class="about-value">
+                    <span class="about-value-num"><?= sprintf('%02d', $i + 1) ?></span>
+                    <strong><?= e($val[0] ?? '') ?></strong>
+                    <?php if (!empty($val[1])): ?><p><?= e($val[1]) ?></p><?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
+<section class="section" style="padding-top:0;">
+    <div class="container">
+        <div class="about-cta">
+            <div>
+                <h2><?= e(site('about.cta_title')) ?></h2>
+                <p><?= e(site('about.cta_text')) ?></p>
+            </div>
+            <div class="about-cta-actions">
+                <a href="<?= path('contact') ?>" class="btn btn-primary"><?= e(site('about.btn_primary')) ?></a>
+                <a href="<?= path('software-clinic') ?>" class="btn btn-outline btn-outline-light">Software Clinic</a>
+            </div>
         </div>
     </div>
 </section>
