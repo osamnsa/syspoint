@@ -43,11 +43,11 @@ $services = [
         <p><?= e(site('home.hero_subtitle')) ?></p>
     </div>
 
-    <!-- The laptop cycles through our page heroes: Gaming, then Shop, then Training. -->
+    <!-- The laptop cycles through our page heroes, 5s each: Gaming, Software Clinic, Training, Shop, About. -->
     <div class="home-hero-stage">
-        <?= site_picture('home.screen_gaming', 'A laptop on a desk showing Syspoint Hub\'s gaming, shop and training pages in turn', ['width' => 1472, 'height' => 844, 'fetchpriority' => 'high'], 'home-screen') ?>
-        <?php foreach (['shop', 'training'] as $screen): ?>
-            <?= str_replace('<picture class=', '<picture aria-hidden="true" class=', site_picture('home.screen_' . $screen, '', ['width' => 1472, 'height' => 844, 'loading' => 'lazy'], 'home-screen home-screen-' . $screen)) ?>
+        <?= site_picture('home.screen_gaming', 'A laptop on a desk showing Syspoint Hub\'s pages in turn: gaming, software clinic, training, shop and about', ['width' => 1472, 'height' => 844, 'fetchpriority' => 'high'], 'home-screen') ?>
+        <?php foreach (['clinic', 'training', 'shop', 'about'] as $i => $screen): ?>
+            <?= str_replace('<picture class=', '<picture aria-hidden="true" style="--d:' . (($i + 1) * 5) . 's" class=', site_picture('home.screen_' . $screen, '', ['width' => 1472, 'height' => 844, 'loading' => 'lazy'], 'home-screen home-screen-cycle')) ?>
         <?php endforeach; ?>
     </div>
 

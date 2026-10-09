@@ -336,8 +336,13 @@ images in `public/assets/img/shop/products/`. Run it only to preview
 the shop; clear them later with `DELETE FROM products WHERE is_demo = 1`.
 The images were cut from a reference mockup, so they're low resolution
 (~100px source, upscaled) — replace with real product photos before
-launch. The shop hero photo (`public/assets/img/shop/hero-laptops.*`)
-came from the same mockup with its "25% OFF" badge painted out.
+launch. The shop hero laptop (`public/assets/img/shop/hero-laptop.png`) is
+the complete laptop from the home-page desk photo, cut out, with the wave
+wallpaper from the original shop photo (`hero-laptops.*`) on its screen.
+The home hero's five laptop screens (`public/assets/img/home/hero-desk-*`)
+are real screenshots of the Gaming, Software Clinic, Training, Shop and
+About pages fitted to that laptop's screen — re-shoot them after a big
+redesign so the home page stays current.
 The same file also adds gadget samples cut from the shop design reference
 and recoloured to the brand indigo: Audio, Smartwatches, Phones and Gaming
 categories (with their card pictures; Accessories gets the power bank if it

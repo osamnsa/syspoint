@@ -295,16 +295,14 @@ main:has(.home-hero) + .site-footer, main:has(.training-hero) + .site-footer { m
 .home-hero-head p { color: rgba(255, 255, 255, 0.78); max-width: 62ch; margin: 0 auto; }
 
 .home-hero-stage { position: relative; max-width: 1120px; margin: 24px auto 0; padding: 0 12px; }
-/* Cross-fade: Gaming is the base layer; Shop then Training fade in over it on a 15s loop. */
-.home-screen-shop, .home-screen-training { position: absolute; inset: 0 12px; opacity: 0; animation: home-screen-cycle 15s infinite; }
-.home-screen-shop { animation-delay: 5s; }
-.home-screen-training { animation-delay: 10s; }
+/* Cross-fade: Gaming is the base layer; the other four fade in over it in turn, 5s each, on a 25s loop. */
+.home-screen-cycle { position: absolute; inset: 0 12px; opacity: 0; animation: home-screen-cycle 25s infinite; animation-delay: var(--d, 5s); }
 @keyframes home-screen-cycle {
     0% { opacity: 0; }
-    6.67%, 33.33% { opacity: 1; }
-    40%, 100% { opacity: 0; }
+    4%, 20% { opacity: 1; }
+    24%, 100% { opacity: 0; }
 }
-@media (prefers-reduced-motion: reduce) { .home-screen-shop, .home-screen-training { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .home-screen-cycle { animation: none; } }
 .home-hero-stage img {
     width: 100%;
     height: auto;
