@@ -20,6 +20,8 @@ require __DIR__ . '/../app/bootstrap.php';
 
 $routes = [
     '#^$#' => __DIR__ . '/../app/views/pages/home.php',
+    '#^sitemap\.xml$#' => __DIR__ . '/../app/views/pages/sitemap.php',
+    '#^robots\.txt$#' => __DIR__ . '/../app/views/pages/robots.php',
     '#^about$#' => __DIR__ . '/../app/views/pages/about.php',
     '#^contact$#' => __DIR__ . '/../app/views/pages/contact.php',
 

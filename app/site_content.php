@@ -32,6 +32,7 @@ function site_content(): array
             'site.brand_first' => $f('Brand name (white part)', 'Syspoint'),
             'site.brand_second' => $f('Brand name (gold part)', 'Hub'),
             'site.tagline' => $f('Tagline', '...challenging conventions'),
+            'site.google_verification' => $f('Google Search Console code', '', 'text', 'From Search Console → HTML tag: paste only the content="…" value (or the whole <meta> tag).'),
             'site.meta_description' => $f('Search engine description', 'Syspoint — computers & accessories, a software clinic, a gaming lounge, IT consulting, and internship training, all in one place.', 'textarea', 'Shown by Google under the site name. About 150 characters.'),
             'site.email' => $f('Email', 'syspointmail@gmail.com', 'email'),
             'site.phone' => $f('Phone number', '', 'text', 'Shown in the footer and contact page when filled in.'),

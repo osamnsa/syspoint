@@ -688,6 +688,18 @@ The token, channel and staff chat can instead live in `.env`
 wins over the saved settings. `TELEGRAM_API_BASE` points the bot at a mock
 server for local testing.
 
+### Search engines (Google Search Console)
+
+`/sitemap.xml` is generated live: home, main pages, events, legal pages,
+every shop category and every active product (with its last-updated date).
+`/robots.txt` allows everything except the admin, cart, checkout, order,
+payment-callback and search-results pages, and points to the sitemap. Each
+page has a canonical URL, Open Graph tags for link previews, and
+`noindex` on cart/checkout/search and filtered shop pages. Paste the
+Search Console HTML-tag code in *Website → Business details → Google Search
+Console code*. Addresses use `APP_URL` — set it to the live https address
+(if left as localhost, the visited host is used).
+
 ### Security, spam and notifications
 
 **Spam filter** (`app/security.php`) on every public form (contact,

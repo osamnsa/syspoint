@@ -136,3 +136,17 @@ function handle_image_upload(string $fieldName, string $subdir): array
 
     return ['ok' => true, 'path' => 'uploads/' . $subdir . '/' . $filename, 'error' => null];
 }
+
+/**
+ * Absolute address of this site for search engines (sitemap, canonical, robots).
+ * Uses APP_URL; if that was left as localhost, falls back to the host being visited.
+ */
+function public_url(string $to = ''): string
+{
+    $base = (string) config()['app']['url'];
+    if (preg_match('#//(localhost|127\.0\.0\.1)(:\d+)?$#', $base) && !empty($_SERVER['HTTP_HOST']) && !preg_match('/^(localhost|127\.)/', (string) $_SERVER['HTTP_HOST'])) {
+        $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || strtolower((string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https';
+        $base = ($https ? 'https://' : 'http://') . preg_replace('/[^A-Za-z0-9.:-]/', '', (string) $_SERVER['HTTP_HOST']);
+    }
+    return rtrim($base, '/') . path($to);
+}
