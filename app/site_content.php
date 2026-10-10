@@ -28,7 +28,7 @@ function site_content(): array
     $f = fn(string $label, string $default = '', string $type = 'text', string $help = '') => compact('label', 'default', 'type', 'help');
 
     return $groups = [
-        'site' => ['label' => 'Business details', 'page' => '', 'intro' => 'Used across the whole site — header, footer, Visit Us and contact sections.', 'fields' => [
+        'site' => ['label' => 'Business details', 'page' => '', 'intro' => 'Used across the whole site — header, footer, Visit Us and contact sections — plus the Google Search Console code.', 'fields' => [
             'site.brand_first' => $f('Brand name (white part)', 'Syspoint'),
             'site.brand_second' => $f('Brand name (gold part)', 'Hub'),
             'site.tagline' => $f('Tagline', '...challenging conventions'),

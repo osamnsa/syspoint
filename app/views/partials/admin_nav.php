@@ -45,6 +45,7 @@ $adminNavGroups = [
         ['path' => 'admin/courses', 'label' => 'Courses', 'icon' => 'cap', 'area' => 'training'],
     ]],
     ['label' => 'Website', 'items' => [
+        ['path' => 'admin/website?group=site', 'label' => 'Business Details & SEO', 'icon' => 'doc', 'area' => 'website'],
         ['path' => 'admin/website', 'label' => 'Website Editor', 'icon' => 'pen', 'area' => 'website'],
         ['path' => 'admin/events', 'label' => 'Events', 'icon' => 'ticket', 'area' => 'gaming|training|website'],
         ['path' => 'admin/telegram', 'label' => 'Telegram', 'icon' => 'send', 'area' => 'website'],

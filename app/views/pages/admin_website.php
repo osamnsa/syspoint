@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $pageTitle = 'Website Editor';
+$activeNav = $sectionKey === 'site' ? 'admin/website?group=site' : 'admin/website';
 require __DIR__ . '/../partials/admin_header.php';
 ?>
 
