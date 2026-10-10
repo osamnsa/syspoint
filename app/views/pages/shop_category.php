@@ -10,50 +10,58 @@ if (!$category) {
     return;
 }
 
-$products = products_in_category((int) $category['id']);
+$hero = category_hero($category);
+$f = shop_filters_from_request($category);
+$res = shop_search($f);
+$allCategories = product_categories();
+$lockCategory = $category;
+$baseUrl = path('shop/' . $category['slug']);
+
+// headline stats for the whole category (not the current filters)
+$stats = db()->prepare('SELECT COUNT(*), MIN(price), SUM(stock_qty > 0) FROM products WHERE category_id = :id AND is_active = 1');
+$stats->execute(['id' => $category['id']]);
+[$catCount, $catFrom, $catInStock] = $stats->fetch(PDO::FETCH_NUM);
 
 $pageTitle = $category['name'];
-$pageDescription = 'Browse ' . $category['name'] . ' — photos, specs, and current prices.';
+$pageDescription = $hero['text'];
 
 require __DIR__ . '/../partials/header.php';
 ?>
 
 <div class="shop-theme">
-
-<section class="page-header">
-    <div class="container">
-        <div class="breadcrumb"><a href="<?= path() ?>">Home</a> / <a href="<?= path('shop') ?>">Shop</a> / <?= e($category['name']) ?></div>
-        <h1><?= e($category['name']) ?></h1>
+<section class="shop-cat-hero">
+    <?php require __DIR__ . '/../partials/page_hero_swoosh.php'; ?>
+    <div class="container shop-cat-hero-inner">
+        <div class="shop-cat-hero-copy">
+            <div class="breadcrumb"><a href="<?= path() ?>">Home</a> / <a href="<?= path('shop') ?>">Shop</a> / <?= e($category['name']) ?></div>
+            <span class="shop-kicker"><?= e($hero['kicker']) ?></span>
+            <h1><?= e($hero['title']) ?><?php if ($hero['highlight'] !== ''): ?> <span class="shop-script"><?= e($hero['highlight']) ?></span><?php endif; ?></h1>
+            <p class="shop-cat-hero-text"><?= e($hero['text']) ?></p>
+            <?php $searchAction = $baseUrl; $searchValue = $f['q']; $searchPlaceholder = 'Search ' . mb_strtolower($category['name']) . '…'; require __DIR__ . '/../partials/shop_searchbar.php'; ?>
+            <ul class="shop-cat-stats">
+                <li><strong><?= (int) $catCount ?></strong><span>product<?= (int) $catCount === 1 ? '' : 's' ?></span></li>
+                <?php if ($catFrom !== null): ?><li><strong><?= format_naira((float) $catFrom) ?></strong><span>starting from</span></li><?php endif; ?>
+                <li><strong><?= (int) $catInStock ?></strong><span>in stock now</span></li>
+            </ul>
+        </div>
+        <div class="shop-cat-hero-art">
+            <span class="shop-hero-ring" aria-hidden="true"></span>
+            <?php if ($hero['image']): ?>
+                <img src="<?= media_url($hero['image']) ?>" alt="<?= e($category['name']) ?>" class="<?= str_ends_with($hero['image'], '.png') ? 'is-cutout' : 'is-photo' ?>" fetchpriority="high">
+            <?php endif; ?>
+        </div>
     </div>
+    <nav class="container shop-cat-tabs" aria-label="Categories">
+        <a href="<?= path('shop') ?>">All</a>
+        <?php foreach ($allCategories as $c): ?><a href="<?= path('shop/' . e($c['slug'])) ?>"<?= $c['id'] === $category['id'] ? ' aria-current="page"' : '' ?>><?= e($c['name']) ?></a><?php endforeach; ?>
+    </nav>
 </section>
 
 <section class="section">
     <div class="container">
-        <?php if (!$products): ?>
-            <p style="color:var(--color-text-muted);">Nothing in this category right now — check back soon.</p>
-        <?php else: ?>
-            <div class="product-grid">
-                <?php foreach ($products as $product): ?>
-                    <a class="product-card" href="<?= path('shop/' . e($category['slug']) . '/' . e($product['slug'])) ?>">
-                        <div class="product-card-img">
-                            <?php if ($product['image_path']): ?>
-                                <img src="<?= asset(e($product['image_path'])) ?>" alt="<?= e($product['name']) ?>">
-                            <?php else: ?>
-                                <span class="product-card-placeholder">📦</span>
-                            <?php endif; ?>
-                            <?php if ((int) $product['stock_qty'] <= 0): ?>
-                                <span class="badge badge-muted product-card-badge">Out of Stock</span>
-                            <?php endif; ?>
-                        </div>
-                        <h3><?= e($product['name']) ?></h3>
-                        <p class="product-card-price"><?= format_naira((float) $product['price']) ?><?= $product['is_demo'] ? demo_badge() : '' ?></p>
-                    </a>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
+        <?php require __DIR__ . '/../partials/shop_results.php'; ?>
     </div>
 </section>
-
 </div>
 
 <?php require __DIR__ . '/../partials/footer.php'; ?>

@@ -609,6 +609,22 @@ if SweetAlert fails to load it falls back to the browser's `confirm()`, so
 destructive actions are never left unconfirmed. Scripts can call
 `SP.toast()`, `SP.alert()`, `SP.confirm()` and `SP.prompt()`.
 
+### Shop search, filters and category pages
+
+`/shop/search` searches every word of the query across product name,
+description, specs, SKU and category (name matches rank first), with
+filters for category (with live counts), price (min/max or quick bands),
+in-stock only, and sorting (best match, newest, price up/down, A–Z), 12 per
+page. Every category page (`/shop/<slug>`) has its own dark hero — kicker,
+heading with a gold script word, intro, a search box scoped to that
+category, product count, starting price and in-stock count, and tabs to the
+other categories — above the same filters and results. Hero text and
+picture are edited per category in *Store → Categories*; empty fields use
+built-in copy for Computers, Audio, Smartwatches, Phones, Accessories and
+Gaming. The shop landing hero has a search box too. Logic:
+`shop_filters_from_request()` / `shop_search()` in `app/products.php`;
+markup: `partials/shop_results.php`, `shop_searchbar.php`, `product_card.php`.
+
 ### Legal pages
 
 `/privacy-policy`, `/returns-policy` and `/terms` (one template,

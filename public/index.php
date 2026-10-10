@@ -24,6 +24,7 @@ $routes = [
     '#^contact$#' => __DIR__ . '/../app/views/pages/contact.php',
 
     '#^shop$#' => __DIR__ . '/../app/views/pages/shop.php',
+    '#^shop/search$#' => __DIR__ . '/../app/views/pages/shop_search.php',
     '#^shop/([a-z0-9-]+)$#' => __DIR__ . '/../app/views/pages/shop_category.php',
     '#^shop/([a-z0-9-]+)/([a-z0-9-]+)$#' => __DIR__ . '/../app/views/pages/product.php',
     '#^cart$#' => __DIR__ . '/../app/views/pages/cart.php',

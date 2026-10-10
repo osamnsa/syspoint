@@ -45,6 +45,7 @@ $promoHref = preg_match('#^https?://#i', $promoUrl) ? $promoUrl : path(ltrim($pr
                 </span>
             </h1>
             <p class="shop-hero-sub"><?= nl2br(e(site('shop.hero_subtitle'))) ?></p>
+            <?php $searchAction = path('shop/search'); $searchValue = ''; require __DIR__ . '/../partials/shop_searchbar.php'; ?>
             <div class="shop-hero-actions">
                 <a href="#categories" class="btn btn-primary shop-pill"><?= e(site('shop.btn_primary')) ?> <span aria-hidden="true">→</span></a>
                 <a href="<?= e(site('site.maps_url')) ?>" class="shop-hero-visit" target="_blank" rel="noopener">
@@ -123,22 +124,7 @@ $promoHref = preg_match('#^https?://#i', $promoUrl) ? $promoUrl : path(ltrim($pr
             </div>
         </div>
         <div class="product-grid">
-            <?php foreach ($trending as $product): ?>
-                <a class="product-card" href="<?= path('shop/' . e($product['category_slug']) . '/' . e($product['slug'])) ?>">
-                    <div class="product-card-img">
-                        <?php if ($product['image_path']): ?>
-                            <img src="<?= asset(e($product['image_path'])) ?>" alt="<?= e($product['name']) ?>">
-                        <?php else: ?>
-                            <span class="product-card-placeholder">📦</span>
-                        <?php endif; ?>
-                        <?php if ((int) $product['stock_qty'] <= 0): ?>
-                            <span class="badge badge-muted product-card-badge">Out of Stock</span>
-                        <?php endif; ?>
-                    </div>
-                    <h3><?= e($product['name']) ?></h3>
-                    <p class="product-card-price"><?= format_naira((float) $product['price']) ?><?= $product['is_demo'] ? demo_badge() : '' ?></p>
-                </a>
-            <?php endforeach; ?>
+            <?php foreach ($trending as $product) require __DIR__ . '/../partials/product_card.php'; ?>
         </div>
     </div>
 </section>

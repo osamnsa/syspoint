@@ -636,3 +636,12 @@ CREATE TABLE IF NOT EXISTS events (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_events_starts (is_active, starts_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Category landing heroes (Shop → Categories): optional text and picture;
+-- empty fields fall back to sensible defaults built from the name.
+ALTER TABLE product_categories ADD COLUMN IF NOT EXISTS hero_kicker VARCHAR(120) NULL AFTER image_path;
+ALTER TABLE product_categories ADD COLUMN IF NOT EXISTS hero_title VARCHAR(190) NULL AFTER hero_kicker;
+ALTER TABLE product_categories ADD COLUMN IF NOT EXISTS hero_text VARCHAR(500) NULL AFTER hero_title;
+ALTER TABLE product_categories ADD COLUMN IF NOT EXISTS hero_image VARCHAR(255) NULL AFTER hero_text;
+-- Product search (name, description, specs, SKU).
+CREATE INDEX IF NOT EXISTS idx_products_active_price ON products (is_active, price);
