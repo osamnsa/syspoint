@@ -381,3 +381,60 @@ document.addEventListener('click', function (e) {
     if (none) none.addEventListener('change', function () { photo.hidden = none.checked; if (!none.checked && initialPhoto) photo.src = initialPhoto; update(); });
     update();
 })();
+
+// Notification bell: opens a panel of the latest notifications, refreshes
+// the unread count every minute, marks one read when opened, or all at once.
+(function () {
+    var bell = document.querySelector('[data-bell]');
+    if (!bell) return;
+    var btn = bell.querySelector('[data-bell-toggle]'), panel = bell.querySelector('[data-bell-panel]');
+    var list = bell.querySelector('[data-bell-list]'), badge = bell.querySelector('[data-bell-count]');
+    var feed = bell.getAttribute('data-feed');
+    var token = (document.querySelector('meta[name="csrf-token"]') || {}).content || '';
+    var baseTitle = document.title.replace(/^\(\d+\+?\)\s*/, '');
+    var last = null;
+
+    function esc(s) { var d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; }
+    function setCount(n) {
+        badge.hidden = !n; badge.textContent = n > 99 ? '99+' : n;
+        document.title = (n ? '(' + n + ') ' : '') + baseTitle;
+        btn.setAttribute('aria-label', 'Notifications' + (n ? ', ' + n + ' unread' : ''));
+        if (last !== null && n > last) { bell.classList.remove('is-ringing'); void bell.offsetWidth; bell.classList.add('is-ringing'); }
+        last = n;
+    }
+    function render(data) {
+        setCount(data.count);
+        if (!data.items.length) { list.innerHTML = '<p class="admin-bell-empty">No notifications yet.</p>'; return; }
+        list.innerHTML = data.items.map(function (n) {
+            return '<a class="admin-bell-item' + (n.read ? '' : ' is-unread') + '" href="' + esc(n.link || '#') + '" data-id="' + n.id + '">' +
+                '<span class="admin-bell-dot" aria-hidden="true"></span>' +
+                '<span class="admin-bell-text"><strong>' + esc(n.title) + '</strong>' + (n.body ? '<small>' + esc(n.body) + '</small>' : '') +
+                '<em>' + esc(n.time) + '</em></span></a>';
+        }).join('');
+    }
+    function load(body) {
+        var opts = body ? { method: 'POST', body: body, credentials: 'same-origin' } : { credentials: 'same-origin' };
+        return fetch(feed, opts).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) { if (d) render(d); }).catch(function () {});
+    }
+    function post(fields) { var f = new FormData(); f.append('csrf_token', token); for (var k in fields) f.append(k, fields[k]); return f; }
+
+    btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = panel.hidden;
+        panel.hidden = !open; btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) load();
+    });
+    document.addEventListener('click', function (e) { if (!bell.contains(e.target)) { panel.hidden = true; btn.setAttribute('aria-expanded', 'false'); } });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { panel.hidden = true; btn.setAttribute('aria-expanded', 'false'); } });
+    bell.querySelector('[data-bell-markall]').addEventListener('click', function () { load(post({ action: 'all' })); });
+    list.addEventListener('click', function (e) {
+        var a = e.target.closest('.admin-bell-item'); if (!a) return;
+        if (a.classList.contains('is-unread') && navigator.sendBeacon) navigator.sendBeacon(feed, post({ action: 'read', id: a.getAttribute('data-id') }));
+        if (a.getAttribute('href') === '#') e.preventDefault();
+    });
+    document.querySelectorAll('[data-notif-open]').forEach(function (a) {
+        a.addEventListener('click', function () { if (navigator.sendBeacon) navigator.sendBeacon(feed, post({ action: 'read', id: a.getAttribute('data-notif-open') })); });
+    });
+    setCount(parseInt(badge.textContent, 10) || 0);
+    setInterval(function () { if (!document.hidden) load(); }, 60000);
+})();

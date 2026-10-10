@@ -36,6 +36,7 @@ $adminRoleLabel = ($adminUser['role'] ?? '') === 'admin'
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($titleTag) ?></title>
     <meta name="robots" content="noindex, nofollow">
+    <meta name="csrf-token" content="<?= e(csrf_token()) ?>">
     <?php require __DIR__ . '/favicons.php'; ?>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,700;0,900;1,900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
     <link rel="stylesheet" href="<?= versioned_asset('assets/vendor/sweetalert2/sweetalert2.min.css') ?>">
@@ -77,6 +78,17 @@ $adminRoleLabel = ($adminUser['role'] ?? '') === 'admin'
         <button type="button" class="admin-icon-btn admin-menu-btn" data-admin-toggle aria-controls="admin-sidebar" aria-expanded="false" aria-label="Open menu"><?= admin_icon('menu') ?></button>
         <a class="brand admin-topbar-brand" href="<?= path('admin') ?>"><img class="brand-logo" src="<?= asset('assets/img/logo.png') ?>" alt="" width="30" height="30"><span class="brand-name">Syspoint <em>Hub</em></span></a>
         <span class="admin-topbar-date"><?= e((new DateTimeImmutable())->format('l, j F Y')) ?></span>
+        <?php $bellCount = notifications_unread_count($adminUser); ?>
+        <div class="admin-bell" data-bell data-feed="<?= path('admin/notifications/feed') ?>">
+            <button type="button" class="admin-icon-btn admin-bell-btn" aria-haspopup="true" aria-expanded="false" aria-label="Notifications<?= $bellCount ? ', ' . $bellCount . ' unread' : '' ?>" data-bell-toggle>
+                <?= admin_icon('bell') ?><span class="admin-bell-count" data-bell-count<?= $bellCount ? '' : ' hidden' ?>><?= $bellCount > 99 ? '99+' : $bellCount ?></span>
+            </button>
+            <div class="admin-bell-panel glass-dark" data-bell-panel hidden>
+                <div class="admin-bell-head"><strong>Notifications</strong><button type="button" class="admin-bell-markall" data-bell-markall>Mark all read</button></div>
+                <div class="admin-bell-list" data-bell-list><p class="admin-bell-empty">Loading…</p></div>
+                <a class="admin-bell-all" href="<?= path('admin/notifications') ?>">See all notifications</a>
+            </div>
+        </div>
         <a class="admin-view-site" href="<?= path() ?>" target="_blank" rel="noopener">View site <?= admin_icon('external') ?></a>
     </header>
     <main class="admin-main">

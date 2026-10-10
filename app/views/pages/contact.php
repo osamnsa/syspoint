@@ -14,26 +14,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = trim((string) ($_POST['email'] ?? ''));
         $subject = trim((string) ($_POST['subject'] ?? ''));
         $message = trim((string) ($_POST['message'] ?? ''));
-        // Basic honeypot — a real visitor never sees or fills this field.
-        $looksHuman = trim((string) ($_POST['website'] ?? '')) === '';
 
         if ($name === '') $errors[] = 'Please enter your name.';
         if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Please enter a valid email address.';
         if ($message === '') $errors[] = 'Please enter a message.';
 
         if (!$errors) {
-            if ($looksHuman) {
+            $spam = spam_check('contact', $email, [$name, $subject, $message]);
+            if ($spam['verdict'] !== 'blocked') {
                 db()->prepare(
-                    'INSERT INTO contact_messages (name, email, subject, message) VALUES (:name, :email, :subject, :message)'
+                    'INSERT INTO contact_messages (name, email, subject, message, is_spam, spam_reason, ip, user_agent)
+                     VALUES (:name, :email, :subject, :message, :is_spam, :reason, :ip, :ua)'
                 )->execute([
-                    'name' => $name,
-                    'email' => $email,
-                    'subject' => $subject !== '' ? $subject : null,
-                    'message' => $message,
+                    'name' => mb_substr($name, 0, 150),
+                    'email' => mb_substr($email, 0, 190),
+                    'subject' => $subject !== '' ? mb_substr($subject, 0, 190) : null,
+                    'message' => mb_substr($message, 0, 10000),
+                    'is_spam' => $spam['verdict'] === 'spam' ? 1 : 0,
+                    'reason' => $spam['reason'],
+                    'ip' => client_ip(),
+                    'ua' => user_agent(),
                 ]);
                 $messageId = (int) db()->lastInsertId();
+            }
+            if ($spam['verdict'] === 'ok') {
                 crm_link('contact_messages', $messageId, $name, $email, null);
-                telegram_notify('contact', '✉️ New message' . ($subject !== '' ? ' — ' . $subject : ''), [
+                notify_staff('contact', '✉️ New message' . ($subject !== '' ? ' — ' . $subject : ''), [
                     $name . ' · ' . $email,
                     mb_strimwidth($message, 0, 300, '…'),
                 ], 'admin/messages/' . $messageId);
@@ -79,10 +85,7 @@ require __DIR__ . '/../partials/header.php';
         <div class="card form-card">
             <form method="post" action="<?= path('contact') ?>" novalidate>
                 <?= csrf_field() ?>
-                <div style="position:absolute;left:-9999px;" aria-hidden="true">
-                    <label for="website">Leave this field empty</label>
-                    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
-                </div>
+                <?= spam_fields() ?>
                 <div class="form-group">
                     <label for="name">Full Name</label>
                     <input type="text" id="name" name="name" value="<?= old('name') ?>" required>

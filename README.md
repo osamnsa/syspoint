@@ -688,6 +688,42 @@ The token, channel and staff chat can instead live in `.env`
 wins over the saved settings. `TELEGRAM_API_BASE` points the bot at a mock
 server for local testing.
 
+### Security, spam and notifications
+
+**Spam filter** (`app/security.php`) on every public form (contact,
+Software Clinic, room booking): a hidden trap field, a signed form timer
+(rejects posts made under 3 seconds or without the form's token — i.e. bots
+posting directly), per-IP rate limits, repeat-offender blocking, and content
+checks (mostly non-Latin script such as Cyrillic/Chinese, 3+ links,
+forum/HTML link code, common spam keywords). Bots and blocked senders are
+dropped silently (they still see "thank you"); content spam is kept in a
+**Spam** folder in Messages / Software Requests with the reason, without
+alerting staff. "Mark as spam" can also block the sender's email, domain or
+IP; "Not spam" restores it (and can unblock).
+
+**Admin → Settings → Security & Spam** (admins): a live checklist (HTTPS,
+default password/login still in use, uploads can't run scripts, PHP errors
+hidden, PHP version, Telegram security alerts), counts, the **blocklist**
+(email, email domain incl. subdomains, IP or IPv4 range; free-mail domains
+and your own IP are refused), what the filter recently stopped, and failed
+sign-ins — each with one-click Block.
+
+**Hardening:** sign-in lockout (5 wrong passwords per account / 10 per IP in
+15 min, with an alert), blocked IPs can't sign in, HttpOnly + SameSite (+
+Secure on HTTPS) session cookie, strict session mode, `X-Frame-Options`,
+`nosniff`, `Referrer-Policy`, `Permissions-Policy` and HSTS on HTTPS,
+`public/uploads/.htaccess` stops scripts running from uploads, login
+redirects only to this site. `APP_KEY` (optional) signs form tokens; set
+`TRUST_PROXY=1` only behind Cloudflare.
+
+**Notifications** (`app/notifications.php`): `notify_staff()` records each
+event — paid order, room booking, Software Clinic request, contact message,
+low stock, repeated failed sign-ins — for the staff area it belongs to and
+also sends the Telegram alert. The bell in the admin top bar shows the
+unread count (also in the tab title), a dropdown of the latest, refreshes
+every minute and rings on new ones; *Notifications* lists them all. Staff
+only see their areas' notifications; read state is per person.
+
 ## Security Notes
 
 - All DB queries use PDO prepared statements (`ATTR_EMULATE_PREPARES`

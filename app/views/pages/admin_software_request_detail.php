@@ -44,6 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf() && ($_POST['action'] 
     exit;
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf() && ($done = spam_handle_admin_action('software_requests', $request, $request['email']))) {
+    flash('success', $done);
+    header('Location: ' . path('admin/software-requests') . (($_POST['action'] ?? '') === 'spam' ? '' : '?view=spam'));
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf()) {
     $newStatus = (string) ($_POST['status'] ?? '');
     if (in_array($newStatus, $statuses, true)) {
@@ -92,7 +98,7 @@ require __DIR__ . '/../partials/admin_header.php';
     <p style="margin:0;white-space:pre-wrap;"><?= e($request['description']) ?></p>
 </div>
 
-<div class="card">
+<div class="card" style="margin-bottom:20px;">
     <h3 style="margin-top:0;">Status</h3>
     <form method="post" action="<?= path('admin/software-requests/' . $requestId) ?>" style="display:flex;gap:10px;align-items:center;">
         <?= csrf_field() ?>
@@ -104,5 +110,7 @@ require __DIR__ . '/../partials/admin_header.php';
         <button type="submit" class="btn btn-primary btn-sm">Update Status</button>
     </form>
 </div>
+
+<div style="max-width:520px;"><?php $spamRow = $request; $spamEmail = $request['email']; require __DIR__ . '/../partials/spam_box.php'; ?></div>
 
 <?php require __DIR__ . '/../partials/admin_footer.php'; ?>

@@ -76,7 +76,7 @@ function inventory_move(int $productId, int $change, string $reason, ?string $re
     // A sale that takes stock to (or below) the reorder level for the first time.
     if (in_array($reason, ['online_sale', 'pos_sale'], true) && isset($product['reorder_level'])
         && (int) $product['stock_qty'] > (int) $product['reorder_level'] && $balance <= (int) $product['reorder_level']) {
-        telegram_notify('low_stock', '📦 Low stock — ' . $product['name'], [
+        notify_staff('low_stock', '📦 Low stock — ' . $product['name'], [
             $balance === 0 ? 'Now OUT OF STOCK.' : 'Only ' . $balance . ' left (reorder level ' . (int) $product['reorder_level'] . ').',
         ], 'admin/inventory/products/' . $productId);
     }

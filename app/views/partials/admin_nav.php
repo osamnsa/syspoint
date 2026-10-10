@@ -54,6 +54,8 @@ $adminNavGroups = [
     ]],
     ['label' => 'Settings', 'items' => [
         ['path' => 'admin/staff', 'label' => 'Staff & Roles', 'icon' => 'users', 'area' => 'admin'],
+        ['path' => 'admin/security', 'label' => 'Security & Spam', 'icon' => 'shield', 'area' => 'admin'],
+        ['path' => 'admin/notifications', 'label' => 'Notifications', 'icon' => 'bell', 'area' => '*'],
         ['path' => 'admin/account', 'label' => 'My Account', 'icon' => 'user', 'area' => '*'],
     ]],
 ];
@@ -90,6 +92,10 @@ function admin_icon(string $name): string
         'mail' => '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
         'pen' => '<path d="M4 20h4L20 8l-4-4L4 16z"/><path d="M14 6l4 4"/>',
         'send' => '<path d="M21 3L3 10.5l7 2.5 2.5 7z"/><path d="M21 3L10 13"/>',
+        'bell' => '<path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
+        'shield' => '<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/>',
+        'code' => '<path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/>',
+        'cart' => '<circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 7H6"/>',
         'menu' => '<path d="M3 6h18M3 12h18M3 18h18"/>',
         'external' => '<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v6H4V6h6"/>',
         'logout' => '<path d="M15 4h4v16h-4"/><path d="M10 8l-4 4 4 4M6 12h11"/>',

@@ -56,6 +56,10 @@ function config(): array
                 // The Icon's own consulting site — the Consulting section
                 // just links out to it rather than building a page here.
                 'consulting_url' => env('CONSULTING_URL', ''),
+                // Secret for signing form tokens (optional: one is generated and stored if empty).
+                'key' => env('APP_KEY', ''),
+                // Set to 1 only behind Cloudflare or another proxy that sets the visitor's IP header.
+                'trust_proxy' => env('TRUST_PROXY', '0') === '1',
             ],
             'db' => [
                 'host' => env('DB_HOST', '127.0.0.1'),

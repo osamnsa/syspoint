@@ -140,7 +140,7 @@ function order_mark_paid(int $orderId, string $paymentReference): bool
                                    (SELECT SUM(quantity) FROM order_items WHERE order_id = orders.id) AS items FROM orders WHERE id = :id');
         $o->execute(['id' => $orderId]);
         if ($order = $o->fetch()) {
-            telegram_notify('order_paid', '🛒 New paid order ' . $order['order_ref'], [
+            notify_staff('order_paid', '🛒 New paid order ' . $order['order_ref'], [
                 $order['customer_name'] . ($order['customer_phone'] ? ' · ' . $order['customer_phone'] : ''),
                 (int) $order['items'] . ' item(s) · ' . format_naira((float) $order['subtotal']),
                 $order['delivery_address'] ? 'Deliver to: ' . $order['delivery_address'] : null,

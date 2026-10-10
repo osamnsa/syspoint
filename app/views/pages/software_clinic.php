@@ -15,8 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = trim((string) ($_POST['email'] ?? ''));
         $phone = trim((string) ($_POST['phone'] ?? ''));
         $description = trim((string) ($_POST['description'] ?? ''));
-        // Basic honeypot — a real visitor never sees or fills this field.
-        $looksHuman = trim((string) ($_POST['website'] ?? '')) === '';
 
         if ($businessName === '') $errors[] = 'Please enter your business name.';
         if ($contactName === '') $errors[] = 'Please enter your name.';
@@ -24,20 +22,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($description === '') $errors[] = 'Please describe what you need.';
 
         if (!$errors) {
-            if ($looksHuman) {
+            $spam = spam_check('software_request', $email, [$businessName, $contactName, $description]);
+            if ($spam['verdict'] !== 'blocked') {
                 db()->prepare(
-                    'INSERT INTO software_requests (business_name, contact_name, email, phone, description)
-                     VALUES (:business_name, :contact_name, :email, :phone, :description)'
+                    'INSERT INTO software_requests (business_name, contact_name, email, phone, description, is_spam, spam_reason, ip, user_agent)
+                     VALUES (:business_name, :contact_name, :email, :phone, :description, :is_spam, :reason, :ip, :ua)'
                 )->execute([
-                    'business_name' => $businessName,
-                    'contact_name' => $contactName,
-                    'email' => $email,
-                    'phone' => $phone !== '' ? $phone : null,
-                    'description' => $description,
+                    'business_name' => mb_substr($businessName, 0, 190),
+                    'contact_name' => mb_substr($contactName, 0, 150),
+                    'email' => mb_substr($email, 0, 190),
+                    'phone' => $phone !== '' ? mb_substr($phone, 0, 30) : null,
+                    'description' => mb_substr($description, 0, 10000),
+                    'is_spam' => $spam['verdict'] === 'spam' ? 1 : 0,
+                    'reason' => $spam['reason'],
+                    'ip' => client_ip(),
+                    'ua' => user_agent(),
                 ]);
                 $requestId = (int) db()->lastInsertId();
+            }
+            if ($spam['verdict'] === 'ok') {
                 crm_link('software_requests', $requestId, $contactName, $email, $phone, 'website', $businessName);
-                telegram_notify('software_request', '💻 Software Clinic request — ' . $businessName, [
+                notify_staff('software_request', '💻 Software Clinic request — ' . $businessName, [
                     $contactName . ($phone !== '' ? ' · ' . $phone : '') . ' · ' . $email,
                     mb_strimwidth($description, 0, 300, '…'),
                 ], 'admin/software-requests/' . $requestId);
@@ -109,10 +114,7 @@ require __DIR__ . '/../partials/header.php';
 
                 <form method="post" action="<?= path('software-clinic') ?>" novalidate>
                     <?= csrf_field() ?>
-                    <div style="position:absolute;left:-9999px;" aria-hidden="true">
-                        <label for="website">Leave this field empty</label>
-                        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
-                    </div>
+                    <?= spam_fields() ?>
                     <div class="form-group">
                         <label for="business_name">Business Name</label>
                         <input type="text" id="business_name" name="business_name" value="<?= old('businessName') ?>" required>

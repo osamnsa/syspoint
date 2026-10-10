@@ -46,7 +46,7 @@ if ($canGaming) {
     $kpis[] = ['label' => 'Room Bookings', 'value' => number_format($now), 'change' => dashboard_change($now, dashboard_count($q, $ps, $pe)), 'note' => 'Common + VIP rooms'];
 }
 if ($canSales) {
-    $q = 'SELECT COUNT(*) FROM software_requests WHERE created_at BETWEEN :from AND :to';
+    $q = 'SELECT COUNT(*) FROM software_requests WHERE is_spam = 0 AND created_at BETWEEN :from AND :to';
     $now = dashboard_count($q, $s, $e);
     $kpis[] = ['label' => 'New Leads', 'value' => number_format($now), 'change' => dashboard_change($now, dashboard_count($q, $ps, $pe)), 'note' => 'Software Clinic requests'];
 }
@@ -64,9 +64,9 @@ if ($canGaming) {
     $attention[] = ['label' => 'Bookings to confirm', 'value' => $n, 'href' => path('admin/bookings')];
 }
 if ($canSales) {
-    $n = (int) db()->query("SELECT COUNT(*) FROM software_requests WHERE status = 'new'")->fetchColumn();
+    $n = (int) db()->query("SELECT COUNT(*) FROM software_requests WHERE status = 'new' AND is_spam = 0")->fetchColumn();
     $attention[] = ['label' => 'New software requests', 'value' => $n, 'href' => path('admin/software-requests')];
-    $n = (int) db()->query('SELECT COUNT(*) FROM contact_messages WHERE read_at IS NULL')->fetchColumn();
+    $n = (int) db()->query('SELECT COUNT(*) FROM contact_messages WHERE read_at IS NULL AND is_spam = 0')->fetchColumn();
     $attention[] = ['label' => 'Unread messages', 'value' => $n, 'href' => path('admin/messages') . '?view=unread'];
     $n = (int) db()->query("SELECT COUNT(*) FROM crm_tasks WHERE status = 'open' AND due_date <= CURDATE() AND assigned_to = " . (int) $adminUser['id'])->fetchColumn();
     $attention[] = ['label' => 'My tasks due today or overdue', 'value' => $n, 'href' => path('admin/tasks')];
@@ -92,7 +92,7 @@ $bookingSeries = $canGaming ? dashboard_bookings_series($period) : [];
 $monthly = $canMoney ? dashboard_monthly_summary(6) : [];
 
 $recentMessages = $canSales ? db()->query(
-    'SELECT id, name, subject, created_at, read_at FROM contact_messages ORDER BY created_at DESC LIMIT 5'
+    'SELECT id, name, subject, created_at, read_at FROM contact_messages WHERE is_spam = 0 ORDER BY created_at DESC LIMIT 5'
 )->fetchAll() : [];
 
 $firstName = explode(' ', (string) ($adminUser['name'] ?? ''))[0] ?: 'there';

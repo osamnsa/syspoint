@@ -163,7 +163,7 @@ function dashboard_bookings_series(array $period): array
 function dashboard_request_funnel(): array
 {
     $counts = ['new' => 0, 'in_review' => 0, 'quoted' => 0, 'closed' => 0];
-    foreach (db()->query('SELECT status, COUNT(*) AS n FROM software_requests GROUP BY status') as $r) {
+    foreach (db()->query('SELECT status, COUNT(*) AS n FROM software_requests WHERE is_spam = 0 GROUP BY status') as $r) {
         $counts[$r['status']] = (int) $r['n'];
     }
     return [

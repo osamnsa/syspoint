@@ -37,7 +37,7 @@ $stmt->execute($params);
 $customers = $stmt->fetchAll();
 $unlinked = (int) db()->query('SELECT
     (SELECT COUNT(*) FROM orders WHERE customer_id IS NULL) + (SELECT COUNT(*) FROM room_bookings WHERE customer_id IS NULL)
-  + (SELECT COUNT(*) FROM software_requests WHERE customer_id IS NULL) + (SELECT COUNT(*) FROM contact_messages WHERE customer_id IS NULL)')->fetchColumn();
+  + (SELECT COUNT(*) FROM software_requests WHERE customer_id IS NULL AND is_spam = 0) + (SELECT COUNT(*) FROM contact_messages WHERE is_spam = 0 AND customer_id IS NULL)')->fetchColumn();
 $pages = max(1, (int) ceil($total / $per));
 $qs = fn($p) => path('admin/customers') . '?' . http_build_query(array_filter(['q' => $q, 'type' => $type, 'page' => $p > 1 ? $p : null]));
 

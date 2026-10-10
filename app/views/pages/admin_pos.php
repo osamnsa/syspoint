@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 crm_link('pos_sales', $saleId, $customer['name'], $customer['email'], $customer['phone'], 'walk_in');
             }
             $sale = pos_sale_by_id($saleId);
-            telegram_notify('walk_in', '🧾 Walk-in sale ' . $sale['receipt_no'], [
+            notify_staff('walk_in', '🧾 Walk-in sale ' . $sale['receipt_no'], [
                 format_naira((float) $sale['total']) . ' · ' . PAYMENT_METHODS[$sale['payment_method']],
                 'Served by ' . ($sale['cashier_name'] ?? '—') . ($customer['name'] !== '' ? ' · ' . $customer['name'] : ''),
             ], 'admin/pos/sales/' . $saleId);

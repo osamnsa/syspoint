@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 $adminUser = require_admin();
 
-$requests = db()->query('SELECT * FROM software_requests ORDER BY created_at DESC')->fetchAll();
+$view = ($_GET['view'] ?? '') === 'spam' ? 'spam' : 'inbox';
+$requests = db()->query('SELECT * FROM software_requests WHERE is_spam = ' . ($view === 'spam' ? 1 : 0) . ' ORDER BY created_at DESC')->fetchAll();
+$spamCount = (int) db()->query('SELECT COUNT(*) FROM software_requests WHERE is_spam = 1')->fetchColumn();
 
 $statusBadge = [
     'new' => 'badge-warning',
@@ -19,6 +21,11 @@ require __DIR__ . '/../partials/admin_header.php';
 <div class="admin-header-row">
     <h1>Software Requests</h1>
 </div>
+
+<nav class="admin-filters" aria-label="Filter">
+    <a href="<?= path('admin/software-requests') ?>"<?= $view === 'inbox' ? ' class="is-active"' : '' ?>>Requests</a>
+    <a href="<?= path('admin/software-requests') ?>?view=spam"<?= $view === 'spam' ? ' class="is-active"' : '' ?>>Spam (<?= $spamCount ?>)</a>
+</nav>
 
 <div class="admin-table-wrap">
     <?php if ($requests): ?>
@@ -37,7 +44,7 @@ require __DIR__ . '/../partials/admin_header.php';
             </tbody>
         </table>
     <?php else: ?>
-        <div class="admin-empty">No requests yet.</div>
+        <div class="admin-empty"><?= $view === 'spam' ? 'No spam.' : 'No requests yet.' ?></div>
     <?php endif; ?>
 </div>
 

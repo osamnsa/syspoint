@@ -15,14 +15,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = trim((string) ($_POST['email'] ?? ''));
         $password = (string) ($_POST['password'] ?? '');
 
-        if (admin_attempt_login($email, $password)) {
-            $redirectTo = $_SESSION['admin_redirect_to'] ?? path('admin');
+        if (blocklist_match(null, client_ip())) {
+            usleep(500000);
+            $error = 'Incorrect email or password.';
+        } elseif ($wait = login_locked_minutes($email)) {
+            $error = 'Too many failed sign-in attempts. Please try again in ' . $wait . ' minute' . ($wait === 1 ? '' : 's') . '.';
+        } elseif (admin_attempt_login($email, $password)) {
+            login_clear_failures($email);
+            // only ever redirect to a page on this site
+            $redirectTo = (string) ($_SESSION['admin_redirect_to'] ?? '');
+            if ($redirectTo === '' || $redirectTo[0] !== '/' || str_starts_with($redirectTo, '//')) $redirectTo = path('admin');
             unset($_SESSION['admin_redirect_to']);
             header('Location: ' . $redirectTo);
             exit;
+        } else {
+            login_record_failure($email);
+            usleep(random_int(300000, 700000));   // slows scripted guessing
+            $error = 'Incorrect email or password.';
         }
-
-        $error = 'Incorrect email or password.';
     }
 }
 

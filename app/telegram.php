@@ -23,6 +23,7 @@ const TELEGRAM_EVENTS = [
     'contact' => 'A contact-form message arrives',
     'low_stock' => 'A sale takes a product to its reorder level',
     'walk_in' => 'A walk-in sale is recorded',
+    'security' => 'Someone keeps failing to sign in to the admin',
 ];
 
 /** Effective settings: .env wins, then the admin settings. */

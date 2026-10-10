@@ -1595,3 +1595,4 @@ main:has(.page-hero) .page-hero + .section { padding-top: 64px; }
     .shop-sort { width: 100%; }
     .shop-sort select { flex: 1; }
 }
+.hp-field { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; }

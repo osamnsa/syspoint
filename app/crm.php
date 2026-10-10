@@ -108,8 +108,8 @@ function crm_sync_existing(): int
     $sources = [
         'orders' => ['SELECT id, customer_name AS name, customer_email AS email, customer_phone AS phone, NULL AS org FROM orders WHERE customer_id IS NULL', 'website'],
         'room_bookings' => ['SELECT id, customer_name AS name, customer_email AS email, customer_phone AS phone, NULL AS org FROM room_bookings WHERE customer_id IS NULL', 'website'],
-        'software_requests' => ['SELECT id, contact_name AS name, email, phone, business_name AS org FROM software_requests WHERE customer_id IS NULL', 'website'],
-        'contact_messages' => ['SELECT id, name, email, NULL AS phone, NULL AS org FROM contact_messages WHERE customer_id IS NULL', 'website'],
+        'software_requests' => ['SELECT id, contact_name AS name, email, phone, business_name AS org FROM software_requests WHERE customer_id IS NULL AND is_spam = 0', 'website'],
+        'contact_messages' => ['SELECT id, name, email, NULL AS phone, NULL AS org FROM contact_messages WHERE customer_id IS NULL AND is_spam = 0', 'website'],
         'pos_sales' => ['SELECT id, customer_name AS name, customer_email AS email, customer_phone AS phone, NULL AS org FROM pos_sales WHERE customer_id IS NULL', 'walk_in'],
     ];
     foreach ($sources as $table => [$sql, $source]) {

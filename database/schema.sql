@@ -645,3 +645,74 @@ ALTER TABLE product_categories ADD COLUMN IF NOT EXISTS hero_text VARCHAR(500) N
 ALTER TABLE product_categories ADD COLUMN IF NOT EXISTS hero_image VARCHAR(255) NULL AFTER hero_text;
 -- Product search (name, description, specs, SKU).
 CREATE INDEX IF NOT EXISTS idx_products_active_price ON products (is_active, price);
+
+-- ---------------------------------------------------------------------------
+-- Security: spam protection, blocklist, login throttling, notifications
+-- ---------------------------------------------------------------------------
+-- Where public submissions came from, and whether they were judged spam.
+ALTER TABLE contact_messages ADD COLUMN IF NOT EXISTS is_spam TINYINT(1) NOT NULL DEFAULT 0 AFTER read_at;
+ALTER TABLE contact_messages ADD COLUMN IF NOT EXISTS spam_reason VARCHAR(190) NULL AFTER is_spam;
+ALTER TABLE contact_messages ADD COLUMN IF NOT EXISTS ip VARCHAR(45) NULL AFTER spam_reason;
+ALTER TABLE contact_messages ADD COLUMN IF NOT EXISTS user_agent VARCHAR(255) NULL AFTER ip;
+ALTER TABLE software_requests ADD COLUMN IF NOT EXISTS is_spam TINYINT(1) NOT NULL DEFAULT 0 AFTER status;
+ALTER TABLE software_requests ADD COLUMN IF NOT EXISTS spam_reason VARCHAR(190) NULL AFTER is_spam;
+ALTER TABLE software_requests ADD COLUMN IF NOT EXISTS ip VARCHAR(45) NULL AFTER spam_reason;
+ALTER TABLE software_requests ADD COLUMN IF NOT EXISTS user_agent VARCHAR(255) NULL AFTER ip;
+ALTER TABLE room_bookings ADD COLUMN IF NOT EXISTS ip VARCHAR(45) NULL AFTER notes;
+
+-- Blocked senders: an exact email, a whole email domain (and its
+-- subdomains), or an IP address / IPv4 CIDR range. Matching submissions are
+-- silently dropped (the sender still sees "thank you").
+CREATE TABLE IF NOT EXISTS blocklist (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    type ENUM('email', 'domain', 'ip') NOT NULL,
+    value VARCHAR(190) NOT NULL,
+    reason VARCHAR(255) NULL,
+    hits INT UNSIGNED NOT NULL DEFAULT 0,
+    last_hit_at TIMESTAMP NULL,
+    created_by INT UNSIGNED NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_blocklist (type, value)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Every submission the spam filter stopped, and every form post (for rate limits).
+CREATE TABLE IF NOT EXISTS spam_log (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    form VARCHAR(30) NOT NULL,
+    verdict ENUM('ok', 'spam', 'blocked') NOT NULL,
+    reason VARCHAR(190) NULL,
+    ip VARCHAR(45) NULL,
+    email VARCHAR(190) NULL,
+    excerpt VARCHAR(255) NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_spam_log_ip (ip, created_at),
+    INDEX idx_spam_log_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Failed admin logins (per IP and per email) for brute-force lockout.
+CREATE TABLE IF NOT EXISTS login_attempts (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    ip VARCHAR(45) NOT NULL,
+    email VARCHAR(190) NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_login_attempts_ip (ip, created_at),
+    INDEX idx_login_attempts_email (email, created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dashboard notifications (the bell). area = which staff can see it.
+CREATE TABLE IF NOT EXISTS notifications (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    event VARCHAR(30) NOT NULL,
+    area VARCHAR(20) NOT NULL,
+    title VARCHAR(190) NOT NULL,
+    body VARCHAR(500) NULL,
+    link VARCHAR(255) NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_notifications_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS notification_reads (
+    notification_id INT UNSIGNED NOT NULL,
+    user_id INT UNSIGNED NOT NULL,
+    read_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (notification_id, user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -49,11 +49,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'That room is already reserved for part of that time slot. Please choose a different time.';
         }
 
+        $spam = !$errors ? spam_check('booking', $email, [$name, $notes]) : ['verdict' => 'ok'];
+        if (!$errors && $spam['verdict'] !== 'ok') {
+            // bots and spam get the normal thank-you; nothing is booked
+            flash('booking_success', "Thanks — your request has been received. We'll confirm shortly.");
+            header('Location: ' . path('gaming'));
+            exit;
+        }
         if (!$errors) {
             db()->prepare(
-                'INSERT INTO room_bookings (room_id, customer_name, customer_email, customer_phone, booking_date, start_time, end_time, party_size, notes)
-                 VALUES (:room_id, :name, :email, :phone, :date, :start_time, :end_time, :party_size, :notes)'
+                'INSERT INTO room_bookings (room_id, customer_name, customer_email, customer_phone, booking_date, start_time, end_time, party_size, notes, ip)
+                 VALUES (:room_id, :name, :email, :phone, :date, :start_time, :end_time, :party_size, :notes, :ip)'
             )->execute([
+                'ip' => client_ip(),
                 'room_id' => $room['id'],
                 'name' => $name,
                 'email' => $email,
@@ -66,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
             $bookingId = (int) db()->lastInsertId();
             crm_link('room_bookings', $bookingId, $name, $email, $phone);
-            telegram_notify('booking', '🎮 Room booking request — ' . $room['name'], [
+            notify_staff('booking', '🎮 Room booking request — ' . $room['name'], [
                 $name . ($phone ? ' · ' . $phone : ''),
                 (new DateTimeImmutable($date))->format('D j M') . ', ' . $startTime . '–' . $endTime . ($partySize !== '' ? ' · ' . $partySize . ' people' : ''),
                 'Waiting for you to confirm.',
@@ -107,6 +115,7 @@ require __DIR__ . '/../partials/header.php';
         <div class="card form-card">
             <form method="post" action="<?= path('gaming/book/' . $room['slug']) ?>" novalidate>
                 <?= csrf_field() ?>
+                <?= spam_fields() ?>
                 <div class="form-group">
                     <label for="customer_name">Full Name</label>
                     <input type="text" id="customer_name" name="customer_name" value="<?= old('name') ?>" required>

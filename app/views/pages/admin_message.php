@@ -14,7 +14,7 @@ if (!$msg) {
     require __DIR__ . '/not_found.php';
     return;
 }
-if (!$msg['read_at']) {
+if (!$msg['read_at'] && !$msg['is_spam']) {
     db()->prepare('UPDATE contact_messages SET read_at = NOW() WHERE id = :id')->execute(['id' => $id]);
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf()) {
@@ -22,6 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf()) {
         db()->prepare('UPDATE contact_messages SET read_at = NULL WHERE id = :id')->execute(['id' => $id]);
         flash('success', 'Marked as unread.');
         header('Location: ' . path('admin/messages'));
+        exit;
+    }
+    if ($done = spam_handle_admin_action('contact_messages', $msg, $msg['email'])) {
+        flash('success', $done);
+        header('Location: ' . path('admin/messages') . (($_POST['action'] ?? '') === 'spam' ? '' : '?view=spam'));
         exit;
     }
     if (($_POST['action'] ?? '') === 'link') {
@@ -52,6 +57,7 @@ require __DIR__ . '/../partials/admin_header.php';
         <div class="message-body"><?= nl2br(e($msg['message'])) ?></div>
     </div>
     <aside class="crm-side">
+        <?php $spamRow = $msg; $spamEmail = $msg['email']; require __DIR__ . '/../partials/spam_box.php'; ?>
         <section class="dash-card glass-dark">
             <header class="dash-card-head"><div><h2>Customer</h2></div></header>
             <?php if ($customer): ?>
