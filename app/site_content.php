@@ -257,7 +257,7 @@ function site_content(): array
         ]],
         'privacy' => ['label' => 'Privacy Policy', 'page' => 'privacy-policy', 'intro' => LEGAL_HELP, 'fields' => [
             'privacy.title' => $f('Page heading', 'Privacy Policy'),
-            'privacy.updated' => $f('Last updated', LEGAL_UPDATED, 'text', 'Change this whenever you change the policy.'),
+            'privacy.updated' => $f('Last updated', LEGAL_UPDATED_COOKIES, 'text', 'Change this whenever you change the policy.'),
             'privacy.body' => $f('Policy', LEGAL_DEFAULT_PRIVACY, 'html', LEGAL_BODY_HELP),
         ]],
         'returns' => ['label' => 'Returns & Refunds', 'page' => 'returns-policy', 'intro' => LEGAL_HELP, 'fields' => [
@@ -271,6 +271,33 @@ function site_content(): array
             'terms.title' => $f('Page heading', 'Terms of Use'),
             'terms.updated' => $f('Last updated', LEGAL_UPDATED, 'text', 'Change this whenever you change the terms.'),
             'terms.body' => $f('Terms', LEGAL_DEFAULT_TERMS, 'html', LEGAL_BODY_HELP),
+        ]],
+        'cookiepolicy' => ['label' => 'Cookie Policy', 'page' => 'cookie-policy', 'intro' => LEGAL_HELP, 'fields' => [
+            'cookiepolicy.title' => $f('Page heading', 'Cookie Policy'),
+            'cookiepolicy.updated' => $f('Last updated', LEGAL_UPDATED_COOKIES, 'text', 'Change this whenever you change the policy.'),
+            'cookiepolicy.body' => $f('Policy', LEGAL_DEFAULT_COOKIES, 'html', LEGAL_BODY_HELP . ' {cookie_table} becomes the up-to-date list of cookies; {cookie_settings} becomes a “Change my cookie settings” button.'),
+        ]],
+        'cookies' => ['label' => 'Cookie Banner', 'page' => '', 'intro' => 'The cookie consent banner and preferences panel. Analytics and advertising tags only load for visitors who allow them.', 'fields' => [
+            'cookies.ga_id' => $f('Google Analytics 4 measurement ID', '', 'text', 'Looks like G-XXXXXXXXXX (Analytics → Admin → Data streams). Leave empty for no analytics. Loads only for visitors who allow Analytics.'),
+            'cookies.pixel_id' => $f('Meta (Facebook) Pixel ID', '', 'text', 'Digits only (Events Manager → Data sources). Leave empty for none. Loads only for visitors who allow Marketing.'),
+            'cookies.days' => $f('Remember a choice for (days)', '180', 'text', 'Between 30 and 395. After that the banner asks again.'),
+            'cookies.revision' => $f('Ask everyone again', '1', 'text', 'Change this number to show the banner to everyone again (e.g. after changing your cookie policy). It also asks again automatically when you add Analytics or a Pixel.'),
+            'cookies.title' => $f('Banner heading', 'We value your privacy'),
+            'cookies.text' => $f('Banner text', 'We use cookies to keep the site and your cart working. With your permission we’d also like to use cookies to understand how the site is used and to improve our adverts. You can accept all, reject the optional ones, or choose.', 'textarea'),
+            'cookies.accept' => $f('“Accept” button', 'Accept all'),
+            'cookies.reject' => $f('“Reject” button', 'Reject all'),
+            'cookies.customise' => $f('“Customise” button', 'Customise'),
+            'cookies.save' => $f('“Save” button (in preferences)', 'Save my preferences'),
+            'cookies.panel_title' => $f('Preferences heading', 'Cookie preferences'),
+            'cookies.panel_text' => $f('Preferences intro', 'Cookies are small text files a website stores in your browser. Some are essential for this site to work. Others are optional — they only switch on if you allow them, and you can change your mind at any time from the cookie button at the bottom of every page.', 'textarea'),
+            'cookies.necessary_label' => $f('Necessary — name', 'Strictly necessary'),
+            'cookies.necessary_text' => $f('Necessary — description', 'Needed for the site to work: your cart, checkout, secure forms and remembering your cookie choice. They can’t be switched off and don’t identify you to anyone else.', 'textarea'),
+            'cookies.functional_label' => $f('Functional — name', 'Functional'),
+            'cookies.functional_text' => $f('Functional — description', 'Remember choices you make to give you a more personal experience, such as embedded videos and maps.', 'textarea'),
+            'cookies.analytics_label' => $f('Analytics — name', 'Analytics'),
+            'cookies.analytics_text' => $f('Analytics — description', 'Help us understand how visitors use the site — which pages are popular and where people get stuck — so we can improve it. The information is counted together, not used to identify you.', 'textarea'),
+            'cookies.marketing_label' => $f('Marketing — name', 'Marketing'),
+            'cookies.marketing_text' => $f('Marketing — description', 'Used by advertising partners such as Meta to measure our adverts and show you relevant offers on other sites.', 'textarea'),
         ]],
     ];
 }
@@ -377,11 +404,12 @@ function site_whatsapp_url(): ?string
 // --- Legal pages ---------------------------------------------------------------
 
 const LEGAL_UPDATED = '9 October 2026';
+const LEGAL_UPDATED_COOKIES = '22 October 2026';
 const LEGAL_HELP = 'A starting draft written for a Nigerian business — have a lawyer review it before relying on it. Headings become the page’s contents list.';
 const LEGAL_BODY_HELP = 'Headings (H2) become the contents list. {company}, {address}, {email}, {phone_sentence}, {website}, {store_suite}, {return_days} and {refund_days} fill in automatically from Business details, Documents and Returns.';
 
 /** The legal pages: slug => content group. */
-const LEGAL_PAGES = ['privacy-policy' => 'privacy', 'returns-policy' => 'returns', 'terms' => 'terms'];
+const LEGAL_PAGES = ['privacy-policy' => 'privacy', 'cookie-policy' => 'cookiepolicy', 'returns-policy' => 'returns', 'terms' => 'terms'];
 
 /** Values for the {placeholders} in legal text (all plain text, escaped here). */
 function legal_tokens(): array
@@ -397,6 +425,8 @@ function legal_tokens(): array
         'refund_days' => site('returns.refund_days'),
     ];
     $t = array_map(fn($v) => e((string) $v), $t);
+    $t['cookie_table'] = cookie_policy_table();
+    $t['cookie_settings'] = '<button type="button" class="btn btn-primary" data-cookie-settings>Change my cookie settings</button>';
     $t['phone_sentence'] = $phone !== '' ? ' or call <a href="tel:' . e(preg_replace('/[^\d+]/', '', $phone)) . '">' . e($phone) . '</a>' : '';
     return $t;
 }
@@ -410,6 +440,7 @@ function legal_render(string $group): array
 {
     $html = site($group . '.body');
     $tokens = legal_tokens();
+    $html = preg_replace('#<p>\s*(\{cookie_table\})\s*</p>#', '$1', $html); // a table can't sit inside a paragraph
     $html = preg_replace_callback('/\{(\w+)\}/', fn($m) => $tokens[$m[1]] ?? $m[0], $html);
     $html = preg_replace('/href="\/(?!\/)/', 'href="' . path(), $html);
     $toc = [];

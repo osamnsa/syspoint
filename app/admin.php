@@ -58,6 +58,7 @@ const ADMIN_AREA_PATHS = [
     'admin/testimonials' => 'website',
     'admin/home-stats' => 'website',
     'admin/website' => 'website',
+    'admin/cookies' => 'website',
     'admin/events' => 'gaming|training|website',
     'admin/telegram' => 'website',
     'admin/telegram/settings' => 'admin',

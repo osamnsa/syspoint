@@ -13,7 +13,7 @@ $add = function (string $path, ?string $lastmod = null, string $freq = 'weekly',
 $add('', null, 'daily', '1.0');
 foreach (['shop' => ['daily', '0.9'], 'software-clinic' => ['monthly', '0.8'], 'gaming' => ['weekly', '0.8'], 'training' => ['weekly', '0.8'],
           'about' => ['monthly', '0.7'], 'events' => ['daily', '0.7'], 'contact' => ['yearly', '0.6'],
-          'privacy-policy' => ['yearly', '0.2'], 'returns-policy' => ['yearly', '0.3'], 'terms' => ['yearly', '0.2']] as $p => [$f, $pr]) {
+          'privacy-policy' => ['yearly', '0.2'], 'cookie-policy' => ['yearly', '0.2'], 'returns-policy' => ['yearly', '0.3'], 'terms' => ['yearly', '0.2']] as $p => [$f, $pr]) {
     $add($p, null, $f, $pr);
 }
 foreach (product_categories() as $c) $add('shop/' . $c['slug'], null, 'daily', '0.8');

@@ -45,7 +45,8 @@ $routes = [
 
     '#^training$#' => __DIR__ . '/../app/views/pages/training.php',
     '#^events$#' => __DIR__ . '/../app/views/pages/events.php',
-    '#^(privacy-policy|returns-policy|terms)$#' => __DIR__ . '/../app/views/pages/legal.php',
+    '#^cookie-consent$#' => __DIR__ . '/../app/views/pages/cookie_consent.php',
+    '#^(privacy-policy|cookie-policy|returns-policy|terms)$#' => __DIR__ . '/../app/views/pages/legal.php',
 
     '#^admin/login$#' => __DIR__ . '/../app/views/pages/admin_login.php',
     '#^admin/logout$#' => __DIR__ . '/../app/views/pages/admin_logout.php',
@@ -58,6 +59,7 @@ $routes = [
     '#^admin/security$#' => __DIR__ . '/../app/views/pages/admin_security.php',
     '#^admin/account$#' => __DIR__ . '/../app/views/pages/admin_account.php',
     '#^admin/website$#' => __DIR__ . '/../app/views/pages/admin_website.php',
+    '#^admin/cookies$#' => __DIR__ . '/../app/views/pages/admin_cookies.php',
     '#^admin/events$#' => __DIR__ . '/../app/views/pages/admin_events.php',
     '#^admin/events/new$#' => __DIR__ . '/../app/views/pages/admin_event_form.php',
     '#^admin/events/(\d+)/edit$#' => __DIR__ . '/../app/views/pages/admin_event_form.php',

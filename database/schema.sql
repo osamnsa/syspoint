@@ -716,3 +716,21 @@ CREATE TABLE IF NOT EXISTS notification_reads (
     read_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (notification_id, user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Cookie consent log (proof of consent). IPs only as a keyed hash.
+CREATE TABLE IF NOT EXISTS cookie_consents (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    consent_id CHAR(36) NOT NULL,
+    action VARCHAR(12) NOT NULL,
+    functional TINYINT(1) NOT NULL DEFAULT 0,
+    analytics TINYINT(1) NOT NULL DEFAULT 0,
+    marketing TINYINT(1) NOT NULL DEFAULT 0,
+    version VARCHAR(16) NOT NULL,
+    ip_hash CHAR(32) NOT NULL,
+    user_agent VARCHAR(255) NULL,
+    page VARCHAR(190) NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_cookie_consents_created (created_at),
+    INDEX idx_cookie_consents_ip (ip_hash, created_at),
+    INDEX idx_cookie_consents_cid (consent_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

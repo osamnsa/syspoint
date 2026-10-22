@@ -33,6 +33,7 @@ require_once __DIR__ . '/inventory.php';
 require_once __DIR__ . '/crm.php';
 require_once __DIR__ . '/events.php';
 require_once __DIR__ . '/security.php';
+require_once __DIR__ . '/cookies.php';
 require_once __DIR__ . '/notifications.php';
 require_once __DIR__ . '/telegram.php';
 require_once __DIR__ . '/paystack.php';

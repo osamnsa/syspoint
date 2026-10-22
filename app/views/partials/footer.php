@@ -51,12 +51,14 @@
 
         <div class="footer-bottom">
             <span>&copy; <?= date('Y') ?> <?= e(site('site.copyright_name')) ?>. All rights reserved.</span>
-            <nav class="footer-legal" aria-label="Legal"><a href="<?= path('privacy-policy') ?>"><?= e(site('privacy.title')) ?></a><a href="<?= path('returns-policy') ?>"><?= e(site('returns.title')) ?></a><a href="<?= path('terms') ?>"><?= e(site('terms.title')) ?></a></nav>
+            <nav class="footer-legal" aria-label="Legal"><a href="<?= path('privacy-policy') ?>"><?= e(site('privacy.title')) ?></a><a href="<?= path('returns-policy') ?>"><?= e(site('returns.title')) ?></a><a href="<?= path('terms') ?>"><?= e(site('terms.title')) ?></a><a href="<?= path('cookie-policy') ?>"><?= e(site('cookiepolicy.title')) ?></a><a href="<?= path('cookie-policy') ?>" data-cookie-settings>Cookie settings</a></nav>
             <span><?= e(site('site.footer_company')) ?></span>
         </div>
     </div>
 </footer>
 
+<?php require __DIR__ . '/cookie_banner.php'; ?>
 <script src="<?= versioned_asset('assets/js/main.js') ?>" defer></script>
+<script src="<?= versioned_asset('assets/js/consent.js') ?>" defer></script>
 </body>
 </html>

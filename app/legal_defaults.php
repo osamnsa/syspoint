@@ -21,7 +21,7 @@ const LEGAL_DEFAULT_PRIVACY = <<<'HTML'
 <li><strong>When you book a gaming room:</strong> your name, email, phone number, the room, date and time.</li>
 <li><strong>When you contact us or send a Software Clinic request:</strong> your name, business name, email, phone number and what you write to us.</li>
 <li><strong>In store, at the Hub and in training:</strong> the details you give us for receipts, warranty records, bookings, course enrolment, payments and internship records.</li>
-<li><strong>Automatically:</strong> one essential cookie (see “Cookies” below) and our server’s security logs — IP address, browser type, pages requested and the time.</li>
+<li><strong>Automatically:</strong> essential cookies, any optional cookies you allow (see “Cookies” below) and our server’s security logs — IP address, browser type, pages requested and the time.</li>
 </ul>
 <p>We don’t ask for sensitive information (such as health or religious beliefs) and ask you not to send it.</p>
 <h2>Why we use it</h2>
@@ -64,7 +64,7 @@ const LEGAL_DEFAULT_PRIVACY = <<<'HTML'
 </ul>
 <p>Email <a href="mailto:{email}">{email}</a>. We may need to check your identity first, and we aim to reply within 30 days. Some records we must keep by law even if you ask us to delete them; if so we will tell you. If you are unhappy with how we handle your data you can complain to the Nigeria Data Protection Commission (<a href="https://ndpc.gov.ng">ndpc.gov.ng</a>) — but please talk to us first so we can try to put it right.</p>
 <h2>Cookies</h2>
-<p>We use a single essential cookie that remembers your cart and keeps forms secure. It is deleted when you close your browser. We don’t use advertising or tracking cookies. Our fonts are loaded from Google Fonts, so your browser connects to Google’s servers, which can see your IP address.</p>
+<p>We use essential cookies to keep your cart, checkout and forms working. Optional analytics and marketing cookies are only used if you allow them on our cookie banner, and you can change your choice at any time from the cookie button at the bottom of every page. Our <a href="/cookie-policy">Cookie Policy</a> lists every cookie we use. Our fonts are loaded from Google Fonts, so your browser connects to Google’s servers, which can see your IP address; this doesn’t set any cookies.</p>
 <h2>Keeping it safe</h2>
 <p>The website uses an encrypted (HTTPS) connection, payments go through Paystack, and only staff who need your details can see them. No system is perfectly secure; if a breach puts your rights at risk we will tell you and the Nigeria Data Protection Commission as the law requires.</p>
 <h2>Children</h2>
@@ -166,4 +166,33 @@ const LEGAL_DEFAULT_TERMS = <<<'HTML'
 <p>We may update these terms from time to time. The version on the website when you place an order is the one that applies to that order.</p>
 <h2>Law and disputes</h2>
 <p>These terms are governed by the laws of the Federal Republic of Nigeria. If something goes wrong, please contact us first — most problems can be settled quickly. Any dispute we can’t resolve together will be decided by the courts of the Federal Capital Territory, Abuja.</p>
+HTML;
+
+const LEGAL_DEFAULT_COOKIES = <<<'HTML'
+<p>This policy explains how {company} (“Syspoint”, “we”, “us”) uses cookies and similar technologies on {website}, what each one does, and how you can control them. Read it together with our <a href="/privacy-policy">Privacy Policy</a>.</p>
+<h2>What cookies are</h2>
+<p>Cookies are small text files a website stores in your browser. They let the site remember things between pages and visits — for example, what is in your cart. Cookies set by us are “first-party” cookies; cookies set by another company whose service we use (such as Google) are “third-party” cookies.</p>
+<h2>How we use them</h2>
+<p>We sort cookies into four groups:</p>
+<ul>
+<li><strong>Strictly necessary</strong> — needed for the site to work: your cart, checkout, secure forms and remembering your cookie choice. These are always on, because the site cannot work properly without them, and they don’t identify you to anyone else.</li>
+<li><strong>Functional</strong> — remember choices you make to give you a more personal experience, such as embedded videos and maps.</li>
+<li><strong>Analytics</strong> — help us understand how visitors use the site so we can improve it. The information is counted together and is not used to identify you.</li>
+<li><strong>Marketing</strong> — used by advertising partners to measure our adverts and show you relevant offers on other websites.</li>
+</ul>
+<p>Functional, analytics and marketing cookies are <strong>off until you switch them on</strong>. If you choose “Reject all”, only strictly necessary cookies are used.</p>
+<h2>The cookies we use</h2>
+<p>This list updates automatically whenever we add or remove a service.</p>
+{cookie_table}
+<h2>Your choices</h2>
+<p>The first time you visit, our banner lets you accept all cookies, reject the optional ones, or choose group by group. We remember your choice for a limited time and then ask again; we also ask again whenever we start using a new kind of cookie. You can change or withdraw your consent at any time — it’s as easy as giving it:</p>
+<p>{cookie_settings}</p>
+<p>You can also use the cookie button at the bottom-left of every page. Withdrawing consent doesn’t affect anything that happened before you withdrew it.</p>
+<p>Most browsers also let you see and delete cookies, or block them altogether, in their settings. If you block strictly necessary cookies, your cart and checkout won’t work.</p>
+<h2>Third-party services</h2>
+<p>When you allow analytics or marketing cookies, the companies that provide those services (for example Google and Meta) receive information about your visit, such as the pages you view, your browser and your IP address, and may process it outside Nigeria. They handle it under their own privacy policies: <a href="https://policies.google.com/privacy">Google</a> and <a href="https://www.facebook.com/privacy/policy">Meta</a>. Our payment provider, Paystack, sets its own cookies on its secure payment page, which is not part of this website.</p>
+<h2>Proof of your choice</h2>
+<p>To be able to show that we respect your choice, we keep a record of it: a random ID stored in your cookie, the choice you made, the date and time, your browser type and a scrambled (hashed) version of your IP address that can’t be turned back into the address. We keep these records for up to two years.</p>
+<h2>Changes to this policy</h2>
+<p>We will update this policy when the cookies we use change. The date at the top shows the latest version. For questions, email <a href="mailto:{email}">{email}</a>{phone_sentence}.</p>
 HTML;
